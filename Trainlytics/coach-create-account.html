@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trainlytics - Coach Create Account</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="auth-container">
+    <a href="coach-login.html" class="back-link">←</a>
+    <h1 class="welcome-title">Welcome, Coach!</h1>
+    <h2 class="signin-subtitle">Create your Trainlytics account</h2>
+    <div class="auth-card">
+      <form class="auth-form" id="coach-signup-form" onsubmit="handleSignupSubmit(event)">
+        <div class="signup-grid">
+          <div class="field-group">
+            <label for="name">Name</label>
+            <input id="name" type="text" placeholder="Your full name" required />
+          </div>
+          <div class="field-group">
+            <label for="gender">Gender</label>
+            <input id="gender" type="text" placeholder="Gender" />
+          </div>
+          <div class="field-group">
+            <label for="school">School</label>
+            <input id="school" type="text" placeholder="Your school" />
+          </div>
+          <div class="field-group">
+            <label for="sport">Sport</label>
+            <input id="sport" type="text" placeholder="e.g. Track & Field" required />
+          </div>
+          <div class="field-group">
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="you@example.com" required />
+          </div>
+          <div class="field-group">
+            <label for="password">Password</label>
+            <input id="password" type="password" placeholder="••••••••" required />
+          </div>
+        </div>
+        <button type="submit" class="primary-btn">Continue</button>
+      </form>
+      <div class="auth-help">Have an existing account? <a href="coach-login.html">Log in</a></div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+  </body>
+</html>
+
+

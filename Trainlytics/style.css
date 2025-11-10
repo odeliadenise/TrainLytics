@@ -1,0 +1,289 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+@font-face {
+  font-family: 'Overcame'; /* give it any name you like */
+  src: url('fonts/OvercameDemoBoldItalic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #1e293b;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* ===== TOP 30% ===== */
+.top-section {
+  height: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  gap: 6px;
+}
+
+.logo {
+  width: 160px; /* slightly smaller logo */
+  height: auto;
+}
+
+h1 {
+  font-family: 'Overcame';
+  font-size: 50px;
+  margin-top: 0px;
+  font-weight: bold;
+}
+
+p {
+  font-size: 15px;
+  color: #475569;
+  max-width: 480px;
+  line-height: 1.4;
+  margin: 0 auto 0 auto;
+}
+
+/* ===== BOTTOM 70% ===== */
+.bottom-section {
+  height: 50%;
+  display: flex;
+  justify-content: space-between; /* icons now go left & right */
+  align-items: center;
+  padding: 0 10%; /* spacing from sides */
+  position: relative;
+}
+
+/* container for each icon */
+.image-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* PNG “buttons” */
+.img-btn {
+  background: transparent;
+  border: none;
+  padding-left: 5%;
+  padding-right: 5%;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+/* Make icons larger than logo */
+.img-btn img {
+  width: 400px; /* bigger emphasis on icons */
+  height: auto;
+  transition: transform 0.4s ease;
+}
+
+/* Hover animation */
+.img-btn:hover img {
+  transform: scale(1.12);
+  animation: bounce 0.6s ease;
+}
+
+/* bounce effect */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0) scale(1.12); }
+  50% { transform: translateY(-8px) scale(1.12); }
+}
+
+footer {
+  position: absolute;
+  bottom: 15px;
+  width: 100%;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+/* ===== Responsive (mobile) ===== */
+@media (max-width: 700px) {
+  .logo {
+    width: 130px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  p {
+    font-size: 14px;
+    max-width: 320px;
+  }
+
+  .bottom-section {
+    padding: 0;
+  }
+
+  .image-buttons {
+    flex-direction: column; /* stack vertically on small screens */
+    gap: 20px;
+  }
+
+  .img-btn img {
+    width: 200px;
+  }
+}
+
+/* ===== AUTH PAGES (athlete/coach login) ===== */
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 32px 16px;
+  background: #ffffff;
+}
+
+.back-link {
+  align-self: flex-start;
+  margin-left: 12px;
+  margin-top: 4px;
+  margin-bottom: 28px;
+  text-decoration: none;
+  color: #0f172a;
+  font-size: 22px;
+}
+
+.welcome-title {
+  font-family: 'Overcame';
+  font-size: 44px;
+  margin-bottom: 12px;
+  color: #0f172a;
+}
+
+.signin-subtitle {
+  font-family: 'Overcame';
+  font-size: 28px;
+  margin-bottom: 28px;
+  color: #0f172a;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.auth-avatar {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  opacity: 0.85;
+}
+
+.auth-form {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 6px;
+}
+
+.auth-form label {
+  text-align: left;
+  font-size: 14px;
+  color: #0f172a;
+}
+
+.auth-form input {
+  width: 100%;
+  border: none;
+  outline: none;
+  height: 46px;
+  border-radius: 999px;
+  padding: 0 18px;
+  background: #e5e7eb; /* light gray to match screenshot */
+  font-size: 16px;
+  color: #0f172a;
+}
+
+.auth-form input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+}
+
+/* Chrome, Safari, Edge, Opera - remove number spinners */
+.auth-form input[type="number"]::-webkit-outer-spin-button,
+.auth-form input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.signup-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 24px;
+  width: 100%;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.primary-btn {
+  border: none;
+  outline: none;
+  height: 44px;
+  border-radius: 999px;
+  background: #d1d5db;
+  color: #0f172a;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  width: 220px;
+  align-self: center;
+  transition: background 0.2s ease, transform 0.05s ease;
+}
+
+.primary-btn:hover {
+  background: #cbd5e1;
+}
+
+.primary-btn:active {
+  transform: translateY(1px);
+}
+
+.auth-help {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.auth-help a {
+  color: #0f172a;
+  text-decoration: underline;
+}
+
+@media (max-width: 700px) {
+  .welcome-title {
+    font-size: 34px;
+  }
+  .signin-subtitle {
+    font-size: 22px;
+  }
+  .auth-form {
+    max-width: 100%;
+  }
+  .signup-grid {
+    grid-template-columns: 1fr;
+  }
+}
