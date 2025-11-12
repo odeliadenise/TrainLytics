@@ -22,11 +22,11 @@
       <div class="auth-help">No account? <a href="coach-create-account.html">Create one</a></div>
     </div>
   </div>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script type="module" src="firebase-config.js"></script>
-  <script src="script.js"></script>
+  <!-- ES Module Scripts -->
+  <script type="module">
+    import { handleLoginSubmit } from './script.js';
+    window.handleLoginSubmit = handleLoginSubmit;
+  </script>
   </body>
 </html>
 

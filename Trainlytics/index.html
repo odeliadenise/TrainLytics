@@ -30,6 +30,9 @@
 
   <footer>© 2025 Trainlytics — All rights reserved</footer>
 
-  <script src="script.js"></script>
+  <script type="module">
+    import { goToLogin } from './script.js';
+    window.goToLogin = goToLogin;
+  </script>
 </body>
 </html>
