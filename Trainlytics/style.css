@@ -13,14 +13,14 @@
 
 
 body {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   background: #ffffff;
   font-family: Arial, Helvetica, sans-serif;
   color: #1e293b;
   text-align: center;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 /* ===== TOP 30% ===== */
@@ -147,6 +147,7 @@ footer {
   justify-content: flex-start;
   padding: 32px 16px;
   background: #ffffff;
+  overflow-y: auto;
 }
 
 .back-link {
@@ -227,11 +228,78 @@ footer {
   margin: 0;
 }
 
+.auth-form select {
+  width: 100%;
+  background: #e5e7eb;
+  border: none;
+  outline: none;
+  height: 46px;
+  border-radius: 999px;
+  padding: 0 18px;
+  font-size: 16px;
+  color: #0f172a;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 16px;
+  padding-right: 40px;
+}
+
 .signup-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px 24px;
   width: 100%;
+}
+
+.signup-grid-three {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px 24px;
+  width: 100%;
+}
+
+.profile-avatar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.avatar-circle {
+  width: 80px;
+  height: 80px;
+  background: #ede9fe;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.avatar-circle:hover {
+  background: #ddd6fe;
+  transform: scale(1.05);
+}
+
+.upload-hint {
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: #6b7280;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.avatar-circle:hover .upload-hint {
+  color: #9333ea;
 }
 
 .field-group {
@@ -252,6 +320,7 @@ footer {
   cursor: pointer;
   width: 220px;
   align-self: center;
+  margin-top: 10px;
   transition: background 0.2s ease, transform 0.05s ease;
 }
 
@@ -261,6 +330,34 @@ footer {
 
 .primary-btn:active {
   transform: translateY(1px);
+}
+
+.secondary-btn {
+  border: 1px solid #9333ea;
+  outline: none;
+  height: 36px;
+  border-radius: 999px;
+  background: transparent;
+  color: #9333ea;
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0 16px;
+  transition: all 0.2s ease;
+}
+
+.secondary-btn:hover {
+  background: #9333ea;
+  color: white;
+}
+
+.secondary-btn:active {
+  transform: translateY(1px);
+}
+
+.secondary-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .auth-help {

@@ -5,7 +5,8 @@ import {
   signOut, 
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
+  sendEmailVerification
 } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 import { 
   doc, 
@@ -339,11 +340,17 @@ export async function handleSignupSubmit(event) {
       profile.sport = formData.sport;
     }
     
+    // Add avatar if uploaded
+    const avatarData = getAvatarData();
+    if (avatarData) {
+      profile.avatar = avatarData;
+    }
+    
     await setDoc(doc(db, 'profiles', user.uid), profile, { merge: true });
 
     // Send email verification if available
     try {
-      await user.sendEmailVerification();
+      await sendEmailVerification(user);
       showFormMessage(formEl, 'Account created. Please verify your email, then log in.', 'success');
     } catch (_) {
       // Ignore if verification not enabled or fails
@@ -508,7 +515,7 @@ async function setupAuthGuards() {
       if (enforceEmailVerification && user.emailVerified === false) {
         // Stay on auth page and inform user
         const form = document.querySelector('form.auth-form');
-        showFormMessage(form || document.body, 'Please verify your email before continuing.', 'error');
+        showFormMessage(form || document.body, 'Please verify your email before continuing. Check your inbox or use the "Resend Email Verification" button below.', 'error');
         window._authGuardRunning = false;
         return;
       }
@@ -587,4 +594,74 @@ async function setupAuthGuards() {
 
 // Initialize guards on load
 document.addEventListener('DOMContentLoaded', setupAuthGuards);
+
+// ============================================
+// Avatar Upload Functionality
+// ============================================
+
+export function initializeAvatarUpload() {
+  const avatarUpload = document.getElementById('avatar-upload');
+  const avatarPreview = document.getElementById('avatar-preview');
+  const avatarPlaceholder = document.getElementById('avatar-placeholder');
+  
+  if (avatarUpload) {
+    avatarUpload.addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (file) {
+        // Check file size (limit to 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+          alert('File size must be less than 5MB');
+          return;
+        }
+        
+        // Check file type
+        if (!file.type.startsWith('image/')) {
+          alert('Please select an image file');
+          return;
+        }
+        
+        // Preview the image
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          avatarPreview.src = e.target.result;
+          avatarPreview.style.display = 'block';
+          avatarPlaceholder.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+}
+
+// Convert image to base64 for storage
+export function getAvatarData() {
+  const avatarPreview = document.getElementById('avatar-preview');
+  if (avatarPreview && avatarPreview.style.display !== 'none') {
+    return avatarPreview.src;
+  }
+  return null;
+}
+
+// ============================================
+// Email Verification Utilities
+// ============================================
+
+export async function resendEmailVerification() {
+  try {
+    const user = auth.currentUser;
+    if (!user) {
+      throw new Error('No user is currently signed in');
+    }
+    
+    if (user.emailVerified) {
+      return { success: false, message: 'Email is already verified' };
+    }
+    
+    await sendEmailVerification(user);
+    return { success: true, message: 'Verification email sent successfully! Please check your inbox.' };
+  } catch (error) {
+    console.error('Failed to send verification email:', error);
+    return { success: false, message: 'Failed to send verification email. Please try again later.' };
+  }
+}
 
