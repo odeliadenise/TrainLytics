@@ -5,27 +5,507 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Trainlytics - Coach Dashboard</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .coach-dashboard {
+      display: flex;
+      height: 100vh;
+      background: #f5f5f5;
+    }
+
+    .coach-sidebar {
+      width: 250px;
+      background: white;
+      padding: 20px;
+      border-right: 1px solid #ddd;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .coach-profile {
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .coach-avatar {
+      width: 80px;
+      height: 80px;
+      background: #e8d5f2;
+      border-radius: 50%;
+      margin: 0 auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .coach-name {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #333;
+    }
+
+    .coach-sport {
+      font-size: 13px;
+      color: #666;
+    }
+
+    .manage-account-btn {
+      background: #ddd;
+      color: #333;
+      border: none;
+      padding: 10px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 12px;
+      transition: background 0.3s;
+    }
+
+    .manage-account-btn:hover {
+      background: #ccc;
+    }
+
+    .coach-nav {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .nav-section {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .nav-item {
+      padding: 10px 12px;
+      color: #333;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+      border-radius: 4px;
+    }
+
+    .nav-item:hover {
+      background: #f0f0f0;
+    }
+
+    .nav-item.active {
+      background: #e8d5f2;
+      color: #6b4c9a;
+    }
+
+    .sign-out-btn {
+      background: #ddd;
+      color: #333;
+      border: none;
+      padding: 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: background 0.3s;
+      margin-top: auto;
+    }
+
+    .sign-out-btn:hover {
+      background: #ccc;
+    }
+
+    .coach-content {
+      flex: 1;
+      padding: 40px;
+      overflow-y: auto;
+    }
+
+    .content-section {
+      display: none;
+    }
+
+    .content-section.active {
+      display: block;
+    }
+
+    .schedule-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #333;
+      letter-spacing: 2px;
+    }
+
+    .schedule-container {
+      background: white;
+      border: 2px solid #333;
+      border-radius: 4px;
+      padding: 20px;
+      margin-bottom: 30px;
+      min-height: auto;
+    }
+
+    .month-header {
+      font-size: 20px;
+      font-weight: 700;
+      text-align: center;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 15px;
+    }
+
+    .calendar {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .calendar th {
+      text-align: center;
+      padding: 10px;
+      font-weight: 600;
+      color: #666;
+    }
+
+    .calendar td {
+      border: 1px solid #eee;
+      padding: 10px;
+      text-align: center;
+      height: 50px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .calendar td:hover {
+      background: #f0f0f0;
+    }
+
+    .calendar td.today {
+      background: #e8d5f2;
+      font-weight: 600;
+    }
+
+    .reminders-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    .reminders-box {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 15px;
+      min-height: 100px;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .reminder-item {
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .reminder-item:last-child {
+      border-bottom: none;
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #333;
+      letter-spacing: 1px;
+    }
+
+    .section-content {
+      background: white;
+      border: 2px solid #333;
+      border-radius: 4px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .team-card {
+      background: white;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s;
+    }
+
+    .team-card:hover {
+      transform: translateY(-2px);
+      border-color: #9333ea;
+    }
+
+    .team-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .team-info {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 5px;
+    }
+
+    .add-team-btn, .add-reminder-btn {
+      background: #9333ea;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 15px;
+      transition: background 0.2s;
+    }
+
+    .add-team-btn:hover, .add-reminder-btn:hover {
+      background: #7c3aed;
+    }
+  </style>
 </head>
 <body>
-  <div class="auth-container">
-    <h1 class="welcome-title">Coach Dashboard</h1>
-    <h2 class="signin-subtitle">Protected page</h2>
-    <div class="auth-card">
-      <div>You're signed in as a coach.</div>
-      <button id="logoutBtn" class="primary-btn">Sign Out</button>
+  <div class="coach-dashboard">
+    <!-- Sidebar -->
+    <div class="coach-sidebar">
+      <!-- Profile Section -->
+      <div class="coach-profile">
+        <div class="coach-avatar" id="coachAvatar">
+          <img id="avatarImage" style="display: none; width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+          <span id="avatarFallback">👨‍🏫</span>
+        </div>
+        <div class="coach-name" id="coachName">COACH NAME</div>
+        <div class="coach-sport" id="coachSport">SPORT</div>
+        <button class="manage-account-btn" onclick="window.location.href='manage-profile.html'">Manage Account</button>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="coach-nav">
+        <div class="nav-section">
+          <div class="nav-item active" data-section="home">Home</div>
+          <div class="nav-item" data-section="teams">Teams</div>
+          <div class="nav-item" data-section="training">Training</div>
+          <div class="nav-item" data-section="competition">Competition</div>
+          <div class="nav-item" data-section="statistics">Statistics</div>
+        </div>
+      </nav>
+
+      <!-- Sign Out -->
+      <button class="sign-out-btn" id="signOutBtn">Sign Out</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="coach-content">
+      <!-- Home Section -->
+      <div class="content-section active" id="home">
+        <div class="schedule-title">SCHEDULE</div>
+        
+        <div class="schedule-container">
+          <div class="month-header" id="monthHeader">November</div>
+          <table class="calendar" id="calendar">
+            <thead>
+              <tr>
+                <th>Sun</th>
+                <th>Mon</th>
+                <th>Tue</th>
+                <th>Wed</th>
+                <th>Thu</th>
+                <th>Fri</th>
+                <th>Sat</th>
+              </tr>
+            </thead>
+            <tbody id="calendarBody"></tbody>
+          </table>
+        </div>
+
+        <div class="reminders-title">Reminders</div>
+        <div class="reminders-box" id="remindersBox">
+          <div class="reminder-item">Team meeting - Tomorrow 3:00 PM</div>
+          <div class="reminder-item">Equipment check - Friday</div>
+          <div class="reminder-item">Game strategy review - Next Monday</div>
+          <button class="add-reminder-btn">Add Reminder</button>
+        </div>
+      </div>
+
+      <!-- Teams Section -->
+      <div id="teams" class="content-section">
+        <div class="section-title">TEAMS MANAGEMENT</div>
+        <div class="section-content">
+          <div class="team-card">
+            <div class="team-name">Varsity Team</div>
+            <div class="team-info">Sport: Basketball</div>
+            <div class="team-info">Athletes: 15</div>
+            <div class="team-info">Next Practice: Today 4:00 PM</div>
+          </div>
+          
+          <div class="team-card">
+            <div class="team-name">JV Team</div>
+            <div class="team-info">Sport: Basketball</div>
+            <div class="team-info">Athletes: 12</div>
+            <div class="team-info">Next Practice: Tomorrow 3:30 PM</div>
+          </div>
+          
+          <button class="add-team-btn">Add New Team</button>
+        </div>
+      </div>
+
+      <!-- Training Section -->
+      <div id="training" class="content-section">
+        <div class="schedule-title">Training</div>
+        <div class="schedule-container">
+          <p>Training information coming soon...</p>
+        </div>
+      </div>
+
+      <!-- Competition Section -->
+      <div id="competition" class="content-section">
+        <div class="schedule-title">Competition</div>
+        <div class="schedule-container">
+          <p>Competition information coming soon...</p>
+        </div>
+      </div>
+
+      <!-- Statistics Section -->
+      <div id="statistics" class="content-section">
+        <div class="schedule-title">Statistics</div>
+        <div class="schedule-container">
+          <p>Statistics coming soon...</p>
+        </div>
+      </div>
     </div>
   </div>
+
   <!-- ES Module Scripts -->
   <script type="module">
-    import { requireAuth, logout } from './script.js';
+    import { requireAuth, logout, getUserProfile } from './script.js';
 
     // Protect this page for coaches only
     requireAuth('coach');
 
-    // Wire the logout button
-    document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+    // Get current user and populate profile
+    import { auth } from './firebase-config.js';
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        const profile = await getUserProfile(user.uid);
+        if (profile) {
+          document.getElementById('coachName').textContent = profile.name || 'COACH NAME';
+          document.getElementById('coachSport').textContent = profile.sport || 'SPORT';
+          
+          // Display avatar if available
+          const avatarImage = document.getElementById('avatarImage');
+          const avatarFallback = document.getElementById('avatarFallback');
+          
+          if (profile.avatar) {
+            avatarImage.src = profile.avatar;
+            avatarImage.style.display = 'block';
+            avatarFallback.style.display = 'none';
+          } else {
+            avatarImage.style.display = 'none';
+            avatarFallback.style.display = 'block';
+          }
+        }
+      }
+    });
+
+    // Initialize calendar
+    function generateCalendar() {
+      const today = new Date();
+      const month = today.getMonth();
+      const year = today.getFullYear();
+      
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      
+      const calendarBody = document.getElementById('calendarBody');
+      calendarBody.innerHTML = '';
+      
+      let date = 1;
+      for (let i = 0; i < 6; i++) {
+        const row = document.createElement('tr');
+        for (let j = 0; j < 7; j++) {
+          const cell = document.createElement('td');
+          if (i === 0 && j < firstDay) {
+            cell.textContent = '';
+          } else if (date > daysInMonth) {
+            cell.textContent = '';
+          } else {
+            cell.textContent = date;
+            if (date === today.getDate()) {
+              cell.classList.add('today');
+            }
+            date++;
+          }
+          row.appendChild(cell);
+        }
+        calendarBody.appendChild(row);
+      }
+    }
+
+    generateCalendar();
+
+    // Navigation
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+        document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+        
+        item.classList.add('active');
+        const section = item.getAttribute('data-section');
+        document.getElementById(section).classList.add('active');
+      });
+    });
+
+    // Sign Out
+    document.getElementById('signOutBtn').addEventListener('click', async (e) => {
       e.preventDefault();
       await logout();
+    });
+
+    // Add reminder functionality (placeholder)
+    document.querySelector('.add-reminder-btn').addEventListener('click', () => {
+      const reminder = prompt('Enter new reminder:');
+      if (reminder) {
+        const remindersBox = document.getElementById('remindersBox');
+        const newReminder = document.createElement('div');
+        newReminder.className = 'reminder-item';
+        newReminder.textContent = reminder;
+        remindersBox.insertBefore(newReminder, remindersBox.lastElementChild);
+      }
+    });
+
+    // Add team functionality (placeholder)
+    document.querySelector('.add-team-btn').addEventListener('click', () => {
+      const teamName = prompt('Enter team name:');
+      if (teamName) {
+        const teamsContainer = document.querySelector('#teams .section-content');
+        const newTeam = document.createElement('div');
+        newTeam.className = 'team-card';
+        newTeam.innerHTML = `
+          <div class="team-name">${teamName}</div>
+          <div class="team-info">Sport: To be assigned</div>
+          <div class="team-info">Athletes: 0</div>
+          <div class="team-info">Next Practice: To be scheduled</div>
+        `;
+        teamsContainer.insertBefore(newTeam, teamsContainer.lastElementChild);
+      }
     });
   </script>
 </body>
