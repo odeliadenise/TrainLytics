@@ -22,50 +22,14 @@
       
       <div class="auth-help">
         <div>No account? <a href="coach-create-account.html">Create one</a></div>
-        <div style="margin-top: 10px;">
-          <button id="resend-verification-btn" class="secondary-btn" style="display: none;">
-            Resend Email Verification
-          </button>
-        </div>
       </div>
     </div>
   </div>
   <!-- ES Module Scripts -->
   <script type="module">
-    import { handleLoginSubmit, resendEmailVerification } from './script.js';
-    import { auth } from './firebase-config.js';
-    import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+    import { handleLoginSubmit } from './script.js';
     
     window.handleLoginSubmit = handleLoginSubmit;
-    
-    const resendBtn = document.getElementById('resend-verification-btn');
-    
-    // Show resend button if user is logged in but not verified
-    onAuthStateChanged(auth, (user) => {
-      if (user && !user.emailVerified) {
-        resendBtn.style.display = 'inline-block';
-      } else {
-        resendBtn.style.display = 'none';
-      }
-    });
-    
-    // Handle resend verification
-    resendBtn.addEventListener('click', async () => {
-      const originalText = resendBtn.textContent;
-      resendBtn.disabled = true;
-      resendBtn.textContent = 'Sending...';
-      
-      const result = await resendEmailVerification();
-      
-      if (result.success) {
-        alert(result.message);
-      } else {
-        alert('Error: ' + result.message);
-      }
-      
-      resendBtn.disabled = false;
-      resendBtn.textContent = originalText;
-    });
   </script>
   </body>
 </html>

@@ -22,7 +22,7 @@ export const db = getFirestore(app);
 
 // Auth behavior options
 export const authOptions = {
-  enforceEmailVerification: true
+  enforceEmailVerification: false
 };
 
 
