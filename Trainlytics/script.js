@@ -1,12 +1,11 @@
-// script.js (ES module)
+// script.js (ES module) - Version 2.0 (Email verification removed)
 import { auth, db, authOptions } from './firebase-config.js';
 import { 
   onAuthStateChanged, 
   signOut, 
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  sendPasswordResetEmail,
-  sendEmailVerification
+  sendPasswordResetEmail
 } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 import { 
   doc, 
@@ -22,8 +21,15 @@ import {
 // ============================================
 
 export async function getUserRole(uid) {
-  const snap = await getDoc(doc(db, 'profiles', uid));
-  return snap.exists() ? snap.data().role : null;
+  try {
+    const snap = await getDoc(doc(db, 'profiles', uid));
+    const role = snap.exists() ? snap.data().role : null;
+    console.log('getUserRole - UID:', uid, 'Role:', role, 'Exists:', snap.exists());
+    return role;
+  } catch (err) {
+    console.error('getUserRole error for UID:', uid, err);
+    throw err;
+  }
 }
 
 export async function getUserProfile(uid) {
@@ -33,18 +39,34 @@ export async function getUserProfile(uid) {
 
 export function requireAuth(expectedRole) {
   onAuthStateChanged(auth, async (user) => {
+    console.log('requireAuth called for role:', expectedRole, 'User:', user?.uid);
     if (!user) { 
+      console.log('requireAuth - No user, redirecting to login');
       location.href = `${expectedRole}-login.html`; 
       return; 
     }
-    const role = await getUserRole(user.uid);
-    if (role !== expectedRole) {
-      location.href = `${role}-dashboard.html`;
-      return;
+    try {
+      const role = await getUserRole(user.uid);
+      console.log('requireAuth - Got role:', role, 'Expected:', expectedRole);
+      if (!role) {
+        console.log('requireAuth - No role found, redirecting to login');
+        location.href = `${expectedRole}-login.html`;
+        return;
+      }
+      if (role !== expectedRole) {
+        console.log('requireAuth - Role mismatch, redirecting to correct dashboard');
+        location.href = `${role}-dashboard.html`;
+        return;
+      }
+      // Role matches, allow access
+      console.log('requireAuth - Role matches, allowing access');
+      // Optional: update UI with user info
+      const who = document.getElementById('whoami');
+      if (who) who.textContent = `Signed in as ${role}.`;
+    } catch (err) {
+      console.error('requireAuth - Error getting role:', err);
+      location.href = `${expectedRole}-login.html`;
     }
-    // Optional: update UI with user info
-    const who = document.getElementById('whoami');
-    if (who) who.textContent = `Signed in as ${role}.`;
   });
 }
 
@@ -58,8 +80,11 @@ export async function logout() {
 // ============================================
 
 function isValidEmail(email) {
+  if (!email || typeof email !== 'string') return false;
+  const trimmed = email.trim();
+  // Firebase requires a valid email format, so we need basic validation
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return re.test(String(email).toLowerCase());
+  return trimmed.length > 0 && re.test(trimmed);
 }
 
 function isValidPassword(password) {
@@ -208,7 +233,7 @@ export async function handleLoginSubmit(event) {
   const passwordInput = form.querySelector('input[type="password"]');
   if (!email || !isValidEmail(email)) {
     hasError = true;
-    setFieldError(emailInput, 'Please enter a valid email address.');
+    setFieldError(emailInput, 'Please enter your email address.');
   }
   if (!isValidPassword(password)) {
     hasError = true;
@@ -266,7 +291,7 @@ export async function handleLoginSubmit(event) {
     } else if (code.includes('too-many-requests')) {
       friendly = 'Too many attempts. Please wait a moment and try again.';
     } else if (code.includes('invalid-email')) {
-      friendly = 'Please enter a valid email.';
+      friendly = 'Please check your email address.';
     }
     showFormMessage(form, friendly, 'error');
     restoreBtn();
@@ -306,7 +331,7 @@ export async function handleSignupSubmit(event) {
   const emailInput = formEl.querySelector('#email');
   if (emailInput && !isValidEmail(formData.email)) {
     hasError = true;
-    setFieldError(emailInput, 'Please enter a valid email address.');
+    setFieldError(emailInput, 'Please enter a valid email address (e.g., user@example.com).');
   }
   // Password length
   const passwordInput = formEl.querySelector('#password');
@@ -318,7 +343,11 @@ export async function handleSignupSubmit(event) {
 
   const restoreBtn = disableSubmitButton(formEl, 'Creating account...');
   try {
-    const cred = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+    // Trim email before sending to Firebase
+    const email = formData.email.trim();
+    console.log('Attempting to create account with:', { email: email.substring(0, 5) + '...', passwordLength: formData.password.length, role });
+    
+    const cred = await createUserWithEmailAndPassword(auth, email, formData.password);
     const user = cred.user;
     if (!user) throw new Error('Missing user after sign up.');
 
@@ -330,7 +359,7 @@ export async function handleSignupSubmit(event) {
       school: formData.school,
       height: formData.height,
       weight: formData.weight,
-      email: formData.email,
+      email: email,
       role: role,
       createdAt: serverTimestamp()
     };
@@ -347,15 +376,25 @@ export async function handleSignupSubmit(event) {
     }
     
     await setDoc(doc(db, 'profiles', user.uid), profile, { merge: true });
-
-    // Send email verification if available
+    console.log('Profile created for user:', user.uid, 'with role:', role);
+    
+    // Verify profile was created by reading it back
     try {
-      await sendEmailVerification(user);
-      showFormMessage(formEl, 'Account created. Please verify your email, then log in.', 'success');
-    } catch (_) {
-      // Ignore if verification not enabled or fails
-      showFormMessage(formEl, 'Account created. You can now log in.', 'success');
+      const verifyProfile = await getUserProfile(user.uid);
+      console.log('Profile verification - Role:', verifyProfile?.role);
+      if (!verifyProfile || !verifyProfile.role) {
+        console.error('Profile verification failed - role not found');
+        throw new Error('Profile creation verification failed');
+      }
+    } catch (verifyErr) {
+      console.error('Error verifying profile:', verifyErr);
+      showFormMessage(formEl, 'Account created but profile verification failed. Please try logging in.', 'error');
+      restoreBtn();
+      return;
     }
+
+    // Account created successfully
+    showFormMessage(formEl, 'Account created. You can now log in.', 'success');
 
     // For athletes, auto-redirect to dashboard (already logged in with sport selected)
     if (role === 'athlete') {
@@ -370,15 +409,40 @@ export async function handleSignupSubmit(event) {
     // Redirect to corresponding login for coaches
     redirectToRoleLogin(role);
   } catch (err) {
+    console.error('Full signup error object:', err);
+    console.error('Error stack:', err.stack);
     const code = err && err.code ? String(err.code) : '';
+    const message = err && err.message ? String(err.message) : '';
+    const errorString = JSON.stringify(err, null, 2);
+    console.error('Error JSON:', errorString);
+    
     let friendly = 'Unable to create your account. Please review your details.';
-    if (code.includes('email-already-in-use')) {
+    
+    // Check for specific Firebase error codes
+    if (code === 'auth/email-already-in-use' || message.includes('email-already-in-use')) {
       friendly = 'An account with this email already exists.';
-    } else if (code.includes('weak-password')) {
-      friendly = 'Password is too weak. Please choose a stronger one.';
-    } else if (code.includes('invalid-email')) {
-      friendly = 'Please enter a valid email.';
+    } else if (code === 'auth/weak-password' || message.includes('weak-password')) {
+      friendly = 'Password is too weak. Please choose a stronger one (at least 6 characters).';
+    } else if (code === 'auth/invalid-email' || message.includes('invalid-email')) {
+      friendly = 'Please enter a valid email address (e.g., user@example.com).';
+      if (emailInput) setFieldError(emailInput, 'Invalid email format.');
+    } else if (code === 'auth/invalid-argument' || message.includes('invalid-argument')) {
+      friendly = 'Invalid email or password format. Please check your details.';
+    } else if (code === 'auth/operation-not-allowed' || message.includes('operation-not-allowed')) {
+      friendly = 'Email/password signup is not enabled in Firebase. Please enable it in Firebase Console > Authentication > Sign-in method.';
+    } else if (code === 'auth/network-request-failed' || message.includes('network')) {
+      friendly = 'Network error. Please check your internet connection and try again.';
+    } else if (code === 'auth/too-many-requests' || message.includes('too-many-requests')) {
+      friendly = 'Too many requests. Please wait a moment and try again.';
+    } else if (code) {
+      friendly = `Error (${code}): ${message || 'Please check your details and try again.'}`;
+    } else if (message) {
+      friendly = `Error: ${message}`;
+    } else {
+      friendly = `Unable to create account. Full error logged to console. Error: ${errorString.substring(0, 200)}`;
     }
+    
+    console.error('Error code:', code, 'Message:', message);
     showFormMessage(formEl, friendly, 'error');
   } finally {
     restoreBtn();
@@ -394,7 +458,7 @@ export async function handleForgotPassword(event) {
   const email = emailInput?.value || '';
   clearFieldErrors(form);
   if (!isValidEmail(email)) {
-    setFieldError(emailInput, 'Enter a valid email to reset your password.');
+    setFieldError(emailInput, 'Enter your email to reset your password.');
     return;
   }
   try {
@@ -404,7 +468,7 @@ export async function handleForgotPassword(event) {
     const code = err && err.code ? String(err.code) : '';
     let friendly = 'Unable to send reset email. Try again later.';
     if (code.includes('user-not-found')) friendly = 'No account found for this email.';
-    if (code.includes('invalid-email')) friendly = 'Please enter a valid email.';
+    if (code.includes('invalid-email')) friendly = 'Please check your email address.';
     showFormMessage(form, friendly, 'error');
   }
 }
@@ -498,24 +562,39 @@ async function setupAuthGuards() {
     let role = null;
     try {
       role = await getUserRole(user.uid);
-    } catch (_e) {
+      console.log('Auth guard - User logged in, UID:', user.uid, 'Role:', role);
+    } catch (err) {
+      console.error('Auth guard - Error getting user role:', err);
+      // If we can't get the role, redirect to login
+      if (!isAuthPage) {
+        window._redirecting = true;
+        if (expectedDashboardRole === 'coach') {
+          window.location.replace('coach-login.html');
+        } else {
+          window.location.replace('athlete-login.html');
+        }
+      }
       window._authGuardRunning = false;
       return;
     }
-
-    const enforceEmailVerification = !!(authOptions && authOptions.enforceEmailVerification);
+    
+    // If no role found and on a protected page, redirect to login
+    if (!role && !isAuthPage) {
+      console.log('Auth guard - No role found for user, redirecting to login');
+      window._redirecting = true;
+      if (expectedDashboardRole === 'coach') {
+        window.location.replace('coach-login.html');
+      } else {
+        window.location.replace('athlete-login.html');
+      }
+      window._authGuardRunning = false;
+      return;
+    }
 
     if (isAuthPage) {
       // Already logged in but on login/signup page
       if (window._loginInProgress) {
         // Let the login handler manage the redirect
-        window._authGuardRunning = false;
-        return;
-      }
-      if (enforceEmailVerification && user.emailVerified === false) {
-        // Stay on auth page and inform user
-        const form = document.querySelector('form.auth-form');
-        showFormMessage(form || document.body, 'Please verify your email before continuing. Check your inbox or use the "Resend Email Verification" button below.', 'error');
         window._authGuardRunning = false;
         return;
       }
@@ -580,14 +659,6 @@ async function setupAuthGuards() {
       }
     }
 
-    // Enforce email verification on dashboards if enabled
-    if (expectedDashboardRole && enforceEmailVerification && user.emailVerified === false) {
-      if (!window._redirecting) {
-        window._redirecting = true;
-        redirectToRoleLogin(role || expectedDashboardRole);
-      }
-    }
-
     window._authGuardRunning = false;
   });
 }
@@ -642,26 +713,4 @@ export function getAvatarData() {
   return null;
 }
 
-// ============================================
-// Email Verification Utilities
-// ============================================
-
-export async function resendEmailVerification() {
-  try {
-    const user = auth.currentUser;
-    if (!user) {
-      throw new Error('No user is currently signed in');
-    }
-    
-    if (user.emailVerified) {
-      return { success: false, message: 'Email is already verified' };
-    }
-    
-    await sendEmailVerification(user);
-    return { success: true, message: 'Verification email sent successfully! Please check your inbox.' };
-  } catch (error) {
-    console.error('Failed to send verification email:', error);
-    return { success: false, message: 'Failed to send verification email. Please try again later.' };
-  }
-}
 
