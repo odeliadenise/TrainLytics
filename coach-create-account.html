@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trainlytics - Coach Create Account</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="auth-container">
+    <a href="coach-login.html" class="back-link">←</a>
+    <h1 class="welcome-title">Welcome Coach</h1>
+    <h2 class="signin-subtitle">Create your Trainlytics account</h2>
+    <div class="auth-card">
+      <div class="profile-avatar">
+        <input type="file" id="avatar-upload" accept="image/*" style="display: none;" />
+        <div class="avatar-circle" onclick="document.getElementById('avatar-upload').click()">
+          <img id="avatar-preview" style="display: none; width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+          <div id="avatar-placeholder">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#9333ea" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <div class="upload-hint">Click to upload photo</div>
+          </div>
+        </div>
+      </div>
+      
+      <form class="auth-form" id="coach-signup-form" onsubmit="handleSignupSubmit(event)">
+        <div class="signup-grid">
+          <div class="field-group">
+            <label for="name">Name</label>
+            <input id="name" type="text" placeholder="Your full name" required />
+          </div>
+          <div class="field-group">
+            <label for="age">Age</label>
+            <input id="age" type="number" min="18" placeholder="Age" />
+          </div>
+          <div class="field-group">
+            <label for="school">School</label>
+            <input id="school" type="text" placeholder="Your school" />
+          </div>
+          <div class="field-group">
+            <label for="sport">Sport</label>
+            <select id="sport" required>
+              <option value=""></option>
+              <option value="badminton">Badminton</option>
+              <option value="baseball">Baseball</option>
+              <option value="basketball">Basketball</option>
+              <option value="soccer">Soccer</option>
+              <option value="swimming">Swimming</option>
+              <option value="table tennis">Table Tennis</option>
+              <option value="track">Track</option>
+              <option value="tennis">Tennis</option>
+              <option value="volleyball">Volleyball</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="you@example.com" required />
+          </div>
+          <div class="field-group">
+            <label for="password">Password</label>
+            <input id="password" type="password" placeholder="••••••••" required />
+          </div>
+        </div>
+        <button type="submit" class="primary-btn">Continue</button>
+      </form>
+      <div class="auth-help">Have an existing account? <a href="coach-login.html">Log in</a></div>
+    </div>
+  </div>
+  <!-- ES Module Scripts -->
+  <script type="module">
+    import { handleSignupSubmit, initializeAvatarUpload } from './script.js';
+    window.handleSignupSubmit = handleSignupSubmit;
+    
+    // Initialize avatar upload when page loads
+    document.addEventListener('DOMContentLoaded', initializeAvatarUpload);
+  </script>
+  </body>
+</html>
+
+

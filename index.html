@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trainlytics - Welcome</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- === TOP 30% === -->
+  <div class="top-section">
+    <img src="assets/logo.png" alt="Trainlytics Logo" class="logo" />
+    <h1>Trainlytics</h1>
+    <p>Train Smarter, Win Together.</p>
+  </div>
+
+  <!-- === BOTTOM 70% === -->
+  <div class="bottom-section">
+  <div class="image-buttons">
+    <button class="img-btn" onclick="goToLogin('coach')" aria-label="I'm a Coach">
+      <img src="assets/coach.png" alt="Coach" />
+    </button>
+    <button class="img-btn" onclick="goToLogin('athlete')" aria-label="I'm an Athlete">
+      <img src="assets/athlete.png" alt="Athlete" />
+    </button>
+  </div>
+  </div>
+
+
+  <footer>© 2025 Trainlytics — All rights reserved</footer>
+
+  <script type="module">
+    import { goToLogin } from './script.js';
+    window.goToLogin = goToLogin;
+  </script>
+</body>
+</html>
