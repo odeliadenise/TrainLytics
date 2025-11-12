@@ -273,6 +273,59 @@ footer {
   text-decoration: underline;
 }
 
+/* ===== SPORT SELECTION ===== */
+.sport-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 24px;
+}
+
+.sport-option {
+  position: relative;
+  cursor: pointer;
+}
+
+.sport-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.sport-card {
+  display: block;
+  padding: 20px 16px;
+  background: #e5e7eb;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f172a;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.sport-option:hover .sport-card {
+  background: #d1d5db;
+  transform: translateY(-2px);
+}
+
+.sport-option input[type="radio"]:checked + .sport-card {
+  background: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+  transform: scale(1.05);
+}
+
+.sport-option input[type="radio"]:focus + .sport-card {
+  outline: 2px solid #0f172a;
+  outline-offset: 2px;
+}
+
 @media (max-width: 700px) {
   .welcome-title {
     font-size: 34px;
@@ -285,5 +338,274 @@ footer {
   }
   .signup-grid {
     grid-template-columns: 1fr;
+  }
+  .sport-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .sport-card {
+    padding: 16px 12px;
+    font-size: 14px;
+  }
+}
+
+/* ===== ATHLETE DASHBOARD ===== */
+.dashboard-body {
+  overflow: auto;
+  text-align: left;
+}
+
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+/* Sidebar */
+.dashboard-sidebar {
+  width: 280px;
+  min-height: 100vh;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.sidebar-back-arrow {
+  font-size: 24px;
+  color: #0f172a;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.sidebar-back-arrow:hover {
+  color: #9333EA;
+}
+
+.sidebar-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-icon {
+  flex-shrink: 0;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.profile-name {
+  font-family: 'Overcame', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.profile-sport {
+  font-family: 'Overcame', Arial, sans-serif;
+  font-size: 14px;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.manage-account-btn {
+  width: 100%;
+  padding: 12px 16px;
+  background: #e5e7eb;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Overcame', Arial, sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.manage-account-btn:hover {
+  background: #d1d5db;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nav-link {
+  font-family: 'Overcame', Arial, sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  color: #0f172a;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 8px 0;
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+  color: #9333EA;
+}
+
+.nav-link.active {
+  color: #9333EA;
+}
+
+/* Main Content */
+.dashboard-main {
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;
+}
+
+.dashboard-content {
+  max-width: 1200px;
+}
+
+.content-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.content-section.hidden {
+  display: none;
+}
+
+.section-title {
+  font-family: 'Overcame', Arial, sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.schedule-box {
+  border: 1px solid #0f172a;
+  border-radius: 8px;
+  padding: 20px;
+  min-height: 400px;
+}
+
+.calendar-header {
+  text-align: center;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.calendar-month {
+  font-family: 'Overcame', Arial, sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.calendar-week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.calendar-header-row {
+  margin-bottom: 8px;
+}
+
+.calendar-day-header {
+  font-family: 'Overcame', Arial, sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  color: #0f172a;
+  text-align: center;
+  padding: 8px 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #0f172a;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calendar-day:hover:not(.empty):not(.today) {
+  background: #f3f4f6;
+}
+
+.calendar-day.empty {
+  border: none;
+  cursor: default;
+}
+
+.calendar-day.today {
+  background: #9333EA;
+  color: #ffffff;
+  border-color: #9333EA;
+  font-weight: bold;
+}
+
+.coach-notes-box {
+  min-height: 200px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 20px;
+  background: #f9fafb;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .dashboard-sidebar {
+    width: 100%;
+    min-height: auto;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 16px;
+  }
+
+  .dashboard-main {
+    padding: 24px 16px;
+  }
+
+  .schedule-box {
+    min-height: 300px;
+  }
+
+  .calendar-day {
+    font-size: 12px;
+    padding: 4px;
   }
 }

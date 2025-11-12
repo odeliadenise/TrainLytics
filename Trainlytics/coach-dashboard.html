@@ -12,14 +12,22 @@
     <h2 class="signin-subtitle">Protected page</h2>
     <div class="auth-card">
       <div>You're signed in as a coach.</div>
-      <button class="primary-btn" onclick="logout()">Sign Out</button>
+      <button id="logoutBtn" class="primary-btn">Sign Out</button>
     </div>
   </div>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script type="module" src="firebase-config.js"></script>
-  <script src="script.js"></script>
+  <!-- ES Module Scripts -->
+  <script type="module">
+    import { requireAuth, logout } from './script.js';
+
+    // Protect this page for coaches only
+    requireAuth('coach');
+
+    // Wire the logout button
+    document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+      e.preventDefault();
+      await logout();
+    });
+  </script>
 </body>
 </html>
 

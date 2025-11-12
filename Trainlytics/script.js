@@ -1,32 +1,61 @@
-// Simple role-based navigation from the landing page
-function goToLogin(role) {
-  if (role === 'athlete') {
-    window.location.href = 'athlete-login.html';
-    return;
-  }
-  if (role === 'coach') {
-    window.location.href = 'coach-login.html';
-    return;
-  }
-  console.warn('Unknown role:', role);
+// script.js (ES module)
+import { auth, db, authOptions } from './firebase-config.js';
+import { 
+  onAuthStateChanged, 
+  signOut, 
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail
+} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import { 
+  doc, 
+  getDoc, 
+  collection, 
+  setDoc,
+  updateDoc,
+  serverTimestamp
+} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+// ============================================
+// Core authentication functions
+// ============================================
+
+export async function getUserRole(uid) {
+  const snap = await getDoc(doc(db, 'profiles', uid));
+  return snap.exists() ? snap.data().role : null;
 }
 
-// Initialize Firebase using compat SDK if not already initialized
-function initFirebaseIfNeeded() {
-  if (!window.firebase || !window.firebaseConfig) {
-    console.warn('Firebase SDK or config not loaded yet.');
-    return null;
-  }
-  if (!firebase.apps.length) {
-    firebase.initializeApp(window.firebaseConfig);
-  }
-  return {
-    auth: firebase.auth(),
-    db: firebase.firestore()
-  };
+export async function getUserProfile(uid) {
+  const snap = await getDoc(doc(db, 'profiles', uid));
+  return snap.exists() ? snap.data() : null;
 }
 
-// ---------- Client-side validation helpers ----------
+export function requireAuth(expectedRole) {
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) { 
+      location.href = `${expectedRole}-login.html`; 
+      return; 
+    }
+    const role = await getUserRole(user.uid);
+    if (role !== expectedRole) {
+      location.href = `${role}-dashboard.html`;
+      return;
+    }
+    // Optional: update UI with user info
+    const who = document.getElementById('whoami');
+    if (who) who.textContent = `Signed in as ${role}.`;
+  });
+}
+
+export async function logout() {
+  await signOut(auth);
+  location.href = 'index.html'; // or role chooser
+}
+
+// ============================================
+// Validation helpers
+// ============================================
+
 function isValidEmail(email) {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return re.test(String(email).toLowerCase());
@@ -35,6 +64,10 @@ function isValidEmail(email) {
 function isValidPassword(password) {
   return typeof password === 'string' && password.length >= 8;
 }
+
+// ============================================
+// UI helper functions
+// ============================================
 
 function ensureErrorElementAfter(inputEl) {
   if (!inputEl) return null;
@@ -91,6 +124,10 @@ function disableSubmitButton(formEl, pendingText) {
   };
 }
 
+// ============================================
+// Page detection helpers
+// ============================================
+
 function getRoleFromPageForSignup() {
   const path = (location.pathname || '').toLowerCase();
   if (path.includes('coach-create-account')) return 'coach';
@@ -104,12 +141,42 @@ function getRoleFromPageForDashboard() {
   return null;
 }
 
-function redirectToRoleDashboard(role) {
-  if (role === 'coach') {
-    window.location.href = 'coach-dashboard.html';
+// ============================================
+// Navigation functions
+// ============================================
+
+export function goToLogin(role) {
+  if (role === 'athlete') {
+    window.location.href = 'athlete-login.html';
     return;
   }
-  window.location.href = 'athlete-dashboard.html';
+  if (role === 'coach') {
+    window.location.href = 'coach-login.html';
+    return;
+  }
+  console.warn('Unknown role:', role);
+}
+
+async function redirectToRoleDashboard(role, uid) {
+  const currentPage = window.location.pathname.split('/').pop() || '';
+  console.log('redirectToRoleDashboard called - Current page:', currentPage, 'Role:', role);
+  
+  if (role === 'coach') {
+    if (currentPage !== 'coach-dashboard.html' && !currentPage.includes('coach-dashboard')) {
+      console.log('Redirecting to coach dashboard from:', currentPage);
+      window.location.href = 'coach-dashboard.html';
+    }
+    return;
+  }
+  
+  // For athletes
+  if (role === 'athlete') {
+    if (currentPage !== 'athlete-dashboard.html' && !currentPage.includes('athlete-dashboard')) {
+      console.log('Redirecting to athlete dashboard from:', currentPage);
+      window.location.href = 'athlete-dashboard.html';
+    }
+    return;
+  }
 }
 
 function redirectToRoleLogin(role) {
@@ -120,22 +187,14 @@ function redirectToRoleLogin(role) {
   window.location.href = 'athlete-login.html';
 }
 
-async function fetchUserRole(db, uid) {
-  const docRef = db.collection('profiles').doc(uid);
-  const snap = await docRef.get();
-  return snap.exists ? (snap.data().role || null) : null;
-}
+// ============================================
+// Form handlers
+// ============================================
 
-// Login with Firebase Auth and route by Firestore profile role
-async function handleLoginSubmit(event) {
+export async function handleLoginSubmit(event) {
   event.preventDefault();
   window._loginInProgress = true;
-  const { auth, db } = initFirebaseIfNeeded() || {};
-  if (!auth || !db) {
-    showFormMessage(event.target, 'Authentication not initialized. Please try again.', 'error');
-    window._loginInProgress = false;
-    return;
-  }
+  
   const form = event.target;
   const desiredRole = (form.getAttribute('data-role') || '').toLowerCase(); // 'athlete' or 'coach' on login pages
   const email = form.querySelector('input[type="email"]')?.value || '';
@@ -158,25 +217,46 @@ async function handleLoginSubmit(event) {
 
   const restoreBtn = disableSubmitButton(form, 'Signing in...');
   try {
-    const cred = await auth.signInWithEmailAndPassword(email, password);
+    const cred = await signInWithEmailAndPassword(auth, email, password);
     const uid = cred.user?.uid;
     if (!uid) throw new Error('Missing user id after login.');
-    const role = await fetchUserRole(db, uid);
+    console.log('User logged in with UID:', uid);
+    
+    const role = await getUserRole(uid);
+    console.log('User role:', role);
+    
     if (!role) {
       showFormMessage(form, 'No profile found. Please contact support.', 'error');
+      restoreBtn();
+      window._loginInProgress = false;
       return;
     }
     // Enforce page-specific role on login pages: block logging in with the wrong role
     if (desiredRole && role !== desiredRole) {
-      try { await auth.signOut(); } catch (_e) {}
+      try { await signOut(auth); } catch (_e) {}
       const roleName = role === 'coach' ? 'Coach' : 'Athlete';
       const desiredName = desiredRole === 'coach' ? 'Coach' : 'Athlete';
       showFormMessage(form, `This account is a ${roleName} account. Please use the ${desiredName} login page.`, 'error');
       const pwdInput = form.querySelector('input[type="password"]');
       if (pwdInput) pwdInput.value = '';
+      restoreBtn();
+      window._loginInProgress = false;
       return;
     }
-    redirectToRoleDashboard(role);
+    // Reset login flag and redirect
+    console.log('Login successful, redirecting...');
+    window._loginInProgress = false;
+    window._redirecting = true;
+    // Don't await - let redirect happen asynchronously
+    redirectToRoleDashboard(role, uid).catch(err => {
+      console.error('Redirect error:', err);
+      // Fallback redirect
+      if (role === 'coach') {
+        window.location.href = 'coach-dashboard.html';
+      } else {
+        window.location.href = 'athlete-dashboard.html';
+      }
+    });
   } catch (err) {
     const code = err && err.code ? String(err.code) : '';
     let friendly = 'Unable to sign in. Please check your details and try again.';
@@ -188,20 +268,14 @@ async function handleLoginSubmit(event) {
       friendly = 'Please enter a valid email.';
     }
     showFormMessage(form, friendly, 'error');
-  } finally {
     restoreBtn();
     window._loginInProgress = false;
   }
 }
 
-// Sign up, create profile document, optional email verification, and route
-async function handleSignupSubmit(event) {
+export async function handleSignupSubmit(event) {
   event.preventDefault();
-  const { auth, db } = initFirebaseIfNeeded() || {};
-  if (!auth || !db) {
-    showFormMessage(event.target, 'Authentication not initialized. Please try again.', 'error');
-    return;
-  }
+  
   const formEl = event.target;
   const role = getRoleFromPageForSignup();
   const formData = {
@@ -220,7 +294,7 @@ async function handleSignupSubmit(event) {
   clearFieldErrors(formEl);
   let hasError = false;
   // Validate all inputs with required attribute
-  formEl.querySelectorAll('input[required]').forEach((input) => {
+  formEl.querySelectorAll('input[required], select[required]').forEach((input) => {
     const value = (input.value || '').trim();
     if (!value) {
       hasError = true;
@@ -243,7 +317,7 @@ async function handleSignupSubmit(event) {
 
   const restoreBtn = disableSubmitButton(formEl, 'Creating account...');
   try {
-    const cred = await auth.createUserWithEmailAndPassword(formData.email, formData.password);
+    const cred = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
     const user = cred.user;
     if (!user) throw new Error('Missing user after sign up.');
 
@@ -257,12 +331,15 @@ async function handleSignupSubmit(event) {
       weight: formData.weight,
       email: formData.email,
       role: role,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      createdAt: serverTimestamp()
     };
-    if (role === 'coach' && formData.sport) {
+    
+    // Add sport for both coaches and athletes
+    if (formData.sport) {
       profile.sport = formData.sport;
     }
-    await db.collection('profiles').doc(user.uid).set(profile, { merge: true });
+    
+    await setDoc(doc(db, 'profiles', user.uid), profile, { merge: true });
 
     // Send email verification if available
     try {
@@ -273,7 +350,17 @@ async function handleSignupSubmit(event) {
       showFormMessage(formEl, 'Account created. You can now log in.', 'success');
     }
 
-    // Redirect to corresponding login
+    // For athletes, auto-redirect to dashboard (already logged in with sport selected)
+    if (role === 'athlete') {
+      console.log('Athlete signup complete, redirecting to dashboard...');
+      // Small delay to show success message, then redirect
+      setTimeout(() => {
+        window.location.href = 'athlete-dashboard.html';
+      }, 1500);
+      return;
+    }
+
+    // Redirect to corresponding login for coaches
     redirectToRoleLogin(role);
   } catch (err) {
     const code = err && err.code ? String(err.code) : '';
@@ -291,11 +378,9 @@ async function handleSignupSubmit(event) {
   }
 }
 
-// Forgot password handler
-async function handleForgotPassword(event) {
+export async function handleForgotPassword(event) {
   event.preventDefault();
-  const { auth } = initFirebaseIfNeeded() || {};
-  if (!auth) return;
+  
   // Find the nearest form and its email value
   const form = event.target.closest('form') || document.querySelector('form.auth-form');
   const emailInput = form?.querySelector('input[type="email"]');
@@ -306,7 +391,7 @@ async function handleForgotPassword(event) {
     return;
   }
   try {
-    await auth.sendPasswordResetEmail(email);
+    await sendPasswordResetEmail(auth, email);
     showFormMessage(form, 'Password reset email sent. Please check your inbox.', 'success');
   } catch (err) {
     const code = err && err.code ? String(err.code) : '';
@@ -317,14 +402,58 @@ async function handleForgotPassword(event) {
   }
 }
 
-// Shared auth state guard and redirector
-function setupAuthGuards() {
-  const init = initFirebaseIfNeeded();
-  if (!init) return;
-  const { auth, db } = init;
+export async function handleSportSelection(event) {
+  event.preventDefault();
 
-  auth.onAuthStateChanged(async (user) => {
+  const user = auth.currentUser;
+  if (!user) {
+    window.location.href = 'athlete-login.html';
+    return;
+  }
+
+  const form = event.target;
+  const selectedSport = form.querySelector('input[name="sport"]:checked')?.value;
+  
+  if (!selectedSport) {
+    showFormMessage(form, 'Please select a sport.', 'error');
+    return;
+  }
+
+  const restoreBtn = disableSubmitButton(form, 'Saving...');
+  try {
+    // Update profile with selected sport
+    await updateDoc(doc(db, 'profiles', user.uid), {
+      sport: selectedSport
+    });
+
+    // Redirect to athlete dashboard
+    window._redirecting = true;
+    window.location.replace('athlete-dashboard.html');
+  } catch (err) {
+    console.error('Error saving sport:', err);
+    showFormMessage(form, 'Unable to save your sport selection. Please try again.', 'error');
+    restoreBtn();
+  }
+}
+
+// ============================================
+// Auth state guard
+// ============================================
+
+async function setupAuthGuards() {
+  // Prevent multiple simultaneous guard checks
+  if (window._authGuardRunning) return;
+  window._authGuardRunning = true;
+
+  onAuthStateChanged(auth, async (user) => {
+    // Prevent redirect loops by checking if we're already redirecting
+    if (window._redirecting) {
+      window._authGuardRunning = false;
+      return;
+    }
+
     const path = (location.pathname || '').toLowerCase();
+    const currentPage = path.split('/').pop() || '';
     const isAuthPage = path.includes('login') || path.includes('create-account');
     const expectedDashboardRole = getRoleFromPageForDashboard(); // for dashboard pages only
     const params = new URLSearchParams(location.search || '');
@@ -332,84 +461,130 @@ function setupAuthGuards() {
     // Auto sign-out flow: visiting a login page with ?switch=1 logs out then reloads without the flag
     if (isAuthPage && params.get('switch') === '1') {
       try {
-        await auth.signOut();
+        await signOut(auth);
       } catch (_e) {}
       // Reload without the switch param to avoid loops
       const url = new URL(location.href);
       url.searchParams.delete('switch');
       location.replace(url.toString());
+      window._authGuardRunning = false;
       return;
     }
 
     if (!user) {
       if (!isAuthPage) {
         // On a protected page, send to the correct login page based on URL
-        if (expectedDashboardRole === 'coach') {
-          window.location.href = 'coach-login.html';
-        } else if (expectedDashboardRole === 'athlete') {
-          window.location.href = 'athlete-login.html';
-        } else {
-          // Fallback to landing
-          // window.location.href = 'index.html';
+        // But only if we're not already on a login page
+        if (expectedDashboardRole === 'coach' && !currentPage.includes('coach-login')) {
+          window._redirecting = true;
+          window.location.replace('coach-login.html');
+        } else if (expectedDashboardRole === 'athlete' && !currentPage.includes('athlete-login')) {
+          window._redirecting = true;
+          window.location.replace('athlete-login.html');
         }
       }
+      window._authGuardRunning = false;
       return;
     }
 
     // User is logged in
     let role = null;
     try {
-      role = await fetchUserRole(db, user.uid);
-    } catch (_e) {}
+      role = await getUserRole(user.uid);
+    } catch (_e) {
+      window._authGuardRunning = false;
+      return;
+    }
 
-    const enforceEmailVerification = !!(window.authOptions && window.authOptions.enforceEmailVerification);
+    const enforceEmailVerification = !!(authOptions && authOptions.enforceEmailVerification);
 
     if (isAuthPage) {
       // Already logged in but on login/signup page
       if (window._loginInProgress) {
-        // Avoid racing redirects while a form submission is handling logic
+        // Let the login handler manage the redirect
+        window._authGuardRunning = false;
         return;
       }
       if (enforceEmailVerification && user.emailVerified === false) {
         // Stay on auth page and inform user
         const form = document.querySelector('form.auth-form');
         showFormMessage(form || document.body, 'Please verify your email before continuing.', 'error');
+        window._authGuardRunning = false;
         return;
       }
-      if (role) redirectToRoleDashboard(role);
+      if (role) {
+        // Only redirect if login is not in progress
+        if (!window._loginInProgress && !window._redirecting) {
+          window._redirecting = true;
+          await redirectToRoleDashboard(role, user.uid);
+        }
+      }
+      window._authGuardRunning = false;
+      return;
+    }
+
+    // Check if on sport selection page - allow it if athlete has no sport
+    const isSportSelectionPage = path.includes('athlete-select-sport');
+    if (isSportSelectionPage && role === 'athlete') {
+      try {
+        const profile = await getUserProfile(user.uid);
+        if (profile && profile.sport) {
+          // Already has sport selected, redirect to dashboard
+          if (!window._redirecting && currentPage !== 'athlete-dashboard.html') {
+            window._redirecting = true;
+            window.location.replace('athlete-dashboard.html');
+          }
+          window._authGuardRunning = false;
+          return;
+        }
+      } catch (err) {
+        console.error('Error checking sport:', err);
+      }
+      // Allow access to sport selection page if no sport
+      window._authGuardRunning = false;
       return;
     }
 
     // On dashboard, if role mismatch, still send to their dashboard
     if (expectedDashboardRole && role && role !== expectedDashboardRole) {
-      redirectToRoleDashboard(role);
+      if (!window._redirecting) {
+        window._redirecting = true;
+        await redirectToRoleDashboard(role, user.uid);
+      }
+      window._authGuardRunning = false;
       return;
+    }
+
+    // For athlete dashboard, check if sport is selected
+    if (expectedDashboardRole === 'athlete' && role === 'athlete') {
+      try {
+        const profile = await getUserProfile(user.uid);
+        if (!profile || !profile.sport) {
+          // No sport selected, redirect to sport selection
+          if (!window._redirecting && currentPage !== 'athlete-select-sport.html') {
+            window._redirecting = true;
+            window.location.replace('athlete-select-sport.html');
+          }
+          window._authGuardRunning = false;
+          return;
+        }
+      } catch (err) {
+        console.error('Error checking sport:', err);
+      }
     }
 
     // Enforce email verification on dashboards if enabled
     if (expectedDashboardRole && enforceEmailVerification && user.emailVerified === false) {
-      redirectToRoleLogin(role || expectedDashboardRole);
+      if (!window._redirecting) {
+        window._redirecting = true;
+        redirectToRoleLogin(role || expectedDashboardRole);
+      }
     }
+
+    window._authGuardRunning = false;
   });
 }
 
 // Initialize guards on load
 document.addEventListener('DOMContentLoaded', setupAuthGuards);
-
-// Sign out and route to appropriate login page
-async function logout() {
-  const init = initFirebaseIfNeeded();
-  if (!init) return;
-  const { auth } = init;
-  const dashboardRole = getRoleFromPageForDashboard();
-  try {
-    await auth.signOut();
-  } catch (_e) {}
-  if (dashboardRole) {
-    redirectToRoleLogin(dashboardRole);
-  } else {
-    // Fallback to landing
-    // window.location.href = 'index.html';
-  }
-}
 
