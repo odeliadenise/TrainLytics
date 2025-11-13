@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Training Session</title>
+
+  <!-- Your global styles -->
+  <link rel="stylesheet" href="style.css" />
+  <!-- Page-specific (small) -->
+  <link rel="stylesheet" href="sessions.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="ts-header">
+    <button class="ts-icon-btn" aria-label="Back" onclick="history.back()">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+        <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <h1 class="ts-title">TRAINING SESSION</h1>
+
+    <a class="ts-icon-btn" aria-label="Add session" href="coach_training.html" title="Add session">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+        <path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </a>
+  </header>
+
+  <!-- Tabs + Search row -->
+  <section class="ts-controls">
+    <nav class="ts-tabs" role="tablist" aria-label="Session views">
+      <button class="tab active" data-filter="all">All</button>
+      <button class="tab" data-filter="upcoming">Upcoming</button>
+      <button class="tab" data-filter="completed">Completed</button>
+      <button class="tab" data-filter="draft">Drafts</button>
+    </nav>
+
+    <div class="ts-sort-search">
+      <span class="sort-label">Sort By</span>
+      <div class="search-wrap">
+        <input id="search" type="search" placeholder="Search Session Name" />
+        <svg class="search-ico" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M20 20l-3.2-3.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cards -->
+  <main class="ts-grid" id="sessionGrid">
+    <article class="ts-card" data-status="completed" data-name="Strength Training #3">
+      <dl>
+        <div class="row"><dt>Name</dt><dd>Strength Training #3</dd></div>
+        <div class="row"><dt>Date</dt><dd>2025/11/15</dd></div>
+        <div class="row"><dt>Team</dt><dd>A-Team</dd></div>
+        <div class="row"><dt>Status</dt><dd>Completed</dd></div>
+      </dl>
+    </article>
+
+    <article class="ts-card" data-status="upcoming" data-name="Cardio Endurance Set">
+      <dl>
+        <div class="row"><dt>Name</dt><dd>Cardio Endurance Set</dd></div>
+        <div class="row"><dt>Date</dt><dd>2025/11/18</dd></div>
+        <div class="row"><dt>Team</dt><dd>A-Team</dd></div>
+        <div class="row"><dt>Status</dt><dd>Upcoming</dd></div>
+      </dl>
+    </article>
+
+    <!-- add more cards as needed -->
+  </main>
+
+  <div class="load-more">
+    <button class="btn-ghost" type="button">Load More</button>
+  </div>
+
+  <script>
+    // Tabs + search (demo-only)
+    const tabs = document.querySelectorAll('.tab');
+    const cards = [...document.querySelectorAll('.ts-card')];
+    const search = document.getElementById('search');
+
+    tabs.forEach(t => t.addEventListener('click', () => {
+      tabs.forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      const f = t.dataset.filter;
+      cards.forEach(c => {
+        const s = c.dataset.status;
+        c.style.display =
+          f === 'all' ? '' :
+          (f === s) ? '' : 'none';
+      });
+      search.value = '';
+    }));
+
+    search.addEventListener('input', e => {
+      const q = e.target.value.toLowerCase();
+      cards.forEach(c => {
+        c.style.display = c.dataset.name.toLowerCase().includes(q) ? '' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>
