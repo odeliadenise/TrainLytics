@@ -778,4 +778,103 @@ footer {
   .search-wrap{ width:100%; min-width:0; }
 }
 
+/* ===== DASHBOARD (Shared UI for athlete/coach) ===== */
+/* Sidebar navigation + common content sections */
+.nav-section{ display:flex; flex-direction:column; gap:12px; }
+.nav-item{
+  padding:10px 12px; color:#333; font-size:15px; font-weight:600; cursor:pointer;
+  transition:background .3s; border-radius:4px;
+}
+.nav-item:hover{ background:#f0f0f0; }
+.nav-item.active{ background:#e8d5f2; color:#6b4c9a; }
+
+.sign-out-btn{
+  background:#ddd; color:#333; border:none; padding:12px; border-radius:20px;
+  cursor:pointer; font-size:14px; font-weight:600; transition:background .3s; margin-top:auto;
+}
+.sign-out-btn:hover{ background:#ccc; }
+
+.content-section{ display:none; }
+.content-section.active{ display:block; }
+
+.schedule-title{
+  font-size:28px; font-weight:700; margin-bottom:20px; color:#333; letter-spacing:2px;
+}
+.schedule-container{
+  background:#fff; border:2px solid #333; border-radius:4px; padding:20px; margin-bottom:30px; min-height:auto;
+}
+.month-header{
+  font-size:20px; font-weight:700; text-align:center; padding-bottom:15px; border-bottom:1px solid #ddd; margin-bottom:15px;
+}
+.calendar{ width:100%; border-collapse:collapse; }
+.calendar th{ text-align:center; padding:10px; font-weight:600; color:#666; }
+.calendar td{
+  border:1px solid #eee; padding:10px; text-align:center; height:50px; cursor:pointer; transition:background .3s;
+}
+.calendar td:hover{ background:#f0f0f0; }
+.calendar td.today{ background:#e8d5f2; font-weight:600; }
+
+/* Buttons inside dashboard sidebars (scoped to avoid conflicts) */
+.coach-sidebar .manage-account-btn,
+.athlete-sidebar .manage-account-btn{
+  background:#ddd; color:#333; border:none; padding:10px; border-radius:20px;
+  cursor:pointer; font-size:13px; font-weight:600; margin-top:12px; transition:background .3s;
+}
+.coach-sidebar .manage-account-btn:hover,
+.athlete-sidebar .manage-account-btn:hover{ background:#ccc; }
+
+/* ===== ATHLETE DASHBOARD (page-specific wrappers) ===== */
+.athlete-dashboard{ display:flex; height:100vh; background:#f5f5f5; }
+.athlete-sidebar{
+  width:250px; background:#fff; padding:20px; border-right:1px solid #ddd; display:flex; flex-direction:column;
+  box-shadow:2px 0 4px rgba(0,0,0,.05);
+}
+.athlete-profile{ text-align:center; margin-bottom:30px; padding-bottom:20px; border-bottom:1px solid #eee; }
+.athlete-avatar{
+  width:80px; height:80px; background:#e8d5f2; border-radius:50%; margin:0 auto 12px; display:flex; align-items:center; justify-content:center;
+  font-size:40px; overflow:hidden; position:relative;
+}
+.athlete-name{ font-size:16px; font-weight:600; margin-bottom:4px; color:#333; }
+.athlete-sport{ font-size:13px; color:#666; }
+.athlete-nav{ flex:1; display:flex; flex-direction:column; gap:20px; }
+.athlete-content{ flex:1; padding:40px; overflow-y:auto; }
+
+.coach-notes-title{ font-size:22px; font-weight:700; margin-top:30px; margin-bottom:15px; color:#333; }
+.coach-notes-box{ background:#fff; border:1px solid #ddd; border-radius:4px; padding:15px; min-height:100px; color:#666; line-height:1.6; }
+
+/* ===== COACH DASHBOARD (page-specific wrappers) ===== */
+.coach-dashboard{ display:flex; height:100vh; background:#f5f5f5; }
+.coach-sidebar{
+  width:250px; background:#fff; padding:20px; border-right:1px solid #ddd; display:flex; flex-direction:column;
+  box-shadow:2px 0 4px rgba(0,0,0,.05);
+}
+.coach-profile{ text-align:center; margin-bottom:30px; padding-bottom:20px; border-bottom:1px solid #eee; }
+.coach-avatar{
+  width:80px; height:80px; background:#e8d5f2; border-radius:50%; margin:0 auto 12px; display:flex; align-items:center; justify-content:center;
+  font-size:40px; overflow:hidden; position:relative;
+}
+.coach-name{ font-size:16px; font-weight:600; margin-bottom:4px; color:#333; }
+.coach-sport{ font-size:13px; color:#666; }
+.coach-nav{ flex:1; display:flex; flex-direction:column; gap:20px; }
+.coach-content{ flex:1; padding:40px; overflow-y:auto; }
+
+/* Coach reminders */
+.reminders-title{ font-size:22px; font-weight:700; margin-top:30px; margin-bottom:15px; color:#333; }
+.reminders-box{ background:#fff; border:1px solid #ddd; border-radius:4px; padding:15px; min-height:100px; color:#666; line-height:1.6; }
+.reminder-item{ padding:10px 0; border-bottom:1px solid #eee; font-size:14px; color:#666; }
+.reminder-item:last-child{ border-bottom:none; }
+
+/* Coach teams section */
+.team-card{
+  background:#fff; border:2px solid #ddd; border-radius:8px; padding:20px; margin-bottom:15px;
+  box-shadow:0 2px 4px rgba(0,0,0,.05); transition:transform .2s, border-color .2s;
+}
+.team-card:hover{ transform:translateY(-2px); border-color:#9333ea; }
+.team-name{ font-size:18px; font-weight:600; color:#333; margin-bottom:8px; }
+.team-info{ font-size:14px; color:#666; margin-bottom:5px; }
+.add-team-btn, .add-reminder-btn{
+  background:#9333ea; color:#fff; border:none; padding:10px 20px; border-radius:6px; cursor:pointer; font-weight:600; margin-top:15px; transition:background .2s;
+}
+.add-team-btn:hover, .add-reminder-btn:hover{ background:#7c3aed; }
+
 
