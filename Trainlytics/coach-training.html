@@ -14,7 +14,7 @@
 
   <!-- Header -->
   <header class="ts-header">
-    <button class="ts-icon-btn" aria-label="Back" onclick="history.back()">
+    <button class="ts-icon-btn" aria-label="Back" onclick="window.location.href='coach-dashboard.html'">
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
         <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
       </svg>
@@ -22,7 +22,7 @@
 
     <h1 class="ts-title">TRAINING SESSION</h1>
 
-    <a class="ts-icon-btn" aria-label="Add session" href="coach_training.html" title="Add session">
+    <a class="ts-icon-btn" aria-label="Add session" href="coach-training.html" title="Add session">
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
         <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
         <path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -103,6 +103,11 @@
         c.style.display = c.dataset.name.toLowerCase().includes(q) ? '' : 'none';
       });
     });
+  </script>
+  <script type="module">
+    import { requireAuth } from './script.js';
+    // Protect training page for coaches only
+    requireAuth('coach');
   </script>
 </body>
 </html>
