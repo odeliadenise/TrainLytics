@@ -62,32 +62,99 @@
 
         <div class="reminders-title">Reminders</div>
         <div class="reminders-box" id="remindersBox">
-          <div class="reminder-item">Team meeting - Tomorrow 3:00 PM</div>
-          <div class="reminder-item">Equipment check - Friday</div>
-          <div class="reminder-item">Game strategy review - Next Monday</div>
-          <button class="add-reminder-btn">Add Reminder</button>
+          <div id="remindersList" class="reminders-list"></div>
+          <button class="add-reminder-btn" id="addReminderBtn">Add Reminder</button>
         </div>
       </div>
 
       <!-- Teams Section -->
       <div id="teams" class="content-section">
-        <div class="section-title">TEAMS MANAGEMENT</div>
-        <div class="section-content">
-          <div class="team-card">
-            <div class="team-name">Varsity Team</div>
-            <div class="team-info">Sport: Basketball</div>
-            <div class="team-info">Athletes: 15</div>
-            <div class="team-info">Next Practice: Today 4:00 PM</div>
+        <div class="teams-header">
+          <h1 class="teams-title">TEAMS</h1>
+          <button class="add-circle-btn" id="addTeamCircleBtn" title="Add New Team">⊕</button>
+        </div>
+        
+        <div class="teams-search-container">
+          <input type="text" class="teams-search-input" placeholder="Search Team Name" id="teamsSearchInput" />
+        </div>
+        
+        <div class="teams-list" id="teamsList">
+          <div class="team-item">
+            <img src="assets/coach.png" alt="Team" class="team-item-image" />
+            <div class="team-item-content">
+              <div class="team-item-name">Team Name</div>
+              <div class="team-item-participants">38 Members</div>
+            </div>
+            <div class="team-item-actions">
+              <button class="team-action-btn" title="Edit Team">✏️</button>
+              <button class="team-action-btn" title="Delete Team">🗑️</button>
+            </div>
           </div>
           
-          <div class="team-card">
-            <div class="team-name">JV Team</div>
-            <div class="team-info">Sport: Basketball</div>
-            <div class="team-info">Athletes: 12</div>
-            <div class="team-info">Next Practice: Tomorrow 3:30 PM</div>
+          <div class="team-item">
+            <img src="assets/coach.png" alt="Team" class="team-item-image" />
+            <div class="team-item-content">
+              <div class="team-item-name">Team Name</div>
+              <div class="team-item-participants">38 Members</div>
+            </div>
+            <div class="team-item-actions">
+              <button class="team-action-btn" title="Edit Team">✏️</button>
+              <button class="team-action-btn" title="Delete Team">🗑️</button>
+            </div>
           </div>
           
-          <button class="add-team-btn">Add New Team</button>
+          <div class="team-item">
+            <img src="assets/coach.png" alt="Team" class="team-item-image" />
+            <div class="team-item-content">
+              <div class="team-item-name">Team Name</div>
+              <div class="team-item-participants">38 Members</div>
+            </div>
+            <div class="team-item-actions">
+              <button class="team-action-btn" title="Edit Team">✏️</button>
+              <button class="team-action-btn" title="Delete Team">🗑️</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Team Section -->
+      <div id="addTeam" class="content-section">
+        <h2 class="add-team-title">Make A New Team!</h2>
+        
+        <div class="add-team-container">
+          <div class="add-team-form">
+            <div class="add-team-layout">
+              <div class="add-team-left">
+                <div class="form-group">
+                  <label class="form-label">Name</label>
+                  <input type="text" id="teamNameInput" class="form-input" placeholder="Enter team name" />
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-label">Add Members</label>
+                  <div class="member-search-container">
+                    <input type="text" id="memberSearchInput" class="member-search-input" placeholder="Search By Name" />
+                  </div>
+                  
+                  <div class="members-grid" id="membersGrid">
+                    <!-- Athletes will be loaded dynamically -->
+                  </div>
+                </div>
+              </div>
+              
+              <div class="add-team-right">
+                <div class="team-image-upload">
+                  <input type="file" id="teamImageInput" accept="image/*" style="display:none;" />
+                  <div class="upload-circle" id="uploadCircle">
+                    <img id="teamPreviewImage" style="display:none; width:100%; height:100%; border-radius:50%; object-fit:cover;" />
+                    <span class="upload-icon" id="uploadIcon">👤</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <button class="upload-btn" id="createTeamBtn">Upload</button>
+          </div>
         </div>
       </div>
 
@@ -120,14 +187,21 @@
   <!-- ES Module Scripts -->
   <script type="module">
     import { requireAuth, logout, getUserProfile } from './script.js';
+    import { auth, db } from './firebase-config.js';
+    import { doc, updateDoc, collection, getDocs, query, where, setDoc, deleteDoc, arrayUnion, arrayRemove } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
     // Protect this page for coaches only
     requireAuth('coach');
 
+    let currentUser = null;
+    let reminders = [];
+    let athletes = [];
+    let teams = [];
+
     // Get current user and populate profile
-    import { auth } from './firebase-config.js';
     auth.onAuthStateChanged(async (user) => {
       if (user) {
+        currentUser = user;
         const profile = await getUserProfile(user.uid);
         if (profile) {
           document.getElementById('coachName').textContent = profile.name || 'COACH NAME';
@@ -145,9 +219,149 @@
             avatarImage.style.display = 'none';
             avatarFallback.style.display = 'block';
           }
+
+          reminders = Array.isArray(profile.reminders) ? profile.reminders.slice() : [];
+          renderReminders();
+          
+          // Load teams
+          await loadTeams();
         }
       }
     });
+
+    // Load teams from Firebase
+    async function loadTeams() {
+      if (!currentUser) return;
+      
+      try {
+        const teamsRef = collection(db, 'teams');
+        const q = query(teamsRef, where('coachId', '==', currentUser.uid));
+        const querySnapshot = await getDocs(q);
+        
+        teams = [];
+        querySnapshot.forEach((doc) => {
+          teams.push({
+            id: doc.id,
+            ...doc.data()
+          });
+        });
+        
+        renderTeams();
+      } catch (error) {
+        console.error('Error loading teams:', error);
+      }
+    }
+
+    // Render teams list
+    function renderTeams() {
+      const teamsList = document.getElementById('teamsList');
+      if (!teamsList) return;
+      
+      // Keep only the dynamically added teams
+      teamsList.innerHTML = '';
+      
+      teams.forEach(team => {
+        const teamItem = document.createElement('div');
+        teamItem.className = 'team-item';
+        teamItem.dataset.teamId = team.id;
+        teamItem.innerHTML = `
+          <img src="${team.image || 'assets/coach.png'}" alt="Team" class="team-item-image" />
+          <div class="team-item-content">
+            <div class="team-item-name">${team.name}</div>
+            <div class="team-item-participants">${team.memberIds?.length || 0} Members</div>
+          </div>
+          <div class="team-item-actions">
+            <button class="team-action-btn team-edit-btn" title="Edit Team">✏️</button>
+            <button class="team-action-btn team-delete-btn" title="Delete Team">🗑️</button>
+          </div>
+        `;
+        teamsList.appendChild(teamItem);
+      });
+    }
+
+    // Delete team
+    async function deleteTeam(teamId) {
+      if (!confirm('Are you sure you want to delete this team?')) return;
+      
+      try {
+        await deleteDoc(doc(db, 'teams', teamId));
+        teams = teams.filter(t => t.id !== teamId);
+        renderTeams();
+      } catch (error) {
+        console.error('Error deleting team:', error);
+        alert('Failed to delete team. Please try again.');
+      }
+    }
+
+    // Edit team
+    let editingTeamId = null;
+    
+    async function editTeam(teamId) {
+      const team = teams.find(t => t.id === teamId);
+      if (!team) return;
+      
+      editingTeamId = teamId;
+      
+      // Load athletes
+      await fetchAthletes();
+      
+      // Populate form with team data
+      document.getElementById('teamNameInput').value = team.name;
+      
+      // Show team image if exists
+      if (team.image && team.image !== 'assets/coach.png') {
+        teamImageData = team.image;
+        teamPreviewImage.src = team.image;
+        teamPreviewImage.style.display = 'block';
+        uploadIcon.style.display = 'none';
+      }
+      
+      // Select members that are in the team
+      setTimeout(() => {
+        const memberCards = document.querySelectorAll('.member-card');
+        memberCards.forEach(card => {
+          const athleteId = card.dataset.athleteId;
+          const btn = card.querySelector('.member-add-btn');
+          if (team.memberIds && team.memberIds.includes(athleteId)) {
+            btn.classList.add('selected');
+            btn.textContent = '✓';
+          }
+        });
+      }, 100);
+      
+      // Change button text to "Update"
+      createTeamBtn.textContent = 'Update';
+      
+      // Navigate to add team page
+      document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+      document.getElementById('addTeam').classList.add('active');
+      document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+    }
+
+    // Team list click handler for delete and edit
+    const teamsList = document.getElementById('teamsList');
+    if (teamsList) {
+      teamsList.addEventListener('click', (e) => {
+        const deleteBtn = e.target.closest('.team-delete-btn');
+        if (deleteBtn) {
+          const teamItem = deleteBtn.closest('.team-item');
+          const teamId = teamItem?.dataset.teamId;
+          if (teamId) {
+            deleteTeam(teamId);
+          }
+          return;
+        }
+        
+        const editBtn = e.target.closest('.team-edit-btn');
+        if (editBtn) {
+          const teamItem = editBtn.closest('.team-item');
+          const teamId = teamItem?.dataset.teamId;
+          if (teamId) {
+            editTeam(teamId);
+          }
+        }
+      });
+    }
 
     // Initialize calendar
     function generateCalendar() {
@@ -210,36 +424,373 @@
       await logout();
     });
 
-    // Add reminder functionality (placeholder)
-    document.querySelector('.add-reminder-btn').addEventListener('click', () => {
-      const reminder = prompt('Enter new reminder:');
-      if (reminder) {
-        const remindersBox = document.getElementById('remindersBox');
-        const newReminder = document.createElement('div');
-        newReminder.className = 'reminder-item';
-        newReminder.textContent = reminder;
-        remindersBox.insertBefore(newReminder, remindersBox.lastElementChild);
+    // Reminder helpers
+    const remindersListEl = document.getElementById('remindersList');
+
+    function renderReminders() {
+      if (!remindersListEl) return;
+      remindersListEl.innerHTML = '';
+
+      if (!reminders.length) {
+        const empty = document.createElement('div');
+        empty.className = 'reminder-empty';
+        empty.textContent = 'No reminders yet.';
+        remindersListEl.appendChild(empty);
+        return;
       }
+
+      reminders.forEach((text, index) => {
+        const item = document.createElement('div');
+        item.className = 'reminder-item';
+        item.innerHTML = `
+          <div class="reminder-item-row">
+            <span class="reminder-text">${text}</span>
+            <button class="reminder-delete-btn" data-index="${index}" aria-label="Delete reminder">
+              Delete
+            </button>
+          </div>
+        `;
+        remindersListEl.appendChild(item);
+      });
+    }
+
+    async function persistReminders(nextReminders) {
+      if (!currentUser) return;
+      await updateDoc(doc(db, 'profiles', currentUser.uid), { reminders: nextReminders });
+    }
+
+    async function addReminder() {
+      const reminder = prompt('Enter new reminder:');
+      if (!reminder) return;
+      const trimmed = reminder.trim();
+      if (!trimmed) return;
+
+      const next = [...reminders, trimmed];
+      reminders = next;
+      renderReminders();
+      try {
+        await persistReminders(next);
+      } catch (err) {
+        console.error('Failed to save reminder', err);
+        alert('Could not save reminder. Please try again.');
+        reminders = reminders.filter((_, idx) => idx !== next.length - 1);
+        renderReminders();
+      }
+    }
+
+    async function deleteReminder(index) {
+      if (index < 0 || index >= reminders.length) return;
+      const next = reminders.filter((_, i) => i !== index);
+      const previous = reminders;
+      reminders = next;
+      renderReminders();
+      try {
+        await persistReminders(next);
+      } catch (err) {
+        console.error('Failed to delete reminder', err);
+        alert('Could not delete reminder. Please try again.');
+        reminders = previous;
+        renderReminders();
+      }
+    }
+
+    document.getElementById('addReminderBtn').addEventListener('click', addReminder);
+    remindersListEl.addEventListener('click', (e) => {
+      const btn = e.target.closest('.reminder-delete-btn');
+      if (!btn) return;
+      const index = Number(btn.dataset.index);
+      deleteReminder(index);
     });
 
-    // Add team functionality (placeholder)
-    document.querySelector('.add-team-btn').addEventListener('click', () => {
-      const teamName = prompt('Enter team name:');
-      if (teamName) {
-        const teamsContainer = document.querySelector('#teams .section-content');
-        const newTeam = document.createElement('div');
-        newTeam.className = 'team-card';
-        newTeam.innerHTML = `
-          <div class="team-name">${teamName}</div>
-          <div class="team-info">Sport: To be assigned</div>
-          <div class="team-info">Athletes: 0</div>
-          <div class="team-info">Next Practice: To be scheduled</div>
-        `;
-        teamsContainer.insertBefore(newTeam, teamsContainer.lastElementChild);
+    // Fetch athletes from database
+    async function fetchAthletes() {
+      const membersGrid = document.getElementById('membersGrid');
+      
+      try {
+        console.log('Starting to fetch athletes...');
+        
+        // For now, use sample data if we don't have permission
+        // You'll need to update Firebase rules to allow coaches to read athlete profiles
+        athletes = [
+          { id: '1', name: 'Sample Athlete 1', avatar: 'assets/athlete.png', sport: '' },
+          { id: '2', name: 'Sample Athlete 2', avatar: 'assets/athlete.png', sport: '' },
+          { id: '3', name: 'Sample Athlete 3', avatar: 'assets/athlete.png', sport: '' },
+          { id: '4', name: 'Sample Athlete 4', avatar: 'assets/athlete.png', sport: '' }
+        ];
+        
+        // Try to fetch real athletes
+        if (db && currentUser) {
+          try {
+            const profilesRef = collection(db, 'profiles');
+            const querySnapshot = await getDocs(profilesRef);
+            
+            const fetchedAthletes = [];
+            querySnapshot.forEach((doc) => {
+              const data = doc.data();
+              // Only include athletes, exclude the current coach
+              if (doc.id !== currentUser.uid && (!data.role || data.role === 'athlete')) {
+                fetchedAthletes.push({
+                  id: doc.id,
+                  name: data.name || data.email || 'Unknown',
+                  avatar: data.avatar || 'assets/athlete.png',
+                  sport: data.sport || ''
+                });
+              }
+            });
+            
+            if (fetchedAthletes.length > 0) {
+              athletes = fetchedAthletes;
+              console.log('Successfully loaded athletes from database:', athletes.length);
+            }
+          } catch (dbError) {
+            console.warn('Could not fetch from database, using sample data:', dbError.message);
+            if (membersGrid) {
+              const warningDiv = document.createElement('div');
+              warningDiv.style.cssText = 'grid-column: 1/-1; padding:10px; background:#fff3cd; border:1px solid #ffc107; border-radius:8px; margin-bottom:12px; font-size:12px;';
+              warningDiv.textContent = 'Note: Using sample data. Update Firebase rules to see real athletes.';
+              membersGrid.parentElement.insertBefore(warningDiv, membersGrid);
+            }
+          }
+        }
+        
+        console.log('Athletes to display:', athletes.length);
+        renderMemberGrid();
+      } catch (error) {
+        console.error('Error in fetchAthletes:', error);
+        
+        if (membersGrid) {
+          membersGrid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; color:#666;">
+            <p>Unable to load athletes.</p>
+            <p style="font-size:12px;">Firebase permissions may need to be updated.</p>
+          </div>`;
+        }
       }
-    });
+    }
+
+    // Render member grid with fetched athletes
+    function renderMemberGrid() {
+      const membersGrid = document.getElementById('membersGrid');
+      if (!membersGrid) return;
+      
+      membersGrid.innerHTML = '';
+      
+      if (athletes.length === 0) {
+        membersGrid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; color:#666;">No athletes found</div>';
+        return;
+      }
+      
+      athletes.forEach(athlete => {
+        const memberCard = document.createElement('div');
+        memberCard.className = 'member-card';
+        memberCard.dataset.athleteId = athlete.id;
+        memberCard.innerHTML = `
+          <img src="${athlete.avatar}" alt="${athlete.name}" class="member-avatar" />
+          <span class="member-name">${athlete.name}</span>
+          <button class="member-add-btn">⊕</button>
+        `;
+        membersGrid.appendChild(memberCard);
+      });
+    }
+
+    // Search functionality for members
+    const memberSearchInput = document.getElementById('memberSearchInput');
+    if (memberSearchInput) {
+      memberSearchInput.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const memberCards = document.querySelectorAll('.member-card');
+        
+        memberCards.forEach(card => {
+          const name = card.querySelector('.member-name').textContent.toLowerCase();
+          if (name.includes(searchTerm)) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    }
+
+    // Add team button - navigate to add team section
+    const addTeamCircleBtn = document.getElementById('addTeamCircleBtn');
+    if (addTeamCircleBtn) {
+      addTeamCircleBtn.addEventListener('click', async () => {
+        // Reset editing mode
+        editingTeamId = null;
+        createTeamBtn.textContent = 'Upload';
+        
+        // Reset form
+        document.getElementById('teamNameInput').value = '';
+        teamImageData = null;
+        if (teamPreviewImage) {
+          teamPreviewImage.style.display = 'none';
+          teamPreviewImage.src = '';
+        }
+        if (uploadIcon) uploadIcon.style.display = 'block';
+        if (teamImageInput) teamImageInput.value = '';
+        
+        // Fetch athletes when navigating to add team page
+        await fetchAthletes();
+        
+        // Switch to add team section
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+        document.getElementById('addTeam').classList.add('active');
+        
+        // Update nav items
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+      });
+    }
+    
+    // Team image upload
+    let teamImageData = null;
+    const uploadCircle = document.getElementById('uploadCircle');
+    const teamImageInput = document.getElementById('teamImageInput');
+    const teamPreviewImage = document.getElementById('teamPreviewImage');
+    const uploadIcon = document.getElementById('uploadIcon');
+    
+    if (uploadCircle && teamImageInput) {
+      uploadCircle.addEventListener('click', () => {
+        teamImageInput.click();
+      });
+      
+      teamImageInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            teamImageData = event.target.result;
+            teamPreviewImage.src = teamImageData;
+            teamPreviewImage.style.display = 'block';
+            uploadIcon.style.display = 'none';
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+    
+    // Toggle member selection
+    const membersGrid = document.getElementById('membersGrid');
+    if (membersGrid) {
+      membersGrid.addEventListener('click', (e) => {
+        const btn = e.target.closest('.member-add-btn');
+        if (!btn) return;
+        
+        if (btn.classList.contains('selected')) {
+          btn.classList.remove('selected');
+          btn.textContent = '⊕';
+        } else {
+          btn.classList.add('selected');
+          btn.textContent = '✓';
+        }
+      });
+    }
+    
+    // Create/Update team button
+    const createTeamBtn = document.getElementById('createTeamBtn');
+    if (createTeamBtn) {
+      createTeamBtn.addEventListener('click', async () => {
+        const teamName = document.getElementById('teamNameInput').value;
+        if (!teamName.trim()) {
+          alert('Please enter a team name');
+          return;
+        }
+        
+        // Get selected member IDs
+        const selectedMemberCards = document.querySelectorAll('.member-add-btn.selected');
+        const selectedMemberIds = Array.from(selectedMemberCards).map(btn => {
+          return btn.closest('.member-card')?.dataset.athleteId;
+        }).filter(id => id);
+        
+        // Use uploaded image or default
+        const imageUrl = teamImageData || 'assets/coach.png';
+        
+        // Create team object
+        const teamData = {
+          name: teamName,
+          image: imageUrl,
+          coachId: currentUser.uid,
+          memberIds: selectedMemberIds,
+          updatedAt: new Date().toISOString()
+        };
+        
+        try {
+          if (editingTeamId) {
+            // Update existing team
+            try {
+              await setDoc(doc(db, 'teams', editingTeamId), teamData, { merge: true });
+              console.log('Team updated in Firebase successfully');
+            } catch (firebaseError) {
+              console.warn('Could not update in Firebase:', firebaseError.message);
+            }
+            
+            // Update local teams array
+            const teamIndex = teams.findIndex(t => t.id === editingTeamId);
+            if (teamIndex !== -1) {
+              teams[teamIndex] = {
+                id: editingTeamId,
+                ...teamData
+              };
+            }
+            
+            alert('Team updated successfully!');
+            editingTeamId = null;
+            createTeamBtn.textContent = 'Upload';
+          } else {
+            // Create new team
+            teamData.createdAt = new Date().toISOString();
+            const teamsRef = collection(db, 'teams');
+            const newTeamRef = doc(teamsRef);
+            
+            try {
+              await setDoc(newTeamRef, teamData);
+              console.log('Team saved to Firebase successfully');
+            } catch (firebaseError) {
+              console.warn('Could not save to Firebase:', firebaseError.message);
+            }
+            
+            // Add to local teams array
+            teams.push({
+              id: newTeamRef.id,
+              ...teamData
+            });
+            
+            alert('Team created successfully!');
+          }
+          
+          // Render teams
+          renderTeams();
+          
+          // Reset form
+          document.getElementById('teamNameInput').value = '';
+          teamImageData = null;
+          if (teamPreviewImage) {
+            teamPreviewImage.style.display = 'none';
+            teamPreviewImage.src = '';
+          }
+          if (uploadIcon) uploadIcon.style.display = 'block';
+          if (teamImageInput) teamImageInput.value = '';
+          document.querySelectorAll('.member-add-btn.selected').forEach(btn => {
+            btn.classList.remove('selected');
+            btn.textContent = '⊕';
+          });
+          
+          // Navigate back to teams section
+          document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+          document.getElementById('teams').classList.add('active');
+          
+          // Update nav items
+          document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+          document.querySelector('[data-section="teams"]').classList.add('active');
+        } catch (error) {
+          console.error('Error saving team:', error);
+          console.error('Error details:', error.message, error.code);
+          alert('Failed to save team: ' + error.message);
+        }
+      });
+    }
   </script>
 </body>
 </html>
+
+
 
 
