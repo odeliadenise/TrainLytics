@@ -12,23 +12,48 @@
 </head>
 <body>
 
-  <!-- Header -->
-  <header class="ts-header">
-    <button class="ts-icon-btn" aria-label="Back" onclick="window.location.href='coach-dashboard.html'">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
-        <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-    </button>
+  <div class="coach-dashboard">
+    <!-- Sidebar -->
+    <div class="coach-sidebar">
+      <!-- Profile Section -->
+      <div class="coach-profile">
+        <div class="coach-avatar" id="coachAvatar">
+          <img id="avatarImage" style="display: none; width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+          <span id="avatarFallback">👨‍🏫</span>
+        </div>
+        <div class="coach-name" id="coachName">COACH NAME</div>
+        <div class="coach-sport" id="coachSport">SPORT</div>
+        <button class="manage-account-btn" onclick="window.location.href='manage-profile.html'">Manage Account</button>
+      </div>
 
-    <h1 class="ts-title">TRAINING SESSION</h1>
+      <!-- Navigation -->
+      <nav class="coach-nav">
+        <div class="nav-section">
+          <div class="nav-item" onclick="window.location.href='coach-dashboard.html'">Home</div>
+          <div class="nav-item" onclick="window.location.href='coach-dashboard.html#teams'">Teams</div>
+          <div class="nav-item active">Training</div>
+          <div class="nav-item" onclick="window.location.href='coach-dashboard.html#competition'">Competition</div>
+          <div class="nav-item" onclick="window.location.href='coach-dashboard.html#statistics'">Statistics</div>
+        </div>
+      </nav>
 
-    <a class="ts-icon-btn" aria-label="Add session" href="coach-training.html" title="Add session">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
-        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
-        <path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-    </a>
-  </header>
+      <!-- Sign Out -->
+      <button class="sign-out-btn" id="signOutBtn">Sign Out</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="coach-content training-content">
+      <!-- Header -->
+      <header class="ts-header">
+        <h1 class="ts-title">TRAINING SESSION</h1>
+
+        <a class="ts-icon-btn" aria-label="Add session" href="coach-training.html" title="Add session">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </a>
+      </header>
 
   <!-- Tabs + Search row -->
   <section class="ts-controls">
@@ -74,8 +99,10 @@
     <!-- add more cards as needed -->
   </main>
 
-  <div class="load-more">
-    <button class="btn-ghost" type="button">Load More</button>
+      <div class="load-more">
+        <button class="btn-ghost" type="button">Load More</button>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -105,9 +132,37 @@
     });
   </script>
   <script type="module">
-    import { requireAuth } from './script.js';
+    import { requireAuth, logout, getUserProfile } from './script.js';
+    import { auth } from './firebase-config.js';
+    
     // Protect training page for coaches only
     requireAuth('coach');
+
+    // Populate profile
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        const profile = await getUserProfile(user.uid);
+        if (profile) {
+          document.getElementById('coachName').textContent = profile.name || 'COACH NAME';
+          document.getElementById('coachSport').textContent = profile.sport || 'SPORT';
+          
+          const avatarImage = document.getElementById('avatarImage');
+          const avatarFallback = document.getElementById('avatarFallback');
+          
+          if (profile.avatar) {
+            avatarImage.src = profile.avatar;
+            avatarImage.style.display = 'block';
+            avatarFallback.style.display = 'none';
+          }
+        }
+      }
+    });
+
+    // Sign out
+    document.getElementById('signOutBtn').addEventListener('click', () => {
+      logout();
+    });
   </script>
 </body>
 </html>
+
