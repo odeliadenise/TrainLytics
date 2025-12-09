@@ -717,6 +717,329 @@
       color: white;
       font-weight: bold;
     }
+
+    /* Statistics Styles */
+    #statistics.content-section {
+      background: transparent;
+      padding: 0;
+    }
+    
+    #statistics .schedule-container {
+      background: transparent;
+      padding: 40px;
+      margin: 0;
+      border: none;
+      box-shadow: none;
+    }
+    
+    .stats-date-filter {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 30px;
+    }
+
+    .date-range-btn {
+      background: #e8e8e8;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: #333;
+    }
+
+    .date-range-btn:hover {
+      background: #ddd;
+    }
+
+    .simple-teams-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .simple-team-item {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 20px;
+      background: #fff;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .simple-team-item:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .simple-team-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #f0f0f0;
+    }
+
+    .simple-team-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .simple-team-avatar.no-image {
+      background: linear-gradient(135deg, #FF6B6B, #FFE66D);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: white;
+      font-weight: bold;
+    }
+
+    .simple-team-info {
+      flex: 1;
+    }
+
+    .simple-team-name {
+      font-size: 18px;
+      font-weight: bold;
+      color: #000;
+      margin-bottom: 4px;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .simple-team-members {
+      font-size: 14px;
+      color: #666;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+    }
+
+    /* Team Detail View Styles */
+    .team-detail-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .player-detail-header {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .stats-back-btn {
+      background: none;
+      border: none;
+      font-size: 14px;
+      color: #666;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .stats-back-btn:hover {
+      background: #f5f5f5;
+      color: #000;
+    }
+
+    .team-detail-header h2,
+    .player-detail-header h2 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: bold;
+      color: #000;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .player-basic-info {
+      display: flex;
+      gap: 20px;
+      font-size: 14px;
+      color: #666;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Graphs Section */
+    .team-graphs-section,
+    .player-graphs-section {
+      margin-bottom: 40px;
+    }
+
+    .graphs-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 20px;
+    }
+
+    .graph-container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .graph-container h3 {
+      font-size: 16px;
+      font-weight: bold;
+      color: #000;
+      margin-bottom: 15px;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .graph-placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 200px;
+      color: #666;
+      font-size: 14px;
+      background: #f9f9f9;
+      border-radius: 8px;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Members Stats Table */
+    .team-members-stats-section h3,
+    .player-stats-table-section h3 {
+      font-size: 18px;
+      font-weight: bold;
+      color: #000;
+      margin-bottom: 20px;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .members-stats-table,
+    .player-stats-table {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .members-stats-header,
+    .player-stats-header {
+      display: grid;
+      background: #f5f5f5;
+      padding: 15px 20px;
+      font-weight: bold;
+      color: #333;
+      font-size: 12px;
+      text-transform: uppercase;
+      font-family: Arial, sans-serif;
+      letter-spacing: 0.5px;
+    }
+
+    .members-stats-header {
+      grid-template-columns: 2fr 1.5fr 1fr 1fr;
+    }
+
+    .player-stats-header {
+      grid-template-columns: 1fr 1.5fr 0.8fr 0.8fr 0.8fr 0.8fr 0.8fr 2fr;
+    }
+
+    .member-col,
+    .stat-col {
+      padding: 0 10px;
+    }
+
+    .members-stats-body,
+    .player-stats-body {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .member-stats-row,
+    .player-stats-row {
+      display: grid;
+      padding: 15px 20px;
+      border-bottom: 1px solid #f0f0f0;
+      transition: background 0.2s;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+    }
+
+    .member-stats-row {
+      grid-template-columns: 2fr 1.5fr 1fr 1fr;
+    }
+
+    .player-stats-row {
+      grid-template-columns: 1fr 1.5fr 0.8fr 0.8fr 0.8fr 0.8fr 0.8fr 2fr;
+      cursor: default;
+    }
+
+    .member-stats-row:hover {
+      background: #f9f9f9;
+    }
+
+    .member-stats-row:last-child,
+    .player-stats-row:last-child {
+      border-bottom: none;
+    }
+
+    .view-btn {
+      background: #6C63FF;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+    }
+
+    .view-btn:hover {
+      background: #5a52d5;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .graphs-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .members-stats-header,
+      .member-stats-row {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      
+      .player-stats-header,
+      .player-stats-row {
+        font-size: 12px;
+        grid-template-columns: repeat(8, 1fr);
+      }
+    }
   </style>
 </head>
 <body>
@@ -1041,7 +1364,104 @@
       <div id="statistics" class="content-section">
         <div class="schedule-title">Statistics</div>
         <div class="schedule-container">
-          <p>Statistics coming soon...</p>
+          <!-- Date Range Filter -->
+          <div class="stats-date-filter">
+            <button class="date-range-btn">Date Range</button>
+          </div>
+
+          <!-- Teams List View -->
+          <div id="teams-overview-view" class="stats-view">
+            <div class="simple-teams-list" id="simpleTeamsList">
+              <!-- Teams will be populated here -->
+            </div>
+          </div>
+
+          <!-- Team Detail View -->
+          <div id="team-stats-detail-view" class="stats-view" style="display: none;">
+            <div class="team-detail-header">
+              <button class="stats-back-btn" onclick="backToTeamsOverview()">← Back to Teams</button>
+              <h2 id="teamDetailTitle">Team Name</h2>
+            </div>
+            
+            <!-- Team Graphs Section -->
+            <div class="team-graphs-section">
+              <div class="graphs-row">
+                <div class="graph-container">
+                  <h3>Average Points Per Player</h3>
+                  <canvas id="avgPointsChart" width="400" height="200"></canvas>
+                  <div id="avgPointsPlaceholder" class="graph-placeholder">No training data available yet</div>
+                </div>
+                <div class="graph-container">
+                  <h3>Team Performance Trend</h3>
+                  <canvas id="teamTrendChart" width="400" height="200"></canvas>
+                  <div id="teamTrendPlaceholder" class="graph-placeholder">No training data available yet</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Team Members Section -->
+            <div class="team-members-stats-section">
+              <h3>Team Members</h3>
+              <div class="members-stats-table">
+                <div class="members-stats-header">
+                  <div class="member-col">Player Name</div>
+                  <div class="member-col">Student ID</div>
+                  <div class="member-col">Position</div>
+                  <div class="member-col">Action</div>
+                </div>
+                <div id="teamMembersStatsList" class="members-stats-body">
+                  <!-- Members will be populated here -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Player Detail View -->
+          <div id="player-stats-detail-view" class="stats-view" style="display: none;">
+            <div class="player-detail-header">
+              <button class="stats-back-btn" onclick="backToTeamDetail()">← Back to Team</button>
+              <h2 id="playerDetailTitle">Player Name</h2>
+              <div class="player-basic-info" id="playerBasicInfo">
+                <!-- Player basic info will be populated here -->
+              </div>
+            </div>
+            
+            <!-- Player Graphs Section -->
+            <div class="player-graphs-section">
+              <div class="graphs-row">
+                <div class="graph-container">
+                  <h3>Points Over Time</h3>
+                  <canvas id="playerPointsChart" width="400" height="200"></canvas>
+                  <div id="playerPointsPlaceholder" class="graph-placeholder">No training data available yet</div>
+                </div>
+                <div class="graph-container">
+                  <h3>Average Stats</h3>
+                  <canvas id="playerAvgChart" width="400" height="200"></canvas>
+                  <div id="playerAvgPlaceholder" class="graph-placeholder">No training data available yet</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Player Stats Table -->
+            <div class="player-stats-table-section">
+              <h3>Training Sessions History</h3>
+              <div class="player-stats-table">
+                <div class="player-stats-header">
+                  <div class="stat-col">Date</div>
+                  <div class="stat-col">Session Type</div>
+                  <div class="stat-col">Points</div>
+                  <div class="stat-col">Rebounds</div>
+                  <div class="stat-col">Assists</div>
+                  <div class="stat-col">Turnovers</div>
+                  <div class="stat-col">RPE</div>
+                  <div class="stat-col">Notes</div>
+                </div>
+                <div id="playerStatsTableBody" class="player-stats-body">
+                  <!-- Player stats will be populated here -->
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -2463,6 +2883,271 @@
     // Load competitions when competition section is active
     document.querySelector('[data-section="competition"]')?.addEventListener('click', () => {
       loadCompetitions();
+    });
+
+    // Statistics Functionality - Enhanced
+    let statisticsData = {
+      teams: [],
+      athletes: [],
+      currentView: 'teams-overview',
+      currentTeam: null,
+      currentPlayer: null
+    };
+
+    // Initialize statistics when section is accessed
+    async function initializeStatistics() {
+      try {
+        await loadStatisticsData();
+        showTeamsOverview();
+      } catch (error) {
+        console.error('Error initializing statistics:', error);
+      }
+    }
+
+    // Load teams and athletes data
+    async function loadStatisticsData() {
+      try {
+        await loadTeams();
+        statisticsData.teams = teams;
+        
+        // Ensure athletes are loaded
+        if (!athletes || athletes.length === 0) {
+          await fetchAthletes();
+        }
+        statisticsData.athletes = athletes || [];
+        
+        console.log('Statistics data loaded:', {
+          teams: statisticsData.teams.length,
+          athletes: statisticsData.athletes.length
+        });
+      } catch (error) {
+        console.error('Error loading statistics data:', error);
+        statisticsData.teams = teams || [];
+        statisticsData.athletes = athletes || [];
+      }
+    }
+
+    // Show teams overview
+    function showTeamsOverview() {
+      statisticsData.currentView = 'teams-overview';
+      document.getElementById('teams-overview-view').style.display = 'block';
+      document.getElementById('team-stats-detail-view').style.display = 'none';
+      document.getElementById('player-stats-detail-view').style.display = 'none';
+      renderSimpleTeamsList();
+    }
+
+    // Show team detail view
+    function showTeamDetail(teamId) {
+      const team = statisticsData.teams.find(t => t.id === teamId);
+      if (!team) return;
+
+      statisticsData.currentTeam = team;
+      statisticsData.currentView = 'team-detail';
+      
+      document.getElementById('teams-overview-view').style.display = 'none';
+      document.getElementById('team-stats-detail-view').style.display = 'block';
+      document.getElementById('player-stats-detail-view').style.display = 'none';
+      
+      renderTeamDetail(team);
+    }
+
+    // Show player detail view
+    function showPlayerDetail(playerId) {
+      const player = statisticsData.athletes.find(a => a.id === playerId);
+      if (!player) return;
+
+      statisticsData.currentPlayer = player;
+      statisticsData.currentView = 'player-detail';
+      
+      document.getElementById('teams-overview-view').style.display = 'none';
+      document.getElementById('team-stats-detail-view').style.display = 'none';
+      document.getElementById('player-stats-detail-view').style.display = 'block';
+      
+      renderPlayerDetail(player);
+    }
+
+    // Navigation functions
+    function backToTeamsOverview() {
+      showTeamsOverview();
+    }
+
+    function backToTeamDetail() {
+      if (statisticsData.currentTeam) {
+        showTeamDetail(statisticsData.currentTeam.id);
+      } else {
+        showTeamsOverview();
+      }
+    }
+
+    // Render simple teams list with click functionality
+    function renderSimpleTeamsList() {
+      const container = document.getElementById('simpleTeamsList');
+      if (!container) return;
+
+      container.innerHTML = '';
+
+      if (statisticsData.teams.length === 0) {
+        container.innerHTML = '<div style="text-align: center; color: #666; padding: 40px;">No teams created yet</div>';
+        return;
+      }
+
+      statisticsData.teams.forEach(team => {
+        // Use memberIds array length instead of members array
+        const totalMembers = team.memberIds ? team.memberIds.length : 0;
+        
+        const teamItem = document.createElement('div');
+        teamItem.className = 'simple-team-item';
+        teamItem.onclick = () => showTeamDetail(team.id);
+        
+        // Create team avatar
+        const avatarHtml = team.image && team.image !== 'assets/coach.png' ? 
+          `<div class="simple-team-avatar"><img src="${team.image}" alt="${team.name}" /></div>` :
+          `<div class="simple-team-avatar no-image">${team.name.substring(0, 2).toUpperCase()}</div>`;
+        
+        teamItem.innerHTML = `
+          ${avatarHtml}
+          <div class="simple-team-info">
+            <div class="simple-team-name">${team.name}</div>
+            <div class="simple-team-members">${totalMembers} Members</div>
+          </div>
+        `;
+
+        container.appendChild(teamItem);
+      });
+    }
+
+    // Render team detail view
+    function renderTeamDetail(team) {
+      document.getElementById('teamDetailTitle').textContent = team.name;
+      
+      // Hide charts and show placeholders since no training data exists
+      const charts = ['avgPointsChart', 'teamTrendChart'];
+      const placeholders = ['avgPointsPlaceholder', 'teamTrendPlaceholder'];
+      
+      charts.forEach(chartId => {
+        const chart = document.getElementById(chartId);
+        if (chart) chart.style.display = 'none';
+      });
+      
+      placeholders.forEach(placeholderId => {
+        const placeholder = document.getElementById(placeholderId);
+        if (placeholder) placeholder.style.display = 'flex';
+      });
+      
+      // Render team members list
+      renderTeamMembersList(team);
+    }
+
+    // Render team members list
+    function renderTeamMembersList(team) {
+      const container = document.getElementById('teamMembersStatsList');
+      if (!container) return;
+
+      container.innerHTML = '';
+
+      if (!team.memberIds || team.memberIds.length === 0) {
+        container.innerHTML = '<div style="text-align: center; color: #666; padding: 20px; grid-column: 1/-1;">No members assigned to this team</div>';
+        return;
+      }
+
+      // Ensure we have athletes data
+      if (!statisticsData.athletes || statisticsData.athletes.length === 0) {
+        container.innerHTML = '<div style="text-align: center; color: #666; padding: 20px; grid-column: 1/-1;">Loading team members...</div>';
+        // Try to reload athletes
+        fetchAthletes().then(() => {
+          statisticsData.athletes = athletes || [];
+          renderTeamMembersList(team); // Re-render after loading
+        });
+        return;
+      }
+
+      console.log('Team memberIds:', team.memberIds);
+      console.log('Available athletes:', statisticsData.athletes);
+
+      // Get member details from athletes array
+      const teamMembers = team.memberIds.map(memberId => {
+        const member = statisticsData.athletes.find(athlete => athlete.id === memberId);
+        if (!member) {
+          console.warn(`Member with ID ${memberId} not found in athletes list`);
+        }
+        return member;
+      }).filter(member => member); // Remove any undefined members
+
+      console.log('Found team members:', teamMembers);
+
+      if (teamMembers.length === 0) {
+        container.innerHTML = '<div style="text-align: center; color: #666; padding: 20px; grid-column: 1/-1;">Team members not found in athlete database</div>';
+        return;
+      }
+
+      teamMembers.forEach(member => {
+        const memberRow = document.createElement('div');
+        memberRow.className = 'member-stats-row';
+        memberRow.onclick = () => showPlayerDetail(member.id);
+        
+        memberRow.innerHTML = `
+          <div class="member-col">${member.name || 'Unknown'}</div>
+          <div class="member-col">${member.studentId || member.email || 'N/A'}</div>
+          <div class="member-col">${member.position || member.sport || 'N/A'}</div>
+          <div class="member-col">
+            <button class="view-btn" onclick="event.stopPropagation(); showPlayerDetail('${member.id}')">View</button>
+          </div>
+        `;
+
+        container.appendChild(memberRow);
+      });
+    }
+
+    // Render player detail view
+    function renderPlayerDetail(player) {
+      document.getElementById('playerDetailTitle').textContent = player.name || 'Unknown Player';
+      
+      // Render basic info
+      const basicInfo = document.getElementById('playerBasicInfo');
+      if (basicInfo) {
+        basicInfo.innerHTML = `
+          <span>Email: ${player.email || 'N/A'}</span>
+          <span>Sport: ${player.sport || 'N/A'}</span>
+          <span>Student ID: ${player.studentId || player.email || 'N/A'}</span>
+        `;
+      }
+      
+      // Hide charts and show placeholders since no training data exists
+      const charts = ['playerPointsChart', 'playerAvgChart'];
+      const placeholders = ['playerPointsPlaceholder', 'playerAvgPlaceholder'];
+      
+      charts.forEach(chartId => {
+        const chart = document.getElementById(chartId);
+        if (chart) chart.style.display = 'none';
+      });
+      
+      placeholders.forEach(placeholderId => {
+        const placeholder = document.getElementById(placeholderId);
+        if (placeholder) placeholder.style.display = 'flex';
+      });
+      
+      // Render empty stats table
+      renderPlayerStatsTable(player);
+    }
+
+    // Render player stats table
+    function renderPlayerStatsTable(player) {
+      const container = document.getElementById('playerStatsTableBody');
+      if (!container) return;
+
+      container.innerHTML = '<div style="text-align: center; color: #666; padding: 20px; grid-column: 1/-1;">No training sessions recorded yet</div>';
+    }
+
+    // Global navigation functions
+    window.showTeamsOverview = showTeamsOverview;
+    window.showTeamDetail = showTeamDetail;
+    window.showPlayerDetail = showPlayerDetail;
+    window.backToTeamsOverview = backToTeamsOverview;
+    window.backToTeamDetail = backToTeamDetail;
+
+    // Load statistics when statistics section is accessed
+    document.querySelector('[data-section="statistics"]')?.addEventListener('click', () => {
+      initializeStatistics();
     });
   </script>
 </body>
