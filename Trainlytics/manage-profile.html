@@ -428,10 +428,14 @@
         // Update profile in Firestore
         await updateDoc(doc(db, 'profiles', currentUser.uid), updatedProfile);
         
+        // Update localStorage cache
+        const updatedFullProfile = { ...currentProfile, ...updatedProfile };
+        localStorage.setItem(`profile_${currentUser.uid}`, JSON.stringify(updatedFullProfile));
+        
         showFormMessage('Profile updated successfully!', 'success');
         
         // Update current profile for comparison
-        currentProfile = { ...currentProfile, ...updatedProfile };
+        currentProfile = updatedFullProfile;
         
       } catch (error) {
         console.error('Error updating profile:', error);

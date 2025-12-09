@@ -7,8 +7,6 @@
 
   <!-- Your global styles -->
   <link rel="stylesheet" href="style.css" />
-  <!-- Page-specific (small) -->
-  <link rel="stylesheet" href="sessions.css" />
 </head>
 <body>
 
@@ -16,7 +14,7 @@
     <!-- Sidebar -->
     <div class="coach-sidebar">
       <!-- Profile Section -->
-      <div class="coach-profile">
+      <div class="coach-profile" id="profileSection" style="display: none;">
         <div class="coach-avatar" id="coachAvatar">
           <img id="avatarImage" style="display: none; width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
           <span id="avatarFallback">👨‍🏫</span>
@@ -138,23 +136,42 @@
     // Protect training page for coaches only
     requireAuth('coach');
 
-    // Populate profile
+    // Helper function to display profile
+    function displayCoachProfile(profile) {
+      if (!profile) return;
+      document.getElementById('profileSection').style.display = 'block';
+      document.getElementById('coachName').textContent = profile.name || 'COACH NAME';
+      document.getElementById('coachSport').textContent = profile.sport || 'SPORT';
+      
+      const avatarImage = document.getElementById('avatarImage');
+      const avatarFallback = document.getElementById('avatarFallback');
+      
+      if (profile.avatar) {
+        avatarImage.src = profile.avatar;
+        avatarImage.style.display = 'block';
+        avatarFallback.style.display = 'none';
+      } else {
+        avatarImage.style.display = 'none';
+        avatarFallback.style.display = 'block';
+      }
+    }
+    
+    // Try to load cached profile for immediate display
+    const cachedUID = Object.keys(localStorage).find(key => key.startsWith('profile_'));
+    if (cachedUID) {
+      try {
+        const cached = JSON.parse(localStorage.getItem(cachedUID));
+        displayCoachProfile(cached);
+      } catch (e) {
+        console.log('Cache load error:', e);
+      }
+    }
+
+    // Populate profile from Firebase
     auth.onAuthStateChanged(async (user) => {
       if (user) {
         const profile = await getUserProfile(user.uid);
-        if (profile) {
-          document.getElementById('coachName').textContent = profile.name || 'COACH NAME';
-          document.getElementById('coachSport').textContent = profile.sport || 'SPORT';
-          
-          const avatarImage = document.getElementById('avatarImage');
-          const avatarFallback = document.getElementById('avatarFallback');
-          
-          if (profile.avatar) {
-            avatarImage.src = profile.avatar;
-            avatarImage.style.display = 'block';
-            avatarFallback.style.display = 'none';
-          }
-        }
+        displayCoachProfile(profile);
       }
     });
 

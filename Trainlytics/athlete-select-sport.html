@@ -5,6 +5,134 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Trainlytics - Select Your Sport</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .auth-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 32px 16px;
+      background: #ffffff;
+      overflow-y: auto;
+    }
+
+    .welcome-title {
+      font-family: 'Overcame';
+      font-size: 44px;
+      margin-bottom: 12px;
+      color: #0f172a;
+    }
+
+    .signin-subtitle {
+      font-family: 'Overcame';
+      font-size: 28px;
+      margin-bottom: 28px;
+      color: #0f172a;
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 720px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .sport-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto 24px;
+    }
+
+    .sport-option {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .sport-option input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .sport-card {
+      display: block;
+      padding: 20px 16px;
+      background: #e5e7eb;
+      border: 2px solid transparent;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 600;
+      color: #0f172a;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .sport-option:hover .sport-card {
+      background: #d1d5db;
+      transform: translateY(-2px);
+    }
+
+    .sport-option input[type="radio"]:checked + .sport-card {
+      background: #0f172a;
+      color: #ffffff;
+      border-color: #0f172a;
+      transform: scale(1.05);
+    }
+
+    .sport-option input[type="radio"]:focus + .sport-card {
+      outline: 2px solid #0f172a;
+      outline-offset: 2px;
+    }
+
+    .primary-btn {
+      border: none;
+      outline: none;
+      height: 44px;
+      border-radius: 999px;
+      background: #d1d5db;
+      color: #0f172a;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      cursor: pointer;
+      width: 220px;
+      align-self: center;
+      margin-top: 10px;
+      transition: background 0.2s ease, transform 0.05s ease;
+    }
+
+    .primary-btn:hover {
+      background: #cbd5e1;
+    }
+
+    .primary-btn:active {
+      transform: translateY(1px);
+    }
+
+    @media (max-width: 700px) {
+      .welcome-title {
+        font-size: 34px;
+      }
+      .signin-subtitle {
+        font-size: 22px;
+      }
+      .sport-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .sport-card {
+        padding: 16px 12px;
+        font-size: 14px;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="auth-container">
