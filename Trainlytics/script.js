@@ -33,8 +33,29 @@ export async function getUserRole(uid) {
 }
 
 export async function getUserProfile(uid) {
+  // Check localStorage first for instant loading
+  const cachedProfile = localStorage.getItem(`profile_${uid}`);
+  if (cachedProfile) {
+    const profile = JSON.parse(cachedProfile);
+    // Still fetch from Firebase in background to update cache
+    getDoc(doc(db, 'profiles', uid)).then(snap => {
+      if (snap.exists()) {
+        const updatedProfile = snap.data();
+        localStorage.setItem(`profile_${uid}`, JSON.stringify(updatedProfile));
+      }
+    }).catch(err => console.error('Background profile sync error:', err));
+    return profile;
+  }
+  
+  // If not in cache, fetch from Firebase
   const snap = await getDoc(doc(db, 'profiles', uid));
-  return snap.exists() ? snap.data() : null;
+  if (snap.exists()) {
+    const profileData = snap.data();
+    // Cache it for next time
+    localStorage.setItem(`profile_${uid}`, JSON.stringify(profileData));
+    return profileData;
+  }
+  return null;
 }
 
 export function requireAuth(expectedRole) {
@@ -71,6 +92,11 @@ export function requireAuth(expectedRole) {
 }
 
 export async function logout() {
+  // Clear profile cache before logging out
+  const currentUser = auth.currentUser;
+  if (currentUser) {
+    localStorage.removeItem(`profile_${currentUser.uid}`);
+  }
   await signOut(auth);
   location.href = 'index.html'; // or role chooser
 }
@@ -152,6 +178,31 @@ function disableSubmitButton(formEl, pendingText) {
 
 // ============================================
 // Page detection helpers
+// ============================================
+// Team member removal (for coach dashboard)
+window.removeAthleteFromTeam = async function(athleteId) {
+  // Find the active team in view
+  const teamName = document.getElementById('teamDetailsName')?.textContent;
+  if (!teamName) return alert('No team selected.');
+  // Find team by name (could use ID if stored)
+  let team = null;
+  if (window.teams && Array.isArray(window.teams)) {
+    team = window.teams.find(t => t.name === teamName);
+  }
+  if (!team) return alert('Team not found.');
+  // Remove athlete from memberIds
+  const newMembers = (team.memberIds || []).filter(id => id !== athleteId);
+  team.memberIds = newMembers;
+  // Update in Firebase
+  try {
+    await updateDoc(doc(db, 'teams', team.id), { memberIds: newMembers });
+    alert('Athlete removed from team.');
+    // Refresh team details view
+    if (window.viewTeamDetails) window.viewTeamDetails(team.id);
+  } catch (err) {
+    alert('Failed to remove athlete: ' + err.message);
+  }
+};
 // ============================================
 
 function getRoleFromPageForSignup() {
@@ -376,6 +427,10 @@ export async function handleSignupSubmit(event) {
     }
     
     await setDoc(doc(db, 'profiles', user.uid), profile, { merge: true });
+    
+    // Cache the profile in localStorage for instant loading on other pages
+    localStorage.setItem(`profile_${user.uid}`, JSON.stringify(profile));
+    
     console.log('Profile created for user:', user.uid, 'with role:', role);
     
     // Verify profile was created by reading it back

@@ -218,7 +218,6 @@ footer {
 }
 
 .auth-form input[type="number"] {
-  appearance: textfield;
   -moz-appearance: textfield; /* Firefox */
 }
 
@@ -706,7 +705,6 @@ footer {
     font-size: 12px;
     padding: 4px;
   }
-
 }
 
 :root{
@@ -814,7 +812,7 @@ footer {
 .content-section.active{ display:block; }
 
 .schedule-title{
-  font-size:28px; font-weight:700; margin-bottom:20px; color:#333; letter-spacing:2px;
+  font-size:42px; font-weight:700; margin-bottom:20px; color:#333; letter-spacing:2px;
 }
 .schedule-container{
   background:#fff; border:2px solid #333; border-radius:4px; padding:20px; margin-bottom:30px; min-height:auto;
@@ -1187,7 +1185,7 @@ footer {
 
 .members-grid{
   display:grid;
-  grid-template-columns:repeat(2, 1fr);
+  grid-template-columns:repeat(5, 1fr);
   gap:12px;
   max-width:500px;
 }
@@ -1268,4 +1266,3 @@ footer {
 .upload-btn:hover{
   background:#b8bcc4;
 }
-
