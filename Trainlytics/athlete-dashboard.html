@@ -42,7 +42,11 @@
         <div class="schedule-title">Schedule</div>
         
         <div class="schedule-container">
-          <div class="month-header" id="monthHeader">November</div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <button id="prevMonthBtn" style="background:none; border:none; font-size:24px; cursor:pointer; padding:8px;">‹</button>
+            <div class="month-header" id="monthHeader">November 2025</div>
+            <button id="nextMonthBtn" style="background:none; border:none; font-size:24px; cursor:pointer; padding:8px;">›</button>
+          </div>
           <table class="calendar" id="calendar">
             <thead>
               <tr>
@@ -57,6 +61,11 @@
             </thead>
             <tbody id="calendarBody"></tbody>
           </table>
+          
+          <div id="selectedDateEvents" style="margin-top:20px; padding:16px; background:#f9f9f9; border-radius:8px; display:none;">
+            <h3 style="margin:0 0 12px 0; font-size:16px;">Events on <span id="selectedDateTitle"></span></h3>
+            <div id="selectedDateEventsList"></div>
+          </div>
         </div>
 
         <div class="coach-notes-title">Coach Notes</div>
