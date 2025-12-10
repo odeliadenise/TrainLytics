@@ -76,9 +76,11 @@
 
       <!-- Training Section -->
       <div class="content-section" id="training">
-        <div class="schedule-title">Training</div>
+        <div class="schedule-title">Training Sessions</div>
         <div class="schedule-container">
-          <p>Training information coming soon...</p>
+          <div id="trainingSessions" style="display: flex; flex-direction: column; gap: 16px;">
+            <p>Loading training sessions...</p>
+          </div>
         </div>
       </div>
 
@@ -227,6 +229,152 @@
     document.getElementById('signOutBtn').addEventListener('click', async (e) => {
       e.preventDefault();
       await logout();
+    });
+
+    // Load training sessions with coach notes
+    import { doc, getDoc, collection, getDocs, query, where } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+    import { db } from './firebase-config.js';
+
+    let currentUser = null;
+
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        currentUser = user;
+        console.log('Athlete logged in:', user.uid);
+        // Load training sessions immediately when user is authenticated
+        await loadTrainingSessions();
+      }
+    });
+
+    async function loadTrainingSessions() {
+      if (!currentUser) {
+        console.log('No current user');
+        return;
+      }
+
+      try {
+        console.log('Loading training sessions for user:', currentUser.uid);
+        const trainingsContainer = document.getElementById('trainingSessions');
+        trainingsContainer.innerHTML = '<p>Loading training sessions...</p>';
+
+        // Get athlete session data for this user
+        console.log('Querying athleteSessionData collection...');
+        const athleteDataQuery = query(
+          collection(db, 'athleteSessionData'),
+          where('athleteId', '==', currentUser.uid)
+        );
+        
+        const athleteDataSnapshot = await getDocs(athleteDataQuery);
+        const sessionData = [];
+        
+        console.log('Query result size:', athleteDataSnapshot.size);
+        
+        athleteDataSnapshot.forEach(doc => {
+          console.log('Found session data:', doc.id, doc.data());
+          sessionData.push({ id: doc.id, ...doc.data() });
+        });
+
+        // If no data found by UID, try searching by email
+        if (sessionData.length === 0) {
+          console.log('No data found by UID, trying email search...');
+          const emailQuery = query(
+            collection(db, 'athleteSessionData'),
+            where('athleteEmail', '==', currentUser.email)
+          );
+          
+          const emailSnapshot = await getDocs(emailQuery);
+          emailSnapshot.forEach(doc => {
+            console.log('Found session data by email:', doc.id, doc.data());
+            sessionData.push({ id: doc.id, ...doc.data() });
+          });
+        }
+
+        if (sessionData.length === 0) {
+          console.log('No session data found for athlete');
+          trainingsContainer.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;"><h3>Coach Notes</h3><p>No notes yet. Check back soon for updates from your coach!</p></div>';
+          return;
+        }
+
+        // Sort by date (most recent first)
+        sessionData.sort((a, b) => new Date(b.sessionDate) - new Date(a.sessionDate));
+
+        // Render training sessions
+        trainingsContainer.innerHTML = '';
+        sessionData.forEach(session => {
+          const sessionCard = document.createElement('div');
+          sessionCard.style.cssText = `
+            background: white;
+            border: 2px solid #f0f0f0;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 16px;
+          `;
+
+          const hasNotes = session.notes && session.notes.trim() !== '';
+          
+          sessionCard.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+              <div>
+                <h3 style="margin: 0 0 8px 0; color: #333; font-size: 18px;">${session.sessionName || 'Training Session'}</h3>
+                <p style="margin: 0; color: #666; font-size: 14px;">
+                  <strong>Date:</strong> ${new Date(session.sessionDate).toLocaleDateString()}<br>
+                  <strong>Team:</strong> ${session.teamName || 'Unknown'}<br>
+                  <strong>Attendance:</strong> <span style="color: ${session.attendance === 'Present' ? '#28a745' : '#dc3545'}; font-weight: 600;">${session.attendance || 'Present'}</span>
+                </p>
+              </div>
+              ${hasNotes ? '<div style="background: #fff3cd; color: #856404; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 600;">Coach Notes</div>' : ''}
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-bottom: ${hasNotes ? '16px' : '0'};">
+              <div style="text-align: center; padding: 12px; background: #f8f9fa; border-radius: 8px;">
+                <div style="font-size: 20px; font-weight: bold; color: #333;">${session.points || 0}</div>
+                <div style="font-size: 12px; color: #666; text-transform: uppercase;">Points</div>
+              </div>
+              <div style="text-align: center; padding: 12px; background: #f8f9fa; border-radius: 8px;">
+                <div style="font-size: 20px; font-weight: bold; color: #333;">${session.rebounds || 0}</div>
+                <div style="font-size: 12px; color: #666; text-transform: uppercase;">Rebounds</div>
+              </div>
+              <div style="text-align: center; padding: 12px; background: #f8f9fa; border-radius: 8px;">
+                <div style="font-size: 20px; font-weight: bold; color: #333;">${session.assists || 0}</div>
+                <div style="font-size: 12px; color: #666; text-transform: uppercase;">Assists</div>
+              </div>
+              <div style="text-align: center; padding: 12px; background: #f8f9fa; border-radius: 8px;">
+                <div style="font-size: 20px; font-weight: bold; color: #333;">${session.turnovers || 0}</div>
+                <div style="font-size: 12px; color: #666; text-transform: uppercase;">Turnovers</div>
+              </div>
+              <div style="text-align: center; padding: 12px; background: #f8f9fa; border-radius: 8px;">
+                <div style="font-size: 20px; font-weight: bold; color: #333;">${session.fouls || 0}</div>
+                <div style="font-size: 12px; color: #666; text-transform: uppercase;">Fouls</div>
+              </div>
+              <div style="text-align: center; padding: 12px; background: #f8f9fa; border-radius: 8px;">
+                <div style="font-size: 20px; font-weight: bold; color: #333;">${session.rpe || '-'}</div>
+                <div style="font-size: 12px; color: #666; text-transform: uppercase;">RPE</div>
+              </div>
+            </div>
+            
+            ${hasNotes ? `
+              <div style="background: #fff3cd; border: 2px solid #ffeaa7; border-radius: 8px; padding: 16px;">
+                <h4 style="margin: 0 0 8px 0; color: #856404; font-size: 16px;">Coach's Feedback</h4>
+                <p style="margin: 0; color: #856404; line-height: 1.5; white-space: pre-wrap;">${session.notes}</p>
+              </div>
+            ` : ''}
+          `;
+
+          trainingsContainer.appendChild(sessionCard);
+        });
+
+      } catch (error) {
+        console.error('Error loading training sessions:', error);
+        document.getElementById('trainingSessions').innerHTML = '<p style="color: #dc3545;">Error loading training sessions. Please try again later.</p>';
+      }
+    }
+
+    // Load training sessions when training tab is clicked
+    document.querySelector('[data-section="training"]').addEventListener('click', () => {
+      if (currentUser) {
+        loadTrainingSessions();
+      }
     });
   </script>
 </body>

@@ -131,6 +131,233 @@
       background: #a9adb5;
     }
 
+    /* Session Members Section */
+    .session-members-section {
+      display: none;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .session-members-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .session-members-title {
+      font-size: 42px;
+      font-weight: 700;
+      color: #000;
+      margin: 0;
+      letter-spacing: 3px;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+    }
+
+    .back-to-sessions-btn {
+      background: #6C63FF;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .back-to-sessions-btn:hover {
+      background: #5a52d5;
+    }
+
+    .member-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      cursor: pointer;
+      transition: background 0.2s;
+      border-bottom: 1px solid #eee;
+    }
+
+    .member-card:hover {
+      background: #f9f9f9;
+      border-radius: 4px;
+      padding: 12px;
+    }
+
+    .member-card:last-child {
+      border-bottom: none;
+    }
+
+    .member-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #6C63FF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+
+    .member-info {
+      flex: 1;
+    }
+
+    .member-name {
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .member-email {
+      font-size: 12px;
+      color: #666;
+    }
+
+    /* Athlete Session Data Modal */
+    .athlete-data-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 3000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .athlete-data-content {
+      background: white;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .athlete-data-header {
+      padding: 20px;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f8f9fa;
+    }
+
+    .athlete-data-body {
+      padding: 20px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .stats-group {
+      background: #f8f9fa;
+      padding: 16px;
+      border-radius: 8px;
+      border-left: 4px solid #6C63FF;
+    }
+
+    .stats-group h4 {
+      margin: 0 0 12px 0;
+      color: #333;
+      font-size: 14px;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    .stat-field {
+      margin-bottom: 12px;
+    }
+
+    .stat-field:last-child {
+      margin-bottom: 0;
+    }
+
+    .stat-field label {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 500;
+      font-size: 13px;
+      color: #555;
+    }
+
+    .stat-field input, .stat-field select, .stat-field textarea {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    .stat-field input[type="number"] {
+      text-align: center;
+    }
+
+    .stat-field textarea {
+      min-height: 60px;
+      resize: vertical;
+      font-family: inherit;
+    }
+
+    .rpe-scale {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .modal-actions {
+      padding: 20px;
+      border-top: 1px solid #ddd;
+      display: flex;
+      gap: 12px;
+      background: #f8f9fa;
+    }
+
+    .modal-btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .modal-btn.primary {
+      background: #6C63FF;
+      color: white;
+    }
+
+    .modal-btn.primary:hover {
+      background: #5a52d5;
+    }
+
+    .modal-btn.secondary {
+      background: #e9ecef;
+      color: #333;
+    }
+
+    .modal-btn.secondary:hover {
+      background: #dee2e6;
+    }
+
     .coach-content {
       flex: 1;
       display: flex;
@@ -351,55 +578,107 @@
 
     .training-card {
       background: white;
-      border: 1px solid #ddd;
-      padding: 16px;
-      border-radius: 4px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border: 2px solid #f0f0f0;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .training-card:hover {
+      border-color: #FF6B35;
+      box-shadow: 0 8px 24px rgba(255, 107, 53, 0.15);
+      transform: translateY(-2px);
+    }
+    
+    .training-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #FF6B35, #F7931E);
     }
 
     .training-card-title {
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 8px;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #333;
     }
 
     .training-card-info {
-      font-size: 13px;
+      font-size: 14px;
       color: #666;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .training-card-info strong {
+      color: #333;
+      min-width: 60px;
+      font-weight: 500;
     }
 
     .training-card-actions {
       display: flex;
-      gap: 8px;
-      margin-top: 12px;
+      gap: 10px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #f0f0f0;
     }
 
     .training-card-btn {
       flex: 1;
-      padding: 8px;
-      border: 1px solid #ddd;
+      padding: 10px 16px;
+      border: 2px solid #e0e0e0;
       background: white;
-      border-radius: 4px;
+      border-radius: 8px;
       cursor: pointer;
-      font-size: 12px;
-      font-weight: bold;
+      font-size: 13px;
+      font-weight: 600;
       text-transform: uppercase;
-      transition: background 0.2s;
+      letter-spacing: 0.5px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
     }
 
     .training-card-btn:hover {
-      background: #f0f0f0;
+      background: #f8f9fa;
+      border-color: #FF6B35;
+      color: #FF6B35;
+    }
+    
+    .training-card-btn.view {
+      background: #FF6B35;
+      border-color: #FF6B35;
+      color: white;
+    }
+    
+    .training-card-btn.view:hover {
+      background: #e55a2b;
+      border-color: #e55a2b;
+      color: white;
     }
 
     .training-card-btn.delete {
-      background: #ff6b6b;
+      background: #dc3545;
       color: white;
-      border-color: #ff6b6b;
+      border-color: #dc3545;
     }
 
     .training-card-btn.delete:hover {
-      background: #ff5252;
+      background: #c82333;
+      border-color: #c82333;
     }
 
     .training-form {
@@ -1040,6 +1319,117 @@
         grid-template-columns: repeat(8, 1fr);
       }
     }
+    /* Member Stats Cards */
+    .members-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      padding: 20px;
+    }
+    
+    .member-stats-card {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+    
+    .member-stats-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      border-color: #FF6B35;
+    }
+    
+    .member-stats-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    
+    .member-stats-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #FF6B35, #F7931E);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      margin-right: 12px;
+    }
+    
+    .member-stats-info h4 {
+      margin: 0;
+      font-size: 16px;
+      color: #333;
+      font-weight: 600;
+    }
+    
+    .member-stats-info .member-status {
+      font-size: 12px;
+      color: #666;
+      margin: 2px 0 0 0;
+    }
+    
+    .stats-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    
+    .stat-item {
+      text-align: center;
+      padding: 6px;
+      background: #f8f9fa;
+      border-radius: 6px;
+    }
+    
+    .stat-label {
+      font-size: 10px;
+      color: #666;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    
+    .stat-value {
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .no-data-card {
+      background: #f8f9fa;
+      border: 2px dashed #ddd;
+      color: #666;
+      text-align: center;
+      padding: 20px;
+    }
+    
+    @media (max-width: 1200px) {
+      .members-stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    
+    @media (max-width: 900px) {
+      .members-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 600px) {
+      .members-stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -1223,11 +1613,22 @@
       <!-- Training Section -->
       <div id="training" class="content-section">
         
+        <!-- Session Members Section -->
+        <div id="sessionMembersSection" class="session-members-section">
+          <div class="session-members-header">
+            <h3 id="sessionMembersTitle" class="session-members-title">Training Session Members</h3>
+            <button id="backToSessionsBtn" class="back-to-sessions-btn">← Back to Sessions</button>
+          </div>
+          <div id="sessionMembersList">
+            <!-- Members will be loaded here -->
+          </div>
+        </div>
+
         <!-- Training List View -->
         <div id="trainingListView" class="schedule-container">
           <div class="schedule-title">TRAINING SESSION</div>
           
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; padding-bottom:16px; border-bottom:2px solid #333;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; padding-bottom:16px; border-bottom:2px solid #1e1e1e;">
             <div style="display:flex; gap:20px; font-size:14px;">
               <span class="training-filter-btn active" data-filter="all" style="cursor:pointer; font-weight:600;">All</span>
               <span style="cursor:default;">|</span>
@@ -1323,6 +1724,88 @@
           <div style="padding:16px; border-top:1px solid #ddd; display:flex; gap:12px;">
             <button id="confirmLocationBtn" style="flex:1; background:#6C63FF; color:white; border:none; padding:12px; border-radius:6px; font-weight:600; cursor:pointer;">CONFIRM LOCATION</button>
             <button id="cancelMapBtn" style="flex:1; background:#ddd; color:#333; border:none; padding:12px; border-radius:6px; font-weight:600; cursor:pointer;">CANCEL</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Athlete Session Data Modal -->
+      <div id="athleteDataModal" class="athlete-data-modal">
+        <div class="athlete-data-content">
+          <div class="athlete-data-header">
+            <div>
+              <h3 id="athleteDataTitle" style="margin: 0; font-size: 18px;">Athlete Session Data</h3>
+              <p id="athleteDataSubtitle" style="margin: 4px 0 0 0; font-size: 14px; color: #666;">Enter performance data for this training session</p>
+            </div>
+            <button class="modal-close" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #666;">&times;</button>
+          </div>
+          
+          <div class="athlete-data-body">
+            <form id="athleteDataForm">
+              <div class="stats-grid">
+                <!-- Performance Stats -->
+                <div class="stats-group">
+                  <h4>Performance Stats</h4>
+                  <div class="stat-field">
+                    <label for="points">Points Scored</label>
+                    <input type="number" id="points" name="points" min="0" placeholder="0">
+                  </div>
+                  <div class="stat-field">
+                    <label for="rebounds">Rebounds</label>
+                    <input type="number" id="rebounds" name="rebounds" min="0" placeholder="0">
+                  </div>
+                  <div class="stat-field">
+                    <label for="assists">Assists</label>
+                    <input type="number" id="assists" name="assists" min="0" placeholder="0">
+                  </div>
+                  <div class="stat-field">
+                    <label for="turnovers">Turnovers</label>
+                    <input type="number" id="turnovers" name="turnovers" min="0" placeholder="0">
+                  </div>
+                  <div class="stat-field">
+                    <label for="fouls">Fouls</label>
+                    <input type="number" id="fouls" name="fouls" min="0" placeholder="0">
+                  </div>
+                </div>
+
+                <!-- Session Data -->
+                <div class="stats-group">
+                  <h4>Session Data</h4>
+                  <div class="stat-field">
+                    <label for="rpe">RPE (Rating of Perceived Exertion)</label>
+                    <input type="number" id="rpe" name="rpe" min="1" max="10" placeholder="5">
+                    <div class="rpe-scale">
+                      <span>1 - Very Easy</span>
+                      <span>5 - Moderate</span>
+                      <span>10 - Maximum</span>
+                    </div>
+                  </div>
+                  <div class="stat-field">
+                    <label for="attendance">Attendance Status</label>
+                    <select id="attendance" name="attendance">
+                      <option value="Present">Present</option>
+                      <option value="Absent">Absent</option>
+                      <option value="Injured">Injured</option>
+                      <option value="Late">Late</option>
+                      <option value="Left Early">Left Early</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Coach Notes -->
+              <div class="stats-group" style="grid-column: 1 / -1;">
+                <h4>Coach's Notes</h4>
+                <div class="stat-field">
+                  <label for="notes">Performance Notes & Feedback</label>
+                  <textarea id="notes" name="notes" placeholder="Add specific notes about this athlete's performance, areas for improvement, highlights, etc."></textarea>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="modal-actions">
+            <button id="saveAthleteData" class="modal-btn primary">Save Session Data</button>
+            <button id="cancelAthleteData" class="modal-btn secondary">Cancel</button>
           </div>
         </div>
       </div>
@@ -1510,7 +1993,7 @@
   <script type="module">
     import { requireAuth, logout, getUserProfile } from './script.js';
     import { auth, db } from './firebase-config.js';
-    import { doc, updateDoc, collection, getDocs, query, where, setDoc, deleteDoc, arrayUnion, arrayRemove, addDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+    import { doc, getDoc, updateDoc, collection, getDocs, query, where, setDoc, deleteDoc, arrayUnion, arrayRemove, addDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
     // Protect this page for coaches only
     requireAuth('coach');
@@ -2644,66 +3127,68 @@
       sessionsList.innerHTML = '';
       filteredSessions.forEach(session => {
         const sessionCard = document.createElement('div');
-        sessionCard.style.cssText = `
-          border: 2px solid #333;
-          border-radius: 8px;
-          padding: 20px;
-          background: white;
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-          cursor: pointer;
-          transition: background 0.2s;
-          min-width: 250px;
-        `;
+        sessionCard.className = 'training-card';
         
         sessionCard.innerHTML = `
-          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-            <div>
-              <p style="margin:0; font-size:12px; color:#666;">Name&nbsp;&nbsp;&nbsp;&nbsp;:</p>
-              <p style="margin:8px 0 0 0; font-size:14px; font-weight:bold;">${session.sessionName}</p>
-            </div>
-            <div style="display:flex; gap:8px;">
-              <button onclick="deleteTrainingSession('${session.id}')" style="background:none; border:none; font-size:20px; cursor:pointer; padding:0; color:#dc3545;">🗑</button>
-              <button onclick="editTrainingSession('${session.id}')" style="background:none; border:none; font-size:24px; cursor:pointer; padding:0;">⋯</button>
-            </div>
+          <div class="training-card-title" onclick="showSessionMembers('${session.id}')">
+            ${session.sessionName}
           </div>
           
-          <div>
-            <p style="margin:0; font-size:12px; color:#666;">Date&nbsp;&nbsp;&nbsp;&nbsp;:</p>
-            <p style="margin:4px 0 0 0; font-size:14px;">${session.date}</p>
+          <div class="training-card-info" onclick="showSessionMembers('${session.id}')">
+            <strong>Date:</strong>
+            <span>${new Date(session.date).toLocaleDateString()}</span>
           </div>
           
-          <div>
-            <p style="margin:0; font-size:12px; color:#666;">Team&nbsp;&nbsp;&nbsp;&nbsp;:</p>
-            <p style="margin:4px 0 0 0; font-size:14px;">${session.teamName || 'Not assigned'}</p>
+          <div class="training-card-info" onclick="showSessionMembers('${session.id}')">
+            <strong>Time:</strong>
+            <span>${session.time || 'Not set'}</span>
           </div>
           
-          <div>
-            <p style="margin:0; font-size:12px; color:#666;">Status&nbsp;:</p>
-            <select onchange="updateSessionStatus('${session.id}', this.value)" style="margin:4px 0 0 0; font-size:14px; font-weight:600; padding:4px 8px; border:2px solid ${
-              session.status === 'completed' ? '#28a745' : 
-              session.status === 'in-progress' ? '#ff6b6b' : 
-              '#ffa500'
-            }; border-radius:4px; background:white; color:${
-              session.status === 'completed' ? '#28a745' : 
-              session.status === 'in-progress' ? '#ff6b6b' : 
-              '#ffa500'
-            }; cursor:pointer;">
+          <div class="training-card-info" onclick="showSessionMembers('${session.id}')">
+            <strong>Team:</strong>
+            <span>${session.teamName || 'Not assigned'}</span>
+          </div>
+          
+          <div class="training-card-info">
+            <strong>Status:</strong>
+            <select onchange="updateSessionStatus('${session.id}', this.value)" style="
+              font-size: 12px; 
+              font-weight: 600; 
+              padding: 4px 8px; 
+              border: 2px solid ${
+                session.status === 'completed' ? '#28a745' : 
+                session.status === 'in-progress' ? '#dc3545' : 
+                '#ffa500'
+              }; 
+              border-radius: 6px; 
+              background: white; 
+              color: ${
+                session.status === 'completed' ? '#28a745' : 
+                session.status === 'in-progress' ? '#dc3545' : 
+                '#ffa500'
+              }; 
+              cursor: pointer;
+              margin-left: auto;
+            ">
               <option value="upcoming" ${session.status === 'upcoming' ? 'selected' : ''}>Upcoming</option>
               <option value="in-progress" ${session.status === 'in-progress' ? 'selected' : ''}>In Progress</option>
               <option value="completed" ${session.status === 'completed' ? 'selected' : ''}>Completed</option>
             </select>
           </div>
+          
+          <div class="training-card-actions">
+            <button class="training-card-btn view" onclick="showSessionMembers('${session.id}')">
+              View Team
+            </button>
+            <button class="training-card-btn" onclick="event.stopPropagation(); editTrainingSession('${session.id}')">
+              Edit
+            </button>
+            <button class="training-card-btn delete" onclick="event.stopPropagation(); deleteTrainingSession('${session.id}')">
+              Delete
+            </button>
+          </div>
         `;
         
-        sessionCard.addEventListener('mouseenter', () => {
-          sessionCard.style.background = '#f9f9f9';
-        });
-        sessionCard.addEventListener('mouseleave', () => {
-          sessionCard.style.background = 'white';
-        });
-
         sessionsList.appendChild(sessionCard);
       });
     }
@@ -2818,6 +3303,484 @@
       document.getElementById('trainingListView').style.display = 'none';
       document.getElementById('addTrainingView').style.display = 'block';
     };
+    // Global variables for athlete data modal
+    let currentSessionData = null;
+
+    // Show session members section
+    window.showSessionMembers = async function(sessionId) {
+      const session = trainingSessions.find(s => s.id === sessionId);
+      if (!session) {
+        alert('Session not found');
+        return;
+      }
+
+      if (!session.teamId) {
+        alert('No team assigned to this session');
+        return;
+      }
+
+      // Store session data globally for modal access
+      currentSessionData = session;
+
+      // Test Firebase rules first
+      console.log('Testing Firebase rules...');
+      try {
+        const testDoc = await getDoc(doc(db, 'profiles', currentUser.uid));
+        console.log('Firebase rules test - can read own profile:', testDoc.exists());
+      } catch (error) {
+        console.error('Firebase rules test failed:', error);
+      }
+
+      // Make sure teams are loaded with complete data
+      if (teams.length === 0) {
+        await loadTeams();
+      }
+
+      // Find the team
+      let team = teams.find(t => t.id === session.teamId);
+      if (!team) {
+        // Try to reload teams and find again
+        await loadTeams();
+        team = teams.find(t => t.id === session.teamId);
+        if (!team) {
+          alert('Team not found');
+          return;
+        }
+      }
+
+      console.log('Team found:', team);
+      console.log('Team memberIds:', team.memberIds);
+
+      // Update section title
+      document.getElementById('sessionMembersTitle').textContent = `${session.sessionName} - Team Members`;
+
+      // Hide training list and show members section
+      document.getElementById('trainingListView').style.display = 'none';
+      document.getElementById('sessionMembersSection').style.display = 'block';
+
+      // Load and display team members
+      await loadSessionMembers(team, session);
+    };
+
+    // Load member session stats
+    async function loadMemberSessionStats(athleteId, sessionId) {
+      try {
+        const dataId = `${athleteId}_${sessionId}`;
+        const docRef = doc(db, 'athleteSessionData', dataId);
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+          return docSnap.data();
+        }
+        return null;
+      } catch (error) {
+        console.error('Error loading member stats:', error);
+        return null;
+      }
+    }
+
+    // Load session members
+    async function loadSessionMembers(team, session) {
+      const membersList = document.getElementById('sessionMembersList');
+      
+      console.log('Loading members for team:', team);
+      console.log('Team memberIds:', team.memberIds);
+      console.log('All team properties:', Object.keys(team));
+      
+      // Check both memberIds and members fields
+      const memberIds = team.memberIds || team.members || [];
+      
+      if (!memberIds || memberIds.length === 0) {
+        membersList.innerHTML = '<div style="text-align:center; color:#999; padding:20px;">No members assigned to this team yet.</div>';
+        return;
+      }
+
+      membersList.innerHTML = '<div style="text-align:center; color:#999; padding:20px;">Loading team members...</div>';
+
+      try {
+        const memberDetails = [];
+        
+        console.log('Fetching details for memberIds:', memberIds);
+        
+        // Get member details from Firebase users collection and profiles collection
+        for (const memberId of memberIds) {
+          try {
+            console.log('Fetching member:', memberId);
+            console.log('Current user:', currentUser?.uid);
+            console.log('Auth state:', currentUser ? 'authenticated' : 'not authenticated');
+            
+            // Try users collection first
+            console.log('Attempting to fetch from users collection...');
+            let memberDoc = await getDoc(doc(db, 'users', memberId));
+            let memberData = null;
+            
+            if (memberDoc.exists()) {
+              memberData = memberDoc.data();
+              console.log('SUCCESS: Found in users collection:', memberData);
+            } else {
+              console.log('Not found in users collection, document does not exist');
+              // Try profiles collection if not found in users
+              console.log('Attempting to fetch from profiles collection...');
+              memberDoc = await getDoc(doc(db, 'profiles', memberId));
+              if (memberDoc.exists()) {
+                memberData = memberDoc.data();
+                console.log('SUCCESS: Found in profiles collection:', memberData);
+              } else {
+                console.log('Not found in profiles collection either, document does not exist');
+              }
+            }
+            
+            if (memberData) {
+              memberDetails.push({
+                id: memberId,
+                ...memberData
+              });
+            } else {
+              console.log('No data found for member:', memberId);
+            }
+          } catch (error) {
+            console.error(`FIREBASE ERROR loading member ${memberId}:`, error);
+            console.error('Error code:', error.code);
+            console.error('Error message:', error.message);
+            console.error('Error details:', error);
+          }
+        }
+
+        console.log('Member details loaded:', memberDetails);
+
+        if (memberDetails.length === 0) {
+          membersList.innerHTML = '<div style="text-align:center; color:#999; padding:20px;">No member details found. This may be due to Firebase permissions.<br><small>Checked IDs: ' + JSON.stringify(memberIds) + '<br>Tried both users and profiles collections</small></div>';
+          return;
+        }
+
+        // Render member stats cards
+        membersList.innerHTML = '';
+        membersList.className = 'members-stats-grid';
+        
+        // Load stats for all members
+        const membersWithStats = await Promise.all(
+          memberDetails.map(async (member) => {
+            const stats = await loadMemberSessionStats(member.id, session.id);
+            return { ...member, stats };
+          })
+        );
+        
+        membersWithStats.forEach(member => {
+          const memberCard = document.createElement('div');
+          memberCard.className = member.stats ? 'member-stats-card' : 'member-stats-card no-data-card';
+          
+          const initials = (member.firstName && member.lastName) 
+            ? `${member.firstName.charAt(0)}${member.lastName.charAt(0)}`.toUpperCase()
+            : member.email ? member.email.charAt(0).toUpperCase() 
+            : member.name ? member.name.charAt(0).toUpperCase()
+            : '?';
+          
+          const displayName = (member.firstName && member.lastName) 
+            ? `${member.firstName} ${member.lastName}` 
+            : member.name || member.email || 'Name not set';
+          
+          if (member.stats) {
+            memberCard.innerHTML = `
+              <div class="member-stats-header">
+                <div class="member-stats-avatar">${initials}</div>
+                <div class="member-stats-info">
+                  <h4>${displayName}</h4>
+                  <div class="member-status">${member.stats.attendance || 'Present'}</div>
+                </div>
+              </div>
+              <div class="stats-row">
+                <div class="stat-item">
+                  <div class="stat-label">PTS</div>
+                  <div class="stat-value">${member.stats.points || 0}</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-label">REB</div>
+                  <div class="stat-value">${member.stats.rebounds || 0}</div>
+                </div>
+              </div>
+              <div class="stats-row">
+                <div class="stat-item">
+                  <div class="stat-label">AST</div>
+                  <div class="stat-value">${member.stats.assists || 0}</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-label">TO</div>
+                  <div class="stat-value">${member.stats.turnovers || 0}</div>
+                </div>
+              </div>
+              <div class="stats-row">
+                <div class="stat-item">
+                  <div class="stat-label">FOULS</div>
+                  <div class="stat-value">${member.stats.fouls || 0}</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-label">RPE</div>
+                  <div class="stat-value">${member.stats.rpe || '-'}</div>
+                </div>
+              </div>
+            `;
+          } else {
+            memberCard.innerHTML = `
+              <div class="member-stats-header">
+                <div class="member-stats-avatar">${initials}</div>
+                <div class="member-stats-info">
+                  <h4>${displayName}</h4>
+                  <div class="member-status">No session data</div>
+                </div>
+              </div>
+              <div style="text-align: center; color: #999; margin-top: 16px;">
+                <p>Click to add session data</p>
+              </div>
+            `;
+          }
+          
+          // Make member card clickable to open athlete data modal
+          memberCard.addEventListener('click', () => {
+            console.log('Clicked member:', member);
+            console.log('Session context:', session);
+            openAthleteDataModal(member, session);
+          });
+          
+          membersList.appendChild(memberCard);
+        });
+
+      } catch (error) {
+        console.error('Error loading session members:', error);
+        membersList.innerHTML = '<div style="text-align:center; color:#dc3545; padding:20px;">Error loading team members. This may be due to Firebase permissions.<br>Error: ' + error.message + '</div>';
+      }
+    }
+
+    // Athlete Data Modal Functions
+    let currentAthleteData = null;
+    let currentSessionContext = null;
+
+    function openAthleteDataModal(athlete, session) {
+      console.log('Opening athlete data modal for:', athlete.name);
+      console.log('Session object received:', session);
+      console.log('Session properties:', Object.keys(session));
+      
+      currentAthleteData = athlete;
+      currentSessionContext = session;
+      
+      // Update modal title
+      const modalTitle = document.querySelector('#athleteDataModal .modal-title');
+      if (modalTitle) {
+        modalTitle.textContent = `Session Data - ${athlete.name}`;
+      }
+      
+      // Update session info
+      const sessionInfo = document.querySelector('#athleteDataModal .session-info');
+      if (sessionInfo) {
+        sessionInfo.innerHTML = `
+          <strong>Training Session:</strong> ${session.sessionName || 'Unknown Session'}<br>
+          <strong>Date:</strong> ${new Date(session.date).toLocaleDateString()}<br>
+          <strong>Team:</strong> ${session.teamName || 'Unknown'}<br>
+          <strong>Team ID:</strong> ${session.teamId || 'Missing teamId'}
+        `;
+      }
+      
+      // Load existing data if available
+      loadExistingAthleteData(athlete.id, session.id);
+      
+      // Store session data in hidden form fields for reliable access
+      const form = document.getElementById('athleteDataForm');
+      if (form) {
+        // Remove existing hidden fields
+        form.querySelectorAll('input[type="hidden"]').forEach(input => input.remove());
+        
+        // Add session data as hidden fields
+        const sessionFields = [
+          { name: 'sessionId', value: session.id || '' },
+          { name: 'sessionName', value: session.sessionName || '' },
+          { name: 'sessionDate', value: session.date || '' },
+          { name: 'sessionTeamId', value: session.teamId || '' },
+          { name: 'sessionTeamName', value: session.teamName || '' }
+        ];
+        
+        sessionFields.forEach(field => {
+          const hiddenInput = document.createElement('input');
+          hiddenInput.type = 'hidden';
+          hiddenInput.name = field.name;
+          hiddenInput.value = field.value;
+          form.appendChild(hiddenInput);
+        });
+      }
+      
+      // Show modal
+      const modal = document.getElementById('athleteDataModal');
+      if (modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+      }
+    }
+
+    function closeAthleteDataModal() {
+      const modal = document.getElementById('athleteDataModal');
+      if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto'; // Restore scrolling
+      }
+      
+      // Clear form
+      clearAthleteDataForm();
+      currentAthleteData = null;
+      currentSessionContext = null;
+    }
+
+    function clearAthleteDataForm() {
+      const form = document.getElementById('athleteDataForm');
+      if (form) {
+        form.reset();
+      }
+    }
+
+    async function loadExistingAthleteData(athleteId, sessionId) {
+      try {
+        const dataId = `${athleteId}_${sessionId}`;
+        const docRef = doc(db, 'athleteSessionData', dataId);
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          console.log('Loading existing athlete data:', data);
+          
+          // Populate form with existing data
+          const form = document.getElementById('athleteDataForm');
+          if (form) {
+            const fields = ['points', 'rebounds', 'assists', 'turnovers', 'fouls', 'rpe', 'attendance', 'notes'];
+            fields.forEach(field => {
+              const input = form.querySelector(`[name="${field}"]`);
+              if (input && data[field] !== undefined) {
+                input.value = data[field];
+              }
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Error loading existing athlete data:', error);
+      }
+    }
+
+    async function saveAthleteData() {
+      console.log('saveAthleteData called');
+      console.log('currentAthleteData:', currentAthleteData);
+      console.log('currentSessionContext:', currentSessionContext);
+      
+      if (!currentAthleteData || !currentSessionContext) {
+        console.error('Missing data - currentAthleteData:', currentAthleteData, 'currentSessionContext:', currentSessionContext);
+        alert('Error: Missing athlete or session data');
+        return;
+      }
+      
+      try {
+        const form = document.getElementById('athleteDataForm');
+        const formData = new FormData(form);
+        
+        // Get session data from form (more reliable) or fallback to global variables
+        const sessionId = formData.get('sessionId') || currentSessionContext?.id;
+        const sessionName = formData.get('sessionName') || currentSessionContext?.sessionName || 'Unknown Session';
+        const sessionDate = formData.get('sessionDate') || currentSessionContext?.date;
+        const teamId = formData.get('sessionTeamId') || currentSessionContext?.teamId || 'unknown';
+        const teamName = formData.get('sessionTeamName') || currentSessionContext?.teamName || 'Unknown Team';
+        
+        if (!sessionId) {
+          alert('Error: Session information is missing');
+          return;
+        }
+        
+        // Create data object
+        const athleteSessionData = {
+          athleteId: currentAthleteData.id,
+          athleteName: currentAthleteData.name,
+          athleteEmail: currentAthleteData.email, // Add email for cross-reference
+          sessionId: sessionId,
+          sessionName: sessionName,
+          sessionDate: sessionDate,
+          teamId: teamId,
+          teamName: teamName,
+          // Session data
+          rpe: (formData.get('attendance') === 'Absent' || formData.get('attendance') === 'Injured') ? 0 : (parseInt(formData.get('rpe')) || 1),
+          attendance: formData.get('attendance') || 'Present',
+          notes: formData.get('notes') || '',
+          
+          // Performance stats - set to 0 if absent or injured
+          points: (formData.get('attendance') === 'Absent' || formData.get('attendance') === 'Injured') ? 0 : (parseInt(formData.get('points')) || 0),
+          rebounds: (formData.get('attendance') === 'Absent' || formData.get('attendance') === 'Injured') ? 0 : (parseInt(formData.get('rebounds')) || 0),
+          assists: (formData.get('attendance') === 'Absent' || formData.get('attendance') === 'Injured') ? 0 : (parseInt(formData.get('assists')) || 0),
+          turnovers: (formData.get('attendance') === 'Absent' || formData.get('attendance') === 'Injured') ? 0 : (parseInt(formData.get('turnovers')) || 0),
+          fouls: (formData.get('attendance') === 'Absent' || formData.get('attendance') === 'Injured') ? 0 : (parseInt(formData.get('fouls')) || 0),
+          
+          // Metadata
+          updatedAt: new Date().toISOString(),
+          updatedBy: currentUser?.email || 'unknown'
+        };
+        
+        console.log('Data to save:', athleteSessionData);
+        console.log('Athlete ID being saved:', currentAthleteData.id);
+        console.log('Athlete email being saved:', currentAthleteData.email);
+        
+        // Save to Firestore - use athleteSessionData collection
+        const dataId = `${currentAthleteData.id}_${sessionId}`;
+        const docRef = doc(db, 'athleteSessionData', dataId);
+        
+        await setDoc(docRef, athleteSessionData, { merge: true });
+        
+        console.log('Athlete session data saved successfully');
+        alert('Athlete data saved successfully!');
+        
+        // Close modal
+        closeAthleteDataModal();
+        
+        // Refresh the member display to show updated stats
+        const team = teams.find(t => t.id === teamId);
+        if (team && sessionId) {
+          // Recreate session object for refresh
+          const sessionForRefresh = {
+            id: sessionId,
+            sessionName: sessionName,
+            date: sessionDate,
+            teamId: teamId,
+            teamName: teamName
+          };
+          await loadSessionMembers(team, sessionForRefresh);
+        }
+        
+      } catch (error) {
+        console.error('Error saving athlete data:', error);
+        alert('Error saving data: ' + error.message);
+      }
+    }
+
+    // Modal event listeners
+    document.addEventListener('DOMContentLoaded', () => {
+      // Close modal when clicking outside
+      const modal = document.getElementById('athleteDataModal');
+      if (modal) {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) {
+            closeAthleteDataModal();
+          }
+        });
+      }
+      
+      // Save button
+      const saveBtn = document.getElementById('saveAthleteData');
+      if (saveBtn) {
+        saveBtn.addEventListener('click', saveAthleteData);
+      }
+      
+      // Cancel button
+      const cancelBtn = document.getElementById('cancelAthleteData');
+      if (cancelBtn) {
+        cancelBtn.addEventListener('click', closeAthleteDataModal);
+      }
+      
+      // Close button
+      const closeBtn = document.querySelector('#athleteDataModal .modal-close');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', closeAthleteDataModal);
+      }
+    });
 
     // Show add training session form
     const addTrainingSessionBtn = document.getElementById('addTrainingSessionBtn');
@@ -3673,6 +4636,18 @@
     // Load statistics when statistics section is accessed
     document.querySelector('[data-section="statistics"]')?.addEventListener('click', () => {
       initializeStatistics();
+    });
+
+    // Session members back button functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const backBtn = document.getElementById('backToSessionsBtn');
+      
+      if (backBtn) {
+        backBtn.addEventListener('click', () => {
+          document.getElementById('sessionMembersSection').style.display = 'none';
+          document.getElementById('trainingListView').style.display = 'block';
+        });
+      }
     });
   </script>
 </body>
