@@ -1679,7 +1679,7 @@
               <input type="number" id="sessionDurationInput" class="form-input" placeholder="60" />
             </div>
 
-            <div class="form-group" style="grid-column:1 / -1;">
+            <div class="form-group">
               <label class="form-label">Location</label>
               <div style="display:flex; gap:8px;">
                 <input type="text" id="sessionLocationInput" class="form-input" placeholder="e.g., Main Field or search for a place..." style="flex:1;" />
@@ -1697,14 +1697,14 @@
               </select>
             </div>
 
-            <div class="form-group" style="grid-column:1 / -1;">
+            <div class="form-group">
               <label class="form-label">Description</label>
-              <textarea id="sessionDescriptionInput" class="form-input" placeholder="Training details..." style="min-height:100px; width:calc(50% - 6px); resize:none; font-family:inherit;"></textarea>
+              <textarea id="sessionDescriptionInput" class="form-input" placeholder="Training details..." style="min-height:100px; width:200%; max-width:1000px; resize:none; font-family:inherit;"></textarea>
             </div>
 
-            <div style="display:flex; gap:12px; grid-column:1 / -1;">
-              <button id="saveSessionBtn" style="flex:1; background-color:#6C63FF; color:white; border:none; padding:12px; border-radius:8px; cursor:pointer; font-weight:bold;">SAVE SESSION</button>
-              <button id="cancelSessionBtn" style="flex:1; background-color:#ddd; color:#333; border:none; padding:12px; border-radius:8px; cursor:pointer; font-weight:bold;">CANCEL</button>
+            <div style="display:flex; gap:12px;">
+              <button id="saveSessionBtn" style="flex:1; background-color:#6C63FF; color:white; border:none; padding:12px; border-radius:8px; margin-top: 300px;cursor:pointer; font-weight:bold;">SAVE SESSION</button>
+              <button id="cancelSessionBtn" style="flex:1; background-color:#ddd; color:#333; border:none; padding:12px; border-radius:8px; margin-top: 300px;cursor:pointer; font-weight:bold;">CANCEL</button>
             </div>
           </div>
         </div>
@@ -2650,6 +2650,11 @@
         // Load training sessions if training section is clicked
         if (section === 'training') {
           loadTrainingSessions();
+        }
+
+        // Load statistics if statistics section is clicked
+        if (section === 'statistics') {
+          loadStatisticsData();
         }
       });
     });
@@ -4373,283 +4378,158 @@
       loadCompetitions();
     });
 
-    // Statistics Functionality - Enhanced
-    let statisticsData = {
-      teams: [],
-      athletes: [],
-      currentView: 'teams-overview',
-      currentTeam: null,
-      currentPlayer: null
-    };
+    // ========== STATISTICS SECTION ==========
+    let currentSelectedTeam = null;
+    let currentSelectedPlayer = null;
 
-    // Initialize statistics when section is accessed
-    async function initializeStatistics() {
-      try {
-        await loadStatisticsData();
-        showTeamsOverview();
-      } catch (error) {
-        console.error('Error initializing statistics:', error);
-      }
-    }
-
-    // Load teams and athletes data
+    // Load and display teams in statistics view
     async function loadStatisticsData() {
       try {
-        await loadTeams();
-        statisticsData.teams = teams;
-        
-        // Ensure athletes are loaded
-        if (!athletes || athletes.length === 0) {
-          await fetchAthletes();
+        // Make sure teams are loaded
+        if (teams.length === 0) {
+          await loadTeams();
         }
-        statisticsData.athletes = athletes || [];
-        
-        console.log('Statistics data loaded:', {
-          teams: statisticsData.teams.length,
-          athletes: statisticsData.athletes.length
-        });
+
+        // Show teams overview
+        renderTeamsOverview();
+        document.getElementById('teams-overview-view').style.display = 'block';
+        document.getElementById('team-stats-detail-view').style.display = 'none';
+        document.getElementById('player-stats-detail-view').style.display = 'none';
       } catch (error) {
-        console.error('Error loading statistics data:', error);
-        statisticsData.teams = teams || [];
-        statisticsData.athletes = athletes || [];
+        console.error('Error loading statistics:', error);
       }
     }
 
-    // Show teams overview
-    function showTeamsOverview() {
-      statisticsData.currentView = 'teams-overview';
-      document.getElementById('teams-overview-view').style.display = 'block';
-      document.getElementById('team-stats-detail-view').style.display = 'none';
-      document.getElementById('player-stats-detail-view').style.display = 'none';
-      renderSimpleTeamsList();
+    // Render teams list in statistics
+    function renderTeamsOverview() {
+      const teamsList = document.getElementById('simpleTeamsList');
+      if (!teamsList) {
+        console.error('simpleTeamsList element not found');
+        return;
+      }
+
+      console.log('Rendering teams overview, teams count:', teams.length);
+      console.log('Teams data:', teams);
+
+      if (teams.length === 0) {
+        teamsList.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;">No teams available</div>';
+        return;
+      }
+
+      teamsList.innerHTML = teams.map(team => `
+        <div class="simple-team-item" onclick="showTeamDetail('${team.id}')">
+          <img src="${team.image || team.avatar || 'assets/default-team.png'}" alt="${team.name}" class="simple-team-avatar">
+          <span class="simple-team-name">${team.name}</span>
+        </div>
+      `).join('');
     }
 
     // Show team detail view
-    function showTeamDetail(teamId) {
-      const team = statisticsData.teams.find(t => t.id === teamId);
-      if (!team) return;
+    async function showTeamDetail(teamId) {
+      currentSelectedTeam = teams.find(t => t.id === teamId);
+      if (!currentSelectedTeam) return;
 
-      statisticsData.currentTeam = team;
-      statisticsData.currentView = 'team-detail';
+      document.getElementById('teamDetailTitle').textContent = currentSelectedTeam.name;
       
+      // Load team members
+      await loadTeamMembers(teamId);
+
+      // Show team detail view
       document.getElementById('teams-overview-view').style.display = 'none';
       document.getElementById('team-stats-detail-view').style.display = 'block';
       document.getElementById('player-stats-detail-view').style.display = 'none';
-      
-      renderTeamDetail(team);
+
+      // Load team statistics/graphs here if you have training data
+      loadTeamGraphs(teamId);
+    }
+
+    // Load team members
+    async function loadTeamMembers(teamId) {
+      const membersContainer = document.getElementById('teamMembersStatsList');
+      if (!membersContainer) return;
+
+      const team = teams.find(t => t.id === teamId);
+      if (!team || !team.members || team.members.length === 0) {
+        membersContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;">No members in this team</div>';
+        return;
+      }
+
+      membersContainer.innerHTML = team.members.map(member => `
+        <div class="member-stats-row">
+          <div class="member-col">${member.name}</div>
+          <div class="member-col">${member.studentId}</div>
+          <div class="member-col">${member.position || 'N/A'}</div>
+          <div class="member-col">
+            <button class="view-player-btn" onclick="showPlayerDetail('${member.studentId}', '${member.name}')">View Stats</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Load team graphs (placeholder for now)
+    function loadTeamGraphs(teamId) {
+      // Show placeholders since we don't have training data yet
+      document.getElementById('avgPointsChart').style.display = 'none';
+      document.getElementById('avgPointsPlaceholder').style.display = 'block';
+      document.getElementById('teamTrendChart').style.display = 'none';
+      document.getElementById('teamTrendPlaceholder').style.display = 'block';
     }
 
     // Show player detail view
-    function showPlayerDetail(playerId) {
-      const player = statisticsData.athletes.find(a => a.id === playerId);
-      if (!player) return;
-
-      statisticsData.currentPlayer = player;
-      statisticsData.currentView = 'player-detail';
+    async function showPlayerDetail(studentId, playerName) {
+      currentSelectedPlayer = { studentId, name: playerName };
       
+      document.getElementById('playerDetailTitle').textContent = playerName;
+      document.getElementById('playerBasicInfo').innerHTML = `<p>Student ID: ${studentId}</p>`;
+
+      // Show player detail view
       document.getElementById('teams-overview-view').style.display = 'none';
       document.getElementById('team-stats-detail-view').style.display = 'none';
       document.getElementById('player-stats-detail-view').style.display = 'block';
-      
-      renderPlayerDetail(player);
+
+      // Load player statistics/graphs
+      loadPlayerGraphs(studentId);
+      loadPlayerStatsTable(studentId);
     }
 
-    // Navigation functions
-    function backToTeamsOverview() {
-      showTeamsOverview();
+    // Load player graphs (placeholder for now)
+    function loadPlayerGraphs(studentId) {
+      // Show placeholders since we don't have training data yet
+      document.getElementById('playerPointsChart').style.display = 'none';
+      document.getElementById('playerPointsPlaceholder').style.display = 'block';
+      document.getElementById('playerAvgChart').style.display = 'none';
+      document.getElementById('playerAvgPlaceholder').style.display = 'block';
     }
 
-    function backToTeamDetail() {
-      if (statisticsData.currentTeam) {
-        showTeamDetail(statisticsData.currentTeam.id);
+    // Load player stats table (placeholder for now)
+    function loadPlayerStatsTable(studentId) {
+      const tableBody = document.getElementById('playerStatsTableBody');
+      if (!tableBody) return;
+
+      tableBody.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;">No training data available yet</div>';
+    }
+
+    // Back navigation functions
+    window.backToTeamsOverview = function() {
+      document.getElementById('teams-overview-view').style.display = 'block';
+      document.getElementById('team-stats-detail-view').style.display = 'none';
+      document.getElementById('player-stats-detail-view').style.display = 'none';
+      currentSelectedTeam = null;
+      currentSelectedPlayer = null;
+    };
+
+    window.backToTeamDetail = function() {
+      if (currentSelectedTeam) {
+        showTeamDetail(currentSelectedTeam.id);
       } else {
-        showTeamsOverview();
+        backToTeamsOverview();
       }
-    }
+    };
 
-    // Render simple teams list with click functionality
-    function renderSimpleTeamsList() {
-      const container = document.getElementById('simpleTeamsList');
-      if (!container) return;
-
-      container.innerHTML = '';
-
-      if (statisticsData.teams.length === 0) {
-        container.innerHTML = '<div style="text-align: center; color: #666; padding: 40px;">No teams created yet</div>';
-        return;
-      }
-
-      statisticsData.teams.forEach(team => {
-        // Use memberIds array length instead of members array
-        const totalMembers = team.memberIds ? team.memberIds.length : 0;
-        
-        const teamItem = document.createElement('div');
-        teamItem.className = 'simple-team-item';
-        teamItem.onclick = () => showTeamDetail(team.id);
-        
-        // Create team avatar
-        const avatarHtml = team.image && team.image !== 'assets/coach.png' ? 
-          `<div class="simple-team-avatar"><img src="${team.image}" alt="${team.name}" /></div>` :
-          `<div class="simple-team-avatar no-image">${team.name.substring(0, 2).toUpperCase()}</div>`;
-        
-        teamItem.innerHTML = `
-          ${avatarHtml}
-          <div class="simple-team-info">
-            <div class="simple-team-name">${team.name}</div>
-            <div class="simple-team-members">${totalMembers} Members</div>
-          </div>
-        `;
-
-        container.appendChild(teamItem);
-      });
-    }
-
-    // Render team detail view
-    function renderTeamDetail(team) {
-      document.getElementById('teamDetailTitle').textContent = team.name;
-      
-      // Hide charts and show placeholders since no training data exists
-      const charts = ['avgPointsChart', 'teamTrendChart'];
-      const placeholders = ['avgPointsPlaceholder', 'teamTrendPlaceholder'];
-      
-      charts.forEach(chartId => {
-        const chart = document.getElementById(chartId);
-        if (chart) chart.style.display = 'none';
-      });
-      
-      placeholders.forEach(placeholderId => {
-        const placeholder = document.getElementById(placeholderId);
-        if (placeholder) placeholder.style.display = 'flex';
-      });
-      
-      // Render team members list
-      renderTeamMembersList(team);
-    }
-
-    // Render team members list
-    function renderTeamMembersList(team) {
-      const container = document.getElementById('teamMembersStatsList');
-      if (!container) return;
-
-      container.innerHTML = '';
-
-      if (!team.memberIds || team.memberIds.length === 0) {
-        container.innerHTML = '<div style="text-align: center; color: #666; padding: 20px; grid-column: 1/-1;">No members assigned to this team</div>';
-        return;
-      }
-
-      // Ensure we have athletes data
-      if (!statisticsData.athletes || statisticsData.athletes.length === 0) {
-        container.innerHTML = '<div style="text-align: center; color: #666; padding: 20px; grid-column: 1/-1;">Loading team members...</div>';
-        // Try to reload athletes
-        fetchAthletes().then(() => {
-          statisticsData.athletes = athletes || [];
-          renderTeamMembersList(team); // Re-render after loading
-        });
-        return;
-      }
-
-      console.log('Team memberIds:', team.memberIds);
-      console.log('Available athletes:', statisticsData.athletes);
-
-      // Get member details from athletes array
-      const teamMembers = team.memberIds.map(memberId => {
-        const member = statisticsData.athletes.find(athlete => athlete.id === memberId);
-        if (!member) {
-          console.warn(`Member with ID ${memberId} not found in athletes list`);
-        }
-        return member;
-      }).filter(member => member); // Remove any undefined members
-
-      console.log('Found team members:', teamMembers);
-
-      if (teamMembers.length === 0) {
-        container.innerHTML = '<div style="text-align: center; color: #666; padding: 20px; grid-column: 1/-1;">Team members not found in athlete database</div>';
-        return;
-      }
-
-      teamMembers.forEach(member => {
-        const memberRow = document.createElement('div');
-        memberRow.className = 'member-stats-row';
-        memberRow.onclick = () => showPlayerDetail(member.id);
-        
-        memberRow.innerHTML = `
-          <div class="member-col">${member.name || 'Unknown'}</div>
-          <div class="member-col">${member.studentId || member.email || 'N/A'}</div>
-          <div class="member-col">${member.position || member.sport || 'N/A'}</div>
-          <div class="member-col">
-            <button class="view-btn" onclick="event.stopPropagation(); showPlayerDetail('${member.id}')">View</button>
-          </div>
-        `;
-
-        container.appendChild(memberRow);
-      });
-    }
-
-    // Render player detail view
-    function renderPlayerDetail(player) {
-      document.getElementById('playerDetailTitle').textContent = player.name || 'Unknown Player';
-      
-      // Render basic info
-      const basicInfo = document.getElementById('playerBasicInfo');
-      if (basicInfo) {
-        basicInfo.innerHTML = `
-          <span>Email: ${player.email || 'N/A'}</span>
-          <span>Sport: ${player.sport || 'N/A'}</span>
-          <span>Student ID: ${player.studentId || player.email || 'N/A'}</span>
-        `;
-      }
-      
-      // Hide charts and show placeholders since no training data exists
-      const charts = ['playerPointsChart', 'playerAvgChart'];
-      const placeholders = ['playerPointsPlaceholder', 'playerAvgPlaceholder'];
-      
-      charts.forEach(chartId => {
-        const chart = document.getElementById(chartId);
-        if (chart) chart.style.display = 'none';
-      });
-      
-      placeholders.forEach(placeholderId => {
-        const placeholder = document.getElementById(placeholderId);
-        if (placeholder) placeholder.style.display = 'flex';
-      });
-      
-      // Render empty stats table
-      renderPlayerStatsTable(player);
-    }
-
-    // Render player stats table
-    function renderPlayerStatsTable(player) {
-      const container = document.getElementById('playerStatsTableBody');
-      if (!container) return;
-
-      container.innerHTML = '<div style="text-align: center; color: #666; padding: 20px; grid-column: 1/-1;">No training sessions recorded yet</div>';
-    }
-
-    // Global navigation functions
-    window.showTeamsOverview = showTeamsOverview;
+    // Make showTeamDetail and showPlayerDetail available globally
     window.showTeamDetail = showTeamDetail;
     window.showPlayerDetail = showPlayerDetail;
-    window.backToTeamsOverview = backToTeamsOverview;
-    window.backToTeamDetail = backToTeamDetail;
 
-    // Load statistics when statistics section is accessed
-    document.querySelector('[data-section="statistics"]')?.addEventListener('click', () => {
-      initializeStatistics();
-    });
-
-    // Session members back button functionality
-    document.addEventListener('DOMContentLoaded', function() {
-      const backBtn = document.getElementById('backToSessionsBtn');
-      
-      if (backBtn) {
-        backBtn.addEventListener('click', () => {
-          document.getElementById('sessionMembersSection').style.display = 'none';
-          document.getElementById('trainingListView').style.display = 'block';
-        });
-      }
-    });
   </script>
 </body>
 </html>
-
