@@ -80,8 +80,8 @@
   </main>
 
   <!-- Add Session Modal -->
-  <div id="addSessionModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center;">
-    <div style="background:white; padding:32px; border-radius:12px; max-width:600px; width:90%; max-height:90vh; overflow-y:auto;">
+  <div id="addSessionModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;">
+    <div style="background:white; padding:32px; border-radius:12px; max-width:900px; width:90%; max-height:90vh; overflow-y:auto; margin:auto; margin-top:5vh;">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
         <h2 style="margin:0; font-size:24px; color:#333;">Add Training Session</h2>
         <button id="closeModalBtn" style="background:none; border:none; font-size:28px; cursor:pointer; color:#666;">&times;</button>
@@ -349,7 +349,7 @@
     const saveSessionBtn = document.getElementById('saveSessionBtn');
 
     addSessionBtn.addEventListener('click', () => {
-      addSessionModal.style.display = 'flex';
+      addSessionModal.style.display = 'block';
       // Set default date to today
       const today = new Date().toISOString().split('T')[0];
       document.getElementById('modalSessionDate').value = today;
