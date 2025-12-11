@@ -69,38 +69,121 @@
         </div>
 
         <div class="coach-notes-title">Coach Notes</div>
-        <div class="coach-notes-box">
-          <p>No notes yet. Check back soon for updates from your coach!</p>
+        <div class="coach-notes-box" id="coachNotesBox">
+          <p>Loading coach notes...</p>
         </div>
       </div>
 
       <!-- Training Section -->
       <div class="content-section" id="training">
         <div class="schedule-title">Training Sessions</div>
+        
+        <div style="display:flex; gap:20px; font-size:14px; margin-bottom:24px; padding-bottom:16px; border-bottom:2px solid #1e1e1e;">
+          <span class="athlete-training-filter-btn active" data-filter="all" style="cursor:pointer; font-weight:600;">All</span>
+          <span style="cursor:default;">|</span>
+          <span class="athlete-training-filter-btn" data-filter="upcoming" style="cursor:pointer;">Upcoming</span>
+          <span style="cursor:default;">|</span>
+          <span class="athlete-training-filter-btn" data-filter="completed" style="cursor:pointer;">Completed</span>
+          <span style="cursor:default;">|</span>
+          <span class="athlete-training-filter-btn" data-filter="in-progress" style="cursor:pointer;">In Progress</span>
+        </div>
+        
         <div class="schedule-container">
-          <div id="trainingSessions" style="display: flex; flex-direction: column; gap: 16px;">
+          <div id="trainingSessions" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
             <p>Loading training sessions...</p>
+          </div>
+        </div>
+        
+        <div id="performanceHistorySection" style="margin-top: 40px;">
+          <div class="schedule-title">Performance History</div>
+          <div class="schedule-container">
+            <div id="performanceHistory" style="display: flex; flex-direction: column; gap: 16px;">
+              <p>Loading performance data...</p>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- Competition Section -->
       <div class="content-section" id="competition">
-        <div class="schedule-title">Competition</div>
+        <div class="schedule-title">Competitions</div>
+        
+        <div style="display:flex; gap:20px; font-size:14px; margin-bottom:24px; padding-bottom:16px; border-bottom:2px solid #1e1e1e;">
+          <span class="athlete-competition-filter-btn active" data-filter="all" style="cursor:pointer; font-weight:600;">All</span>
+          <span style="cursor:default;">|</span>
+          <span class="athlete-competition-filter-btn" data-filter="upcoming" style="cursor:pointer;">Upcoming</span>
+          <span style="cursor:default;">|</span>
+          <span class="athlete-competition-filter-btn" data-filter="completed" style="cursor:pointer;">Completed</span>
+        </div>
+        
         <div class="schedule-container">
-          <p>Competition information coming soon...</p>
+          <div id="competitionsList" style="display:flex; flex-direction:column; gap:16px;">
+            <p>Loading competitions...</p>
+          </div>
         </div>
       </div>
 
       <!-- Statistics Section -->
       <div class="content-section" id="statistics">
-        <div class="schedule-title">Statistics</div>
+        <div class="schedule-title">Team Statistics</div>
         <div class="schedule-container">
-          <p>Statistics coming soon...</p>
+          
+          <!-- Teams Overview -->
+          <div id="athlete-teams-overview-view">
+            <div style="margin-bottom: 24px;">
+              <h3 style="font-size: 18px; color: #333; margin: 0;">My Teams</h3>
+              <p style="font-size: 14px; color: #666; margin: 8px 0 0 0;">View performance analytics for teams you're a member of</p>
+            </div>
+            <div id="athleteTeamsList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px;">
+              <p>Loading teams...</p>
+            </div>
+          </div>
+
+          <!-- Team Detail View -->
+          <div id="athlete-team-detail-view" style="display: none;">
+            <button class="stats-back-btn" id="backToAthleteTeamsBtn" style="background: none; border: none; font-size: 16px; cursor: pointer; color: #6C63FF; font-weight: 600; padding: 8px 0; margin-bottom: 20px;">← Back to My Teams</button>
+            
+            <div style="margin-bottom: 30px;">
+              <h2 id="athleteTeamDetailTitle" style="font-size: 28px; font-weight: bold; color: #333; margin: 0 0 16px 0;">Team Name</h2>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 12px;">
+                  <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Total Members</div>
+                  <div id="athleteTotalMembers" style="font-size: 32px; font-weight: bold;">0</div>
+                </div>
+                <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 20px; border-radius: 12px;">
+                  <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Training Sessions</div>
+                  <div id="athleteTotalSessions" style="font-size: 32px; font-weight: bold;">0</div>
+                </div>
+                <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 20px; border-radius: 12px;">
+                  <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">Avg Performance</div>
+                  <div id="athleteAvgTeamPerformance" style="font-size: 32px; font-weight: bold;">0.0</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Team Charts -->
+            <div style="display: flex; flex-direction: column; gap: 30px;">
+              <div style="background: white; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);">
+                <h4 style="font-size: 18px; font-weight: bold; color: #333; margin: 0 0 20px 0;">Team Performance Trend</h4>
+                <canvas id="athleteTeamPerformanceChart" width="800" height="350"></canvas>
+                <div id="athleteTeamTrendPlaceholder" style="text-align: center; color: #999; padding: 60px 20px; display: none;">No training data available yet</div>
+              </div>
+
+              <div style="background: white; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);">
+                <h4 style="font-size: 18px; font-weight: bold; color: #333; margin: 0 0 20px 0;">Average Team Stats</h4>
+                <canvas id="athleteTeamAvgStatsChart" width="800" height="350"></canvas>
+                <div id="athleteTeamAvgPlaceholder" style="text-align: center; color: #999; padding: 60px 20px; display: none;">No training data available yet</div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Chart.js Library for Statistics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <!-- ES Module Scripts -->
   <script type="module">
@@ -153,24 +236,99 @@
       }
     });
 
-    // Initialize calendar
-    function generateCalendar() {
-      const today = new Date();
-      const year = today.getFullYear();
-      const month = today.getMonth();
+    // Calendar variables and events
+    let currentCalendarMonth = new Date().getMonth();
+    let currentCalendarYear = new Date().getFullYear();
+    let calendarEvents = [];
+
+    // Load calendar events (training sessions and competitions)
+    async function loadCalendarEvents() {
+      if (!currentUser) {
+        console.log('No current user for calendar events');
+        return;
+      }
+      
+      calendarEvents = [];
+      console.log('Loading calendar events for athlete:', currentUser.uid);
+      
+      try {
+        // Get athlete's teams
+        const teamsRef = collection(db, 'teams');
+        const teamsQuery = query(teamsRef, where('memberIds', 'array-contains', currentUser.uid));
+        const teamsSnapshot = await getDocs(teamsQuery);
+        
+        const athleteTeamIds = [];
+        teamsSnapshot.forEach(doc => {
+          athleteTeamIds.push(doc.id);
+        });
+        
+        console.log('Athlete teams:', athleteTeamIds);
+        
+        if (athleteTeamIds.length > 0) {
+          // Load training sessions for athlete's teams
+          const sessionsRef = collection(db, 'trainingSessions');
+          const sessionsSnapshot = await getDocs(sessionsRef);
+          
+          sessionsSnapshot.forEach(doc => {
+            const data = doc.data();
+            if (athleteTeamIds.includes(data.teamId)) {
+              calendarEvents.push({
+                id: doc.id,
+                type: 'training',
+                date: data.date,
+                time: data.time,
+                title: data.sessionName,
+                details: `Team: ${data.teamName || 'N/A'}`,
+                location: data.location
+              });
+            }
+          });
+          
+          // Load competitions for athlete's teams
+          const competitionsRef = collection(db, 'competitions');
+          const competitionsSnapshot = await getDocs(competitionsRef);
+          
+          competitionsSnapshot.forEach(doc => {
+            const data = doc.data();
+            if (athleteTeamIds.includes(data.team1Id)) {
+              calendarEvents.push({
+                id: doc.id,
+                type: 'competition',
+                date: data.date,
+                time: data.time,
+                title: data.competitionName,
+                details: `vs ${data.opponentName || 'TBD'}`,
+                location: data.location
+              });
+            }
+          });
+        }
+        
+        console.log('Total calendar events loaded:', calendarEvents.length);
+      } catch (error) {
+        console.error('Error loading calendar events:', error);
+      }
+    }
+
+    // Generate calendar with events
+    async function generateCalendar() {
+      await loadCalendarEvents();
+      console.log('Rendering calendar with events:', calendarEvents.length);
       
       const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'];
       
-      document.getElementById('monthHeader').textContent = `${monthNames[month]} ${year}`;
+      document.getElementById('monthHeader').textContent = `${monthNames[currentCalendarMonth]} ${currentCalendarYear}`;
       
-      const firstDay = new Date(year, month, 1).getDay();
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const firstDay = new Date(currentCalendarYear, currentCalendarMonth, 1).getDay();
+      const daysInMonth = new Date(currentCalendarYear, currentCalendarMonth + 1, 0).getDate();
       
       const calendarBody = document.getElementById('calendarBody');
       calendarBody.innerHTML = '';
       
       let date = 1;
+      const today = new Date();
+      
       for (let i = 0; i < 6; i++) {
         const row = document.createElement('tr');
         for (let j = 0; j < 7; j++) {
@@ -180,10 +338,49 @@
           } else if (date > daysInMonth) {
             cell.textContent = '';
           } else {
-            cell.textContent = date;
-            if (date === today.getDate()) {
+            const currentDate = date;
+            cell.textContent = currentDate;
+            
+            // Highlight today
+            if (date === today.getDate() && 
+                currentCalendarMonth === today.getMonth() && 
+                currentCalendarYear === today.getFullYear()) {
               cell.classList.add('today');
             }
+            
+            // Check for events on this date
+            const dateString = `${currentCalendarYear}-${String(currentCalendarMonth + 1).padStart(2, '0')}-${String(currentDate).padStart(2, '0')}`;
+            const eventsOnDate = calendarEvents.filter(e => e.date === dateString);
+            
+            if (eventsOnDate.length > 0) {
+              cell.style.position = 'relative';
+              cell.style.cursor = 'pointer';
+              cell.style.fontWeight = 'bold';
+              
+              // Add event indicators
+              const indicator = document.createElement('div');
+              indicator.style.cssText = 'position:absolute; bottom:2px; left:50%; transform:translateX(-50%); display:flex; gap:2px;';
+              
+              const hasTraining = eventsOnDate.some(e => e.type === 'training');
+              const hasCompetition = eventsOnDate.some(e => e.type === 'competition');
+              
+              if (hasTraining) {
+                const dot = document.createElement('div');
+                dot.style.cssText = 'width:4px; height:4px; border-radius:50%; background:#6C63FF;';
+                indicator.appendChild(dot);
+              }
+              if (hasCompetition) {
+                const dot = document.createElement('div');
+                dot.style.cssText = 'width:4px; height:4px; border-radius:50%; background:#ff6b6b;';
+                indicator.appendChild(dot);
+              }
+              
+              cell.appendChild(indicator);
+              
+              // Click event to show details
+              cell.addEventListener('click', () => showEventsForDate(dateString, currentDate));
+            }
+            
             date++;
           }
           row.appendChild(cell);
@@ -192,7 +389,61 @@
       }
     }
 
-    generateCalendar();
+    // Show events for selected date
+    function showEventsForDate(dateString, day) {
+      const eventsOnDate = calendarEvents.filter(e => e.date === dateString);
+      const eventDisplay = document.getElementById('selectedDateEvents');
+      const eventsList = document.getElementById('selectedDateEventsList');
+      const dateTitle = document.getElementById('selectedDateTitle');
+      
+      if (eventsOnDate.length === 0) {
+        eventDisplay.style.display = 'none';
+        return;
+      }
+      
+      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      dateTitle.textContent = `${monthNames[currentCalendarMonth]} ${day}, ${currentCalendarYear}`;
+      
+      eventsList.innerHTML = '';
+      eventsOnDate.forEach(event => {
+        const eventItem = document.createElement('div');
+        eventItem.style.cssText = 'padding:12px; margin-bottom:8px; background:white; border-radius:6px; border-left:4px solid ' + 
+          (event.type === 'training' ? '#6C63FF' : '#ff6b6b');
+        eventItem.innerHTML = `
+          <div style="font-weight:600; margin-bottom:4px;">${event.title}</div>
+          <div style="font-size:12px; color:#666; margin-bottom:2px;">
+            <span style="text-transform:capitalize;">${event.type}</span> • ${event.time || 'No time set'}
+          </div>
+          <div style="font-size:12px; color:#666;">${event.details}</div>
+          ${event.location ? `<div style="font-size:12px; color:#666; margin-top:4px;">📍 ${event.location}</div>` : ''}
+        `;
+        eventsList.appendChild(eventItem);
+      });
+      
+      eventDisplay.style.display = 'block';
+    }
+
+    // Calendar navigation
+    document.getElementById('prevMonthBtn')?.addEventListener('click', () => {
+      currentCalendarMonth--;
+      if (currentCalendarMonth < 0) {
+        currentCalendarMonth = 11;
+        currentCalendarYear--;
+      }
+      generateCalendar();
+    });
+
+    document.getElementById('nextMonthBtn')?.addEventListener('click', () => {
+      currentCalendarMonth++;
+      if (currentCalendarMonth > 11) {
+        currentCalendarMonth = 0;
+        currentCalendarYear++;
+      }
+      generateCalendar();
+    });
+
+    // Initialize calendar when user is authenticated
+    // (Will be called after currentUser is set)
 
     // Navigation
     function showSection(sectionId) {
@@ -232,7 +483,7 @@
     });
 
     // Load training sessions with coach notes
-    import { doc, getDoc, collection, getDocs, query, where } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+    import { doc, getDoc, collection, getDocs, query, where, addDoc, updateDoc, arrayUnion } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
     import { db } from './firebase-config.js';
 
     let currentUser = null;
@@ -241,21 +492,333 @@
       if (user) {
         currentUser = user;
         console.log('Athlete logged in:', user.uid);
-        // Load training sessions immediately when user is authenticated
-        await loadTrainingSessions();
+        // Load calendar and training sessions when user is authenticated
+        await generateCalendar();
+        await loadAllTrainingSessions();
+        await loadPerformanceHistory();
+        await loadCoachNotes();
       }
     });
+    let allTrainingSessions = [];
+    let currentAthleteTrainingFilter = 'all';
 
-    async function loadTrainingSessions() {
+    // Calculate status based on date and time
+    function calculateSessionStatus(session) {
+      const now = new Date();
+      const sessionDateTime = new Date(`${session.date}T${session.time}`);
+      const sessionEndTime = new Date(sessionDateTime.getTime() + (session.duration || 60) * 60000);
+      
+      if (now < sessionDateTime) {
+        return 'upcoming';
+      } else if (now >= sessionDateTime && now < sessionEndTime) {
+        return 'in-progress';
+      } else {
+        return 'completed';
+      }
+    }
+
+    // Load all training sessions
+    async function loadAllTrainingSessions() {
       if (!currentUser) {
         console.log('No current user');
         return;
       }
 
       try {
-        console.log('Loading training sessions for user:', currentUser.uid);
         const trainingsContainer = document.getElementById('trainingSessions');
-        trainingsContainer.innerHTML = '<p>Loading training sessions...</p>';
+        trainingsContainer.innerHTML = '<p style="grid-column: 1/-1;">Loading training sessions...</p>';
+
+        // Find teams where this athlete is a member
+        const teamsQuery = query(
+          collection(db, 'teams'),
+          where('memberIds', 'array-contains', currentUser.uid)
+        );
+        const teamsSnapshot = await getDocs(teamsQuery);
+        
+        const teamIds = [];
+        teamsSnapshot.forEach(doc => {
+          teamIds.push(doc.id);
+        });
+
+        console.log('Athlete is member of teams:', teamIds);
+
+        if (teamIds.length === 0) {
+          trainingsContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #666;">You are not assigned to any teams yet. Contact your coach.</p>';
+          return;
+        }
+
+        // Get all training sessions
+        const sessionsQuery = query(collection(db, 'trainingSessions'));
+        const sessionsSnapshot = await getDocs(sessionsQuery);
+        
+        allTrainingSessions = [];
+        sessionsSnapshot.forEach(docSnap => {
+          const sessionData = docSnap.data();
+          // Only include sessions for teams the athlete is a member of
+          if (teamIds.includes(sessionData.teamId)) {
+            allTrainingSessions.push({ id: docSnap.id, ...sessionData });
+          }
+        });
+
+        console.log('Found training sessions:', allTrainingSessions.length);
+
+        // Sort by date (newest first)
+        allTrainingSessions.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        renderTrainingSessions();
+      } catch (error) {
+        console.error('Error loading training sessions:', error);
+        document.getElementById('trainingSessions').innerHTML = '<p style="color: #dc3545; grid-column: 1/-1;">Error loading training sessions.</p>';
+      }
+    }
+
+    // Render training sessions
+    function renderTrainingSessions() {
+      const trainingsContainer = document.getElementById('trainingSessions');
+      
+      if (allTrainingSessions.length === 0) {
+        trainingsContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #666;">No training sessions available.</p>';
+        return;
+      }
+
+      // Calculate status for each session
+      const sessionsWithStatus = allTrainingSessions.map(session => ({
+        ...session,
+        status: calculateSessionStatus(session)
+      }));
+
+      // Filter based on selected filter
+      let filteredSessions = sessionsWithStatus;
+      if (currentAthleteTrainingFilter !== 'all') {
+        filteredSessions = sessionsWithStatus.filter(s => s.status === currentAthleteTrainingFilter);
+      }
+
+      if (filteredSessions.length === 0) {
+        trainingsContainer.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #666;">No ${currentAthleteTrainingFilter} training sessions.</p>`;
+        return;
+      }
+
+      trainingsContainer.innerHTML = '';
+      filteredSessions.forEach(session => {
+        const sessionCard = document.createElement('div');
+        sessionCard.style.cssText = `
+          background: white;
+          border: 2px solid ${session.status === 'completed' ? '#28a745' : session.status === 'in-progress' ? '#dc3545' : '#ffa500'};
+          border-radius: 12px;
+          padding: 20px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        `;
+
+        const statusColors = {
+          'upcoming': { bg: '#fff3cd', color: '#856404', text: 'Upcoming' },
+          'in-progress': { bg: '#f8d7da', color: '#721c24', text: 'In Progress' },
+          'completed': { bg: '#d4edda', color: '#155724', text: 'Completed' }
+        };
+        
+        const statusStyle = statusColors[session.status] || statusColors.upcoming;
+
+        sessionCard.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h3 style="margin: 0; color: #333; font-size: 18px;">${session.sessionName || 'Training Session'}</h3>
+            <span style="background: ${statusStyle.bg}; color: ${statusStyle.color}; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 600;">
+              ${statusStyle.text}
+            </span>
+          </div>
+          
+          <div style="margin-bottom: 16px; color: #666; font-size: 14px; line-height: 1.6;">
+            <p style="margin: 4px 0;"><strong>Date:</strong> ${new Date(session.date).toLocaleDateString()}</p>
+            <p style="margin: 4px 0;"><strong>Time:</strong> ${session.time || 'Not set'}</p>
+            <p style="margin: 4px 0;"><strong>Duration:</strong> ${session.duration || '60'} minutes</p>
+            <p style="margin: 4px 0;"><strong>Location:</strong> ${session.location || 'TBD'}</p>
+            <p style="margin: 4px 0;"><strong>Team:</strong> ${session.teamName || 'N/A'}</p>
+          </div>
+          
+          ${session.description ? `
+            <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+              <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.5;">${session.description}</p>
+            </div>
+          ` : ''}
+          
+          <button onclick="sendReminder('${session.id}', '${session.sessionName}')" style="
+            width: 100%;
+            padding: 10px;
+            background: #6C63FF;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+          ">
+            📧 Send Reminder to Coach
+          </button>
+        `;
+
+        trainingsContainer.appendChild(sessionCard);
+      });
+    }
+
+    // Send reminder to coach
+    window.sendReminder = async function(sessionId, sessionName) {
+      try {
+        const session = allTrainingSessions.find(s => s.id === sessionId);
+        if (!session) {
+          alert('Session not found');
+          return;
+        }
+
+        const reminderText = prompt('Add a note for the coach (optional):', '');
+        if (reminderText === null) return; // Cancelled
+
+        // Get athlete name from profile
+        let athleteName = 'Athlete';
+        try {
+          const athleteDoc = await getDoc(doc(db, 'users', currentUser.uid));
+          if (athleteDoc.exists()) {
+            athleteName = athleteDoc.data().name || 'Athlete';
+          }
+        } catch (e) {
+          console.log('Could not get athlete name:', e);
+        }
+
+        // Add reminder to the training session document
+        const sessionRef = doc(db, 'trainingSessions', sessionId);
+        const reminderData = {
+          athleteId: currentUser.uid,
+          athleteEmail: currentUser.email,
+          athleteName: athleteName,
+          message: reminderText || 'Reminder about upcoming training session',
+          timestamp: new Date().toISOString()
+        };
+
+        await updateDoc(sessionRef, {
+          reminders: arrayUnion(reminderData)
+        });
+
+        alert('✅ Reminder sent to coach!');
+      } catch (error) {
+        console.error('Error sending reminder:', error);
+        alert('Failed to send reminder: ' + error.message);
+      }
+    };
+
+    // Training filter buttons
+    document.querySelectorAll('.athlete-training-filter-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.athlete-training-filter-btn').forEach(b => {
+          b.classList.remove('active');
+          b.style.fontWeight = 'normal';
+        });
+        this.classList.add('active');
+        this.style.fontWeight = '600';
+        
+        currentAthleteTrainingFilter = this.getAttribute('data-filter');
+        renderTrainingSessions();
+      });
+    });
+
+    async function loadCoachNotes() {
+      if (!currentUser) {
+        console.log('No current user');
+        return;
+      }
+
+      try {
+        const notesContainer = document.getElementById('coachNotesBox');
+        notesContainer.innerHTML = '<p>Loading coach notes...</p>';
+
+        // Get athlete session data for this user
+        const athleteDataQuery = query(
+          collection(db, 'athleteSessionData'),
+          where('athleteId', '==', currentUser.uid)
+        );
+        
+        const athleteDataSnapshot = await getDocs(athleteDataQuery);
+        const sessionData = [];
+        
+        athleteDataSnapshot.forEach(doc => {
+          const data = doc.data();
+          if (data.notes && data.notes.trim() !== '') {
+            sessionData.push({ id: doc.id, ...data });
+          }
+        });
+
+        // If no data found by UID, try searching by email
+        if (sessionData.length === 0) {
+          const emailQuery = query(
+            collection(db, 'athleteSessionData'),
+            where('athleteEmail', '==', currentUser.email)
+          );
+          
+          const emailSnapshot = await getDocs(emailQuery);
+          emailSnapshot.forEach(doc => {
+            const data = doc.data();
+            if (data.notes && data.notes.trim() !== '') {
+              sessionData.push({ id: doc.id, ...data });
+            }
+          });
+        }
+
+        if (sessionData.length === 0) {
+          notesContainer.innerHTML = '<p>No notes yet. Check back soon for updates from your coach!</p>';
+          return;
+        }
+
+        // Sort by date (most recent first)
+        sessionData.sort((a, b) => new Date(b.sessionDate) - new Date(a.sessionDate));
+
+        // Display only the most recent notes
+        notesContainer.innerHTML = '';
+        sessionData.slice(0, 3).forEach(session => {
+          const noteDiv = document.createElement('div');
+          noteDiv.style.cssText = `
+            background: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+          `;
+          
+          noteDiv.innerHTML = `
+            <div style="margin-bottom: 12px;">
+              <div style="margin-bottom: 8px; text-align: center;">
+                <strong style="color: #856404;">Session Name:</strong> 
+                <span style="color: #856404;">${session.sessionName || 'Training Session'}</span>
+              </div>
+              <div style="margin-bottom: 8px; text-align: center;">
+                <strong style="color: #856404;">Coach Name:</strong> 
+                <span style="color: #856404;">${session.coachName || 'N/A'}</span>
+              </div>
+              <div style="margin-bottom: 8px; text-align: center;">
+                <strong style="color: #856404;">Date:</strong> 
+                <span style="color: #856404;">${new Date(session.sessionDate).toLocaleDateString()}</span>
+              </div>
+              <div style="border-top: 1px solid #ffeaa7; margin-top: 12px; padding-top: 12px; text-align: center;">
+                <strong style="color: #856404; display: block; margin-bottom: 6px;">Comment:</strong>
+                <p style="margin: 0; color: #856404; line-height: 1.5; white-space: pre-wrap; text-align: center;">${session.notes}</p>
+              </div>
+            </div>
+          `;
+          
+          notesContainer.appendChild(noteDiv);
+        });
+
+      } catch (error) {
+        console.error('Error loading coach notes:', error);
+        document.getElementById('coachNotesBox').innerHTML = '<p style="color: #dc3545;">Error loading coach notes. Please try again later.</p>';
+      }
+    }
+
+    async function loadPerformanceHistory() {
+      if (!currentUser) {
+        console.log('No current user');
+        return;
+      }
+
+      try {
+        console.log('Loading performance history for user:', currentUser.uid);
+        const performanceContainer = document.getElementById('performanceHistory');
+        performanceContainer.innerHTML = '<p>Loading performance data...</p>';
 
         // Get athlete session data for this user
         console.log('Querying athleteSessionData collection...');
@@ -291,15 +854,15 @@
 
         if (sessionData.length === 0) {
           console.log('No session data found for athlete');
-          trainingsContainer.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;"><h3>Coach Notes</h3><p>No notes yet. Check back soon for updates from your coach!</p></div>';
+          performanceContainer.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;"><p>No performance data recorded yet.</p></div>';
           return;
         }
 
         // Sort by date (most recent first)
         sessionData.sort((a, b) => new Date(b.sessionDate) - new Date(a.sessionDate));
 
-        // Render training sessions
-        trainingsContainer.innerHTML = '';
+        // Render performance history
+        performanceContainer.innerHTML = '';
         sessionData.forEach(session => {
           const sessionCard = document.createElement('div');
           sessionCard.style.cssText = `
@@ -361,19 +924,471 @@
             ` : ''}
           `;
 
-          trainingsContainer.appendChild(sessionCard);
+          performanceContainer.appendChild(sessionCard);
         });
 
       } catch (error) {
-        console.error('Error loading training sessions:', error);
-        document.getElementById('trainingSessions').innerHTML = '<p style="color: #dc3545;">Error loading training sessions. Please try again later.</p>';
+        console.error('Error loading performance history:', error);
+        document.getElementById('performanceHistory').innerHTML = '<p style="color: #dc3545;">Error loading performance history. Please try again later.</p>';
       }
     }
 
-    // Load training sessions when training tab is clicked
+    // Load data when training tab is clicked
     document.querySelector('[data-section="training"]').addEventListener('click', () => {
       if (currentUser) {
-        loadTrainingSessions();
+        loadAllTrainingSessions();
+      }
+    });
+
+    // ========== COMPETITION SECTION ==========
+    let allCompetitions = [];
+    let currentAthleteCompetitionFilter = 'all';
+
+    // Load competitions for athlete's teams
+    async function loadAthleteCompetitions() {
+      if (!currentUser) return;
+      
+      try {
+        console.log('Loading competitions for athlete:', currentUser.uid);
+        
+        // First, get all teams where the athlete is a member
+        const teamsRef = collection(db, 'teams');
+        const teamsQuery = query(teamsRef, where('memberIds', 'array-contains', currentUser.uid));
+        const teamsSnapshot = await getDocs(teamsQuery);
+        
+        const athleteTeamIds = [];
+        teamsSnapshot.forEach(doc => {
+          athleteTeamIds.push(doc.id);
+        });
+        
+        console.log('Athlete is member of teams:', athleteTeamIds);
+        
+        if (athleteTeamIds.length === 0) {
+          document.getElementById('competitionsList').innerHTML = '<p style="text-align:center; color:#666; padding:40px;">You are not a member of any teams yet.</p>';
+          return;
+        }
+        
+        // Load all competitions where team1Id matches any of athlete's teams
+        const competitionsRef = collection(db, 'competitions');
+        const competitionsSnapshot = await getDocs(competitionsRef);
+        
+        allCompetitions = [];
+        competitionsSnapshot.forEach(doc => {
+          const compData = doc.data();
+          // Check if this competition involves any of the athlete's teams
+          if (athleteTeamIds.includes(compData.team1Id)) {
+            allCompetitions.push({
+              id: doc.id,
+              ...compData
+            });
+          }
+        });
+        
+        console.log('Found competitions:', allCompetitions.length);
+        renderAthleteCompetitions();
+      } catch (error) {
+        console.error('Error loading competitions:', error);
+        document.getElementById('competitionsList').innerHTML = '<p style="color: #dc3545;">Error loading competitions. Please try again later.</p>';
+      }
+    }
+
+    // Render competitions with filter
+    function renderAthleteCompetitions() {
+      const competitionsList = document.getElementById('competitionsList');
+      if (!competitionsList) return;
+      
+      competitionsList.innerHTML = '';
+      
+      if (allCompetitions.length === 0) {
+        competitionsList.innerHTML = '<p style="text-align:center; color:#666; padding:40px;">No competitions scheduled yet.</p>';
+        return;
+      }
+
+      // Filter competitions
+      const now = new Date();
+      const filteredCompetitions = allCompetitions.filter(comp => {
+        if (currentAthleteCompetitionFilter === 'all') return true;
+        
+        const compDate = new Date(comp.date);
+        if (currentAthleteCompetitionFilter === 'upcoming') {
+          return compDate >= now;
+        } else if (currentAthleteCompetitionFilter === 'completed') {
+          return compDate < now;
+        }
+        return true;
+      });
+
+      // Sort by date
+      filteredCompetitions.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+      filteredCompetitions.forEach(comp => {
+        const compDate = new Date(comp.date);
+        const formattedDate = compDate.toLocaleDateString('en-GB', { 
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric'
+        });
+        
+        const compCard = document.createElement('div');
+        compCard.style.cssText = `
+          border: 1px solid #333;
+          border-radius: 12px;
+          padding: 24px;
+          display: flex;
+          align-items: center;
+          gap: 32px;
+          position: relative;
+          background: white;
+        `;
+        
+        compCard.innerHTML = `
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+            <div style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 20px;">
+              ${comp.team1Name.charAt(0).toUpperCase()}
+            </div>
+            <div style="font-family: Arial, sans-serif; font-weight: bold; font-size: 16px;">${comp.team1Name}</div>
+          </div>
+          
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 4px; text-align: center;">
+            <div style="font-family: Arial, sans-serif; font-weight: bold; font-size: 20px; text-transform: uppercase;">${comp.competitionName || comp.name}</div>
+            <div style="font-family: Arial, sans-serif; font-size: 14px; color: #666;">${formattedDate.toUpperCase()}</div>
+            <div style="font-family: Arial, sans-serif; font-size: 14px; color: #666;">${comp.time}</div>
+            <div style="font-family: Arial, sans-serif; font-size: 14px; color: #666;">${comp.location}</div>
+          </div>
+          
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+            <div style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 20px;">
+              ${comp.opponentName.charAt(0).toUpperCase()}
+            </div>
+            <div style="font-family: Arial, sans-serif; font-weight: bold; font-size: 16px;">${comp.opponentName}</div>
+          </div>
+        `;
+        
+        competitionsList.appendChild(compCard);
+      });
+    }
+
+    // Competition filter buttons
+    const competitionFilters = document.querySelectorAll('.athlete-competition-filter-btn');
+    competitionFilters.forEach(filter => {
+      filter.addEventListener('click', () => {
+        competitionFilters.forEach(f => f.classList.remove('active'));
+        filter.classList.add('active');
+        currentAthleteCompetitionFilter = filter.dataset.filter;
+        renderAthleteCompetitions();
+      });
+    });
+
+    // Load competitions when competition section is clicked
+    document.querySelector('[data-section="competition"]').addEventListener('click', () => {
+      if (currentUser) {
+        loadAthleteCompetitions();
+      }
+    });
+
+    // ========== STATISTICS SECTION ==========
+    let athleteTeams = [];
+    let currentSelectedTeamForStats = null;
+    let teamPerformanceChart = null;
+    let teamAvgStatsChart = null;
+
+    // Load athlete's teams
+    async function loadAthleteTeams() {
+      if (!currentUser) return;
+      
+      try {
+        console.log('Loading teams for athlete:', currentUser.uid);
+        
+        const teamsRef = collection(db, 'teams');
+        const teamsQuery = query(teamsRef, where('memberIds', 'array-contains', currentUser.uid));
+        const teamsSnapshot = await getDocs(teamsQuery);
+        
+        athleteTeams = [];
+        teamsSnapshot.forEach(doc => {
+          const teamData = doc.data();
+          athleteTeams.push({
+            id: doc.id,
+            ...teamData,
+            memberCount: teamData.memberIds ? teamData.memberIds.length : 0
+          });
+        });
+        
+        console.log('Athlete teams loaded:', athleteTeams.length);
+        renderAthleteTeamsOverview();
+      } catch (error) {
+        console.error('Error loading athlete teams:', error);
+        document.getElementById('athleteTeamsList').innerHTML = '<p style="color: #dc3545;">Error loading teams.</p>';
+      }
+    }
+
+    // Render teams overview
+    function renderAthleteTeamsOverview() {
+      const teamsList = document.getElementById('athleteTeamsList');
+      if (!teamsList) return;
+      
+      if (athleteTeams.length === 0) {
+        teamsList.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #666; padding: 40px;">You are not a member of any teams yet.</div>';
+        return;
+      }
+      
+      teamsList.innerHTML = '';
+      
+      athleteTeams.forEach(team => {
+        const teamCard = document.createElement('div');
+        teamCard.style.cssText = `
+          background: white;
+          border-radius: 16px;
+          padding: 24px;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+          cursor: pointer;
+          transition: all 0.3s ease;
+          border: 2px solid transparent;
+        `;
+        
+        teamCard.addEventListener('mouseenter', () => {
+          teamCard.style.transform = 'translateY(-4px)';
+          teamCard.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.15)';
+          teamCard.style.borderColor = '#6C63FF';
+        });
+        
+        teamCard.addEventListener('mouseleave', () => {
+          teamCard.style.transform = 'translateY(0)';
+          teamCard.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.1)';
+          teamCard.style.borderColor = 'transparent';
+        });
+        
+        teamCard.addEventListener('click', () => showAthleteTeamDetail(team.id));
+        
+        teamCard.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+            <div style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-weight: bold;">
+              ${team.name.charAt(0).toUpperCase()}
+            </div>
+            <div>
+              <h4 style="margin: 0; font-size: 20px; font-weight: bold; color: #333;">${team.name}</h4>
+              <p style="margin: 4px 0 0 0; font-size: 14px; color: #666;">${team.sport || 'Sport'}</p>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; text-align: center;">
+              <div style="font-size: 24px; font-weight: bold; color: #333;">${team.memberCount}</div>
+              <div style="font-size: 12px; color: #666; text-transform: uppercase; margin-top: 4px;">Members</div>
+            </div>
+            <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; text-align: center;">
+              <div style="font-size: 24px; font-weight: bold; color: #6C63FF;">→</div>
+              <div style="font-size: 12px; color: #666; text-transform: uppercase; margin-top: 4px;">View Stats</div>
+            </div>
+          </div>
+        `;
+        
+        teamsList.appendChild(teamCard);
+      });
+    }
+
+    // Show team detail with analytics
+    async function showAthleteTeamDetail(teamId) {
+      const team = athleteTeams.find(t => t.id === teamId);
+      if (!team) return;
+      
+      currentSelectedTeamForStats = team;
+      
+      // Update UI
+      document.getElementById('athlete-teams-overview-view').style.display = 'none';
+      document.getElementById('athlete-team-detail-view').style.display = 'block';
+      document.getElementById('athleteTeamDetailTitle').textContent = team.name;
+      document.getElementById('athleteTotalMembers').textContent = team.memberCount;
+      
+      // Load team statistics
+      await loadAthleteTeamStatistics(team);
+    }
+
+    // Load team statistics and render charts
+    async function loadAthleteTeamStatistics(team) {
+      try {
+        // Load training sessions for this team
+        const sessionsRef = collection(db, 'trainingSessions');
+        const sessionsQuery = query(sessionsRef, where('teamId', '==', team.id));
+        const sessionsSnapshot = await getDocs(sessionsQuery);
+        
+        const sessions = [];
+        sessionsSnapshot.forEach(doc => {
+          sessions.push({ id: doc.id, ...doc.data() });
+        });
+        
+        document.getElementById('athleteTotalSessions').textContent = sessions.length;
+        
+        // Load athlete session data
+        const athleteDataRef = collection(db, 'athleteSessionData');
+        const athleteDataSnapshot = await getDocs(athleteDataRef);
+        
+        const sessionData = [];
+        athleteDataSnapshot.forEach(doc => {
+          const data = doc.data();
+          const session = sessions.find(s => s.id === data.sessionId);
+          if (session) {
+            sessionData.push({ ...data, sessionDate: session.date });
+          }
+        });
+        
+        if (sessionData.length === 0) {
+          document.getElementById('athleteAvgTeamPerformance').textContent = '0.0';
+          showPlaceholders();
+          return;
+        }
+        
+        // Calculate average performance
+        const avgPoints = sessionData.reduce((sum, s) => sum + (s.points || 0), 0) / sessionData.length;
+        document.getElementById('athleteAvgTeamPerformance').textContent = avgPoints.toFixed(1);
+        
+        // Render charts
+        renderAthleteTeamPerformanceTrend(sessionData);
+        renderAthleteTeamAvgStats(sessionData);
+        
+      } catch (error) {
+        console.error('Error loading team statistics:', error);
+        showPlaceholders();
+      }
+    }
+
+    // Render performance trend chart
+    function renderAthleteTeamPerformanceTrend(sessionData) {
+      const canvas = document.getElementById('athleteTeamPerformanceChart');
+      const placeholder = document.getElementById('athleteTeamTrendPlaceholder');
+      
+      if (sessionData.length === 0) {
+        canvas.style.display = 'none';
+        placeholder.style.display = 'block';
+        return;
+      }
+      
+      canvas.style.display = 'block';
+      placeholder.style.display = 'none';
+      
+      // Sort by date
+      const sortedData = sessionData.sort((a, b) => new Date(a.sessionDate) - new Date(b.sessionDate));
+      
+      // Destroy existing chart
+      if (teamPerformanceChart) {
+        teamPerformanceChart.destroy();
+      }
+      
+      teamPerformanceChart = new Chart(canvas, {
+        type: 'line',
+        data: {
+          labels: sortedData.map(s => new Date(s.sessionDate).toLocaleDateString()),
+          datasets: [{
+            label: 'Points',
+            data: sortedData.map(s => s.points || 0),
+            borderColor: '#6C63FF',
+            backgroundColor: 'rgba(108, 99, 255, 0.1)',
+            tension: 0.4,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'top'
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+
+    // Render average stats chart
+    function renderAthleteTeamAvgStats(sessionData) {
+      const canvas = document.getElementById('athleteTeamAvgStatsChart');
+      const placeholder = document.getElementById('athleteTeamAvgPlaceholder');
+      
+      if (sessionData.length === 0) {
+        canvas.style.display = 'none';
+        placeholder.style.display = 'block';
+        return;
+      }
+      
+      canvas.style.display = 'block';
+      placeholder.style.display = 'none';
+      
+      // Calculate averages
+      const avgPoints = sessionData.reduce((sum, s) => sum + (s.points || 0), 0) / sessionData.length;
+      const avgRebounds = sessionData.reduce((sum, s) => sum + (s.rebounds || 0), 0) / sessionData.length;
+      const avgAssists = sessionData.reduce((sum, s) => sum + (s.assists || 0), 0) / sessionData.length;
+      const avgTurnovers = sessionData.reduce((sum, s) => sum + (s.turnovers || 0), 0) / sessionData.length;
+      const avgFouls = sessionData.reduce((sum, s) => sum + (s.fouls || 0), 0) / sessionData.length;
+      
+      // Destroy existing chart
+      if (teamAvgStatsChart) {
+        teamAvgStatsChart.destroy();
+      }
+      
+      teamAvgStatsChart = new Chart(canvas, {
+        type: 'bar',
+        data: {
+          labels: ['Points', 'Rebounds', 'Assists', 'Turnovers', 'Fouls'],
+          datasets: [{
+            label: 'Average Team Stats',
+            data: [avgPoints, avgRebounds, avgAssists, avgTurnovers, avgFouls],
+            backgroundColor: [
+              'rgba(108, 99, 255, 0.8)',
+              'rgba(255, 107, 107, 0.8)',
+              'rgba(78, 205, 196, 0.8)',
+              'rgba(255, 159, 64, 0.8)',
+              'rgba(255, 205, 86, 0.8)'
+            ],
+            borderColor: [
+              '#6C63FF',
+              '#ff6b6b',
+              '#4ecdc4',
+              '#ff9f40',
+              '#ffcd56'
+            ],
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+
+    // Show placeholders when no data
+    function showPlaceholders() {
+      document.getElementById('athleteTeamPerformanceChart').style.display = 'none';
+      document.getElementById('athleteTeamTrendPlaceholder').style.display = 'block';
+      document.getElementById('athleteTeamAvgStatsChart').style.display = 'none';
+      document.getElementById('athleteTeamAvgPlaceholder').style.display = 'block';
+    }
+
+    // Back button
+    document.getElementById('backToAthleteTeamsBtn')?.addEventListener('click', () => {
+      document.getElementById('athlete-teams-overview-view').style.display = 'block';
+      document.getElementById('athlete-team-detail-view').style.display = 'none';
+      currentSelectedTeamForStats = null;
+    });
+
+    // Load statistics when section is clicked
+    document.querySelector('[data-section="statistics"]')?.addEventListener('click', () => {
+      if (currentUser) {
+        loadAthleteTeams();
       }
     });
   </script>

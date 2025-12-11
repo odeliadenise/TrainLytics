@@ -8,27 +8,69 @@
 </head>
 
 <body>
-  <!-- === TOP 30% === -->
-  <div class="top-section">
-    <img src="assets/logo.png" alt="Trainlytics Logo" class="logo" />
-    <h1>Trainlytics</h1>
-    <p>Train Smarter, Win Together.</p>
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="hero-content">
+      <div class="logo-container">
+        <img src="assets/logo.png" alt="Trainlytics Logo" class="main-logo" />
+      </div>
+      <h1 class="main-title">Trainlytics</h1>
+      <p class="tagline">Train Smarter, Win Together.</p>
+      <p class="subtitle">Your complete platform for tracking athletic performance, managing teams, and achieving excellence.</p>
+    </div>
   </div>
 
-  <!-- === BOTTOM 70% === -->
-  <div class="bottom-section">
-  <div class="image-buttons">
-    <button class="img-btn" onclick="goToLogin('coach')" aria-label="I'm a Coach">
-      <img src="assets/coach.png" alt="Coach" />
-    </button>
-    <button class="img-btn" onclick="goToLogin('athlete')" aria-label="I'm an Athlete">
-      <img src="assets/athlete.png" alt="Athlete" />
-    </button>
-  </div>
+  <!-- Role Selection Section -->
+  <div class="role-selection">
+    <h2 class="selection-title">Choose Your Role</h2>
+    <div class="role-cards">
+      <!-- Coach Card -->
+      <div class="role-card" onclick="goToLogin('coach')">
+        <div class="role-icon">
+          <img src="assets/coach.png" alt="Coach" />
+        </div>
+        <h3>I'm a Coach</h3>
+        <p>Manage teams, create training sessions, track athlete performance, and analyze statistics.</p>
+        <div class="card-arrow">→</div>
+      </div>
+
+      <!-- Athlete Card -->
+      <div class="role-card" onclick="goToLogin('athlete')">
+        <div class="role-icon">
+          <img src="assets/athlete.png" alt="Athlete" />
+        </div>
+        <h3>I'm an Athlete</h3>
+        <p>View your training schedule, track your progress, receive coach feedback, and monitor performance.</p>
+        <div class="card-arrow">→</div>
+      </div>
+    </div>
   </div>
 
-
-  <footer>© 2025 Trainlytics — All rights reserved</footer>
+  <!-- Features Section -->
+  <div class="features-section">
+    <div class="feature-grid">
+      <div class="feature-item">
+        <div class="feature-icon">📊</div>
+        <h4>Performance Analytics</h4>
+        <p>Track detailed statistics and visualize progress over time</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">👥</div>
+        <h4>Team Management</h4>
+        <p>Organize teams, schedule sessions, and coordinate activities</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📅</div>
+        <h4>Smart Calendar</h4>
+        <p>Never miss a training session or competition with integrated scheduling</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">💬</div>
+        <h4>Real-time Feedback</h4>
+        <p>Instant communication between coaches and athletes</p>
+      </div>
+    </div>
+  </div>
 
   <script type="module">
     import { goToLogin } from './script.js';
