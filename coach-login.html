@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trainlytics - Coach Login</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="auth-container">
+    <a href="index.html" class="back-link">←</a>
+    <h1 class="welcome-title">Welcome Coach</h1>
+    <h2 class="signin-subtitle">Sign in to Trainlytics</h2>
+    <div class="auth-card">
+      <form class="auth-form" data-role="coach" onsubmit="handleLoginSubmit(event)">
+        <label for="coach-email">Email</label>
+        <input id="coach-email" type="email" placeholder="you@example.com" required />
+        <label for="coach-password">Password</label>
+        <input id="coach-password" type="password" placeholder="••••••••" required />
+        <button type="submit" class="primary-btn">Log In</button>
+      </form>
+      
+      <div class="auth-help">
+        <div>No account? <a href="coach-create-account.html">Create one</a></div>
+      </div>
+    </div>
+  </div>
+  <!-- ES Module Scripts -->
+  <script type="module">
+    import { handleLoginSubmit } from './script.js';
+    
+    window.handleLoginSubmit = handleLoginSubmit;
+  </script>
+  </body>
+</html>
+
+

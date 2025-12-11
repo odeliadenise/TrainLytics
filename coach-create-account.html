@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trainlytics - Coach Create Account</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .auth-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 32px 16px;
+      background: #ffffff;
+      overflow-y: auto;
+    }
+
+    .back-link {
+      align-self: flex-start;
+      margin-left: 12px;
+      margin-top: 4px;
+      margin-bottom: 28px;
+      text-decoration: none;
+      color: #0f172a;
+      font-size: 22px;
+    }
+
+    .welcome-title {
+      font-family: 'Overcame';
+      font-size: 44px;
+      margin-bottom: 12px;
+      color: #0f172a;
+    }
+
+    .signin-subtitle {
+      font-family: 'Overcame';
+      font-size: 28px;
+      margin-bottom: 28px;
+      color: #0f172a;
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 720px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .profile-avatar {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .avatar-circle {
+      width: 80px;
+      height: 80px;
+      background: #ede9fe;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .avatar-circle:hover {
+      background: #ddd6fe;
+      transform: scale(1.05);
+    }
+
+    .upload-hint {
+      position: absolute;
+      bottom: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      color: #6b7280;
+      white-space: nowrap;
+      text-align: center;
+    }
+
+    .avatar-circle:hover .upload-hint {
+      color: #9333ea;
+    }
+
+    .auth-form {
+      width: 100%;
+      max-width: 640px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 6px;
+    }
+
+    .auth-form label {
+      text-align: left;
+      font-size: 14px;
+      color: #0f172a;
+    }
+
+    .auth-form input {
+      width: 100%;
+      border: none;
+      outline: none;
+      height: 46px;
+      border-radius: 999px;
+      padding: 0 18px;
+      background: #e5e7eb;
+      font-size: 16px;
+      color: #0f172a;
+    }
+
+    .auth-form select {
+      width: 100%;
+      background: #e5e7eb;
+      border: none;
+      outline: none;
+      height: 46px;
+      border-radius: 999px;
+      padding: 0 18px;
+      font-size: 16px;
+      color: #0f172a;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 15px center;
+      background-size: 16px;
+      padding-right: 40px;
+    }
+
+    .signup-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 24px;
+      width: 100%;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .primary-btn {
+      border: none;
+      outline: none;
+      height: 44px;
+      border-radius: 999px;
+      background: #d1d5db;
+      color: #0f172a;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      cursor: pointer;
+      width: 220px;
+      align-self: center;
+      margin-top: 10px;
+      transition: background 0.2s ease, transform 0.05s ease;
+    }
+
+    .primary-btn:hover {
+      background: #cbd5e1;
+    }
+
+    .primary-btn:active {
+      transform: translateY(1px);
+    }
+
+    .auth-help {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .auth-help a {
+      color: #0f172a;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 700px) {
+      .welcome-title {
+        font-size: 34px;
+      }
+      .signin-subtitle {
+        font-size: 22px;
+      }
+      .auth-form {
+        max-width: 100%;
+      }
+      .signup-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <a href="coach-login.html" class="back-link">←</a>
+    <h1 class="welcome-title">Welcome Coach</h1>
+    <h2 class="signin-subtitle">Create your Trainlytics account</h2>
+    <div class="auth-card">
+      <div class="profile-avatar">
+        <input type="file" id="avatar-upload" accept="image/*" style="display: none;" />
+        <div class="avatar-circle" onclick="document.getElementById('avatar-upload').click()">
+          <img id="avatar-preview" style="display: none; width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+          <div id="avatar-placeholder">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#9333ea" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <div class="upload-hint">Click to upload photo</div>
+          </div>
+        </div>
+      </div>
+      
+      <form class="auth-form" id="coach-signup-form" onsubmit="handleSignupSubmit(event)">
+        <div class="signup-grid">
+          <div class="field-group">
+            <label for="name">Name</label>
+            <input id="name" type="text" placeholder="Your full name" required />
+          </div>
+          <div class="field-group">
+            <label for="age">Age</label>
+            <input id="age" type="number" min="18" placeholder="Age" />
+          </div>
+          <div class="field-group">
+            <label for="school">School</label>
+            <input id="school" type="text" placeholder="Your school" />
+          </div>
+          <div class="field-group">
+            <label for="sport">Sport</label>
+            <select id="sport" required>
+              <option value=""></option>
+              <option value="badminton">Badminton</option>
+              <option value="baseball">Baseball</option>
+              <option value="basketball">Basketball</option>
+              <option value="soccer">Soccer</option>
+              <option value="swimming">Swimming</option>
+              <option value="table tennis">Table Tennis</option>
+              <option value="track">Track</option>
+              <option value="tennis">Tennis</option>
+              <option value="volleyball">Volleyball</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="you@example.com" required />
+          </div>
+          <div class="field-group">
+            <label for="password">Password</label>
+            <input id="password" type="password" placeholder="••••••••" required />
+          </div>
+        </div>
+        <button type="submit" class="primary-btn">Continue</button>
+      </form>
+      <div class="auth-help">Have an existing account? <a href="coach-login.html">Log in</a></div>
+    </div>
+  </div>
+  <!-- ES Module Scripts -->
+  <script type="module">
+    import { handleSignupSubmit, initializeAvatarUpload } from './script.js';
+    window.handleSignupSubmit = handleSignupSubmit;
+    
+    // Initialize avatar upload when page loads
+    document.addEventListener('DOMContentLoaded', initializeAvatarUpload);
+  </script>
+  </body>
+</html>
+
+

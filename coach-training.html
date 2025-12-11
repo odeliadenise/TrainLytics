@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Training Session</title>
+
+  <!-- Your global styles -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="coach-dashboard">
+    <!-- Sidebar -->
+    <div class="coach-sidebar">
+      <!-- Profile Section -->
+      <div class="coach-profile" id="profileSection" style="display: none;">
+        <div class="coach-avatar" id="coachAvatar">
+          <img id="avatarImage" style="display: none; width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" />
+          <span id="avatarFallback">👨‍🏫</span>
+        </div>
+        <div class="coach-name" id="coachName">COACH NAME</div>
+        <div class="coach-sport" id="coachSport">SPORT</div>
+        <button class="manage-account-btn" onclick="window.location.href='manage-profile.html'">Manage Account</button>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="coach-nav">
+        <div class="nav-section">
+          <div class="nav-item" onclick="window.location.href='coach-dashboard.html'">Home</div>
+          <div class="nav-item" onclick="window.location.href='coach-dashboard.html#teams'">Teams</div>
+          <div class="nav-item active">Training</div>
+          <div class="nav-item" onclick="window.location.href='coach-dashboard.html#competition'">Competition</div>
+          <div class="nav-item" onclick="window.location.href='coach-dashboard.html#statistics'">Statistics</div>
+        </div>
+      </nav>
+
+      <!-- Sign Out -->
+      <button class="sign-out-btn" id="signOutBtn">Sign Out</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="coach-content training-content">
+      <!-- Header -->
+      <header class="ts-header">
+        <h1 class="ts-title">TRAINING SESSION</h1>
+
+        <button class="ts-icon-btn" aria-label="Add session" id="addSessionBtn" title="Add session">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </header>
+
+  <!-- Tabs + Search row -->
+  <section class="ts-controls">
+    <nav class="ts-tabs" role="tablist" aria-label="Session views">
+      <button class="tab active" data-filter="all">All</button>
+      <button class="tab" data-filter="upcoming">Upcoming</button>
+      <button class="tab" data-filter="completed">Completed</button>
+      <button class="tab" data-filter="draft">Drafts</button>
+    </nav>
+
+    <div class="ts-sort-search">
+      <span class="sort-label">Sort By</span>
+      <div class="search-wrap">
+        <input id="search" type="search" placeholder="Search Session Name" />
+        <svg class="search-ico" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M20 20l-3.2-3.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cards -->
+  <main class="ts-grid" id="sessionGrid">
+    <!-- Sessions will be loaded here dynamically -->
+  </main>
+
+  <!-- Add Session Modal -->
+  <div id="addSessionModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;">
+    <div style="background:white; padding:32px; border-radius:12px; max-width:900px; width:90%; max-height:90vh; overflow-y:auto; margin:auto; margin-top:5vh;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+        <h2 style="margin:0; font-size:24px; color:#333;">Add Training Session</h2>
+        <button id="closeModalBtn" style="background:none; border:none; font-size:28px; cursor:pointer; color:#666;">&times;</button>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div>
+          <label style="display:block; margin-bottom:6px; font-weight:600; color:#333;">Session Name *</label>
+          <input type="text" id="modalSessionName" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; font-size:14px;" placeholder="e.g., Strength Training" />
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+          <div>
+            <label style="display:block; margin-bottom:6px; font-weight:600; color:#333;">Date *</label>
+            <input type="date" id="modalSessionDate" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; font-size:14px;" />
+          </div>
+          <div>
+            <label style="display:block; margin-bottom:6px; font-weight:600; color:#333;">Time *</label>
+            <input type="time" id="modalSessionTime" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; font-size:14px;" />
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+          <div>
+            <label style="display:block; margin-bottom:6px; font-weight:600; color:#333;">Duration (min)</label>
+            <input type="number" id="modalSessionDuration" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; font-size:14px;" placeholder="60" />
+          </div>
+          <div>
+            <label style="display:block; margin-bottom:6px; font-weight:600; color:#333;">Location</label>
+            <input type="text" id="modalSessionLocation" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; font-size:14px;" placeholder="e.g., Main Field" />
+          </div>
+        </div>
+
+        <div>
+          <label style="display:block; margin-bottom:6px; font-weight:600; color:#333;">Team *</label>
+          <select id="modalSessionTeam" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; font-size:14px;">
+            <option value="">Select a team...</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="display:block; margin-bottom:6px; font-weight:600; color:#333;">Description</label>
+          <textarea id="modalSessionDescription" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; font-size:14px; min-height:80px; resize:vertical;" placeholder="Training details..."></textarea>
+        </div>
+
+        <div>
+          <label style="display:block; margin-bottom:6px; font-weight:600; color:#333;">Status *</label>
+          <select id="modalSessionStatus" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; font-size:14px;">
+            <option value="draft">Draft</option>
+            <option value="upcoming">Upcoming</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+
+        <div style="display:flex; gap:12px; margin-top:8px;">
+          <button id="saveSessionBtn" style="flex:1; background:#6C63FF; color:white; border:none; padding:12px; border-radius:6px; font-weight:600; cursor:pointer; font-size:14px;">SAVE SESSION</button>
+          <button id="cancelModalBtn" style="flex:1; background:#ddd; color:#333; border:none; padding:12px; border-radius:6px; font-weight:600; cursor:pointer; font-size:14px;">CANCEL</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+      <div class="load-more">
+        <button class="btn-ghost" type="button">Load More</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Tabs + search (demo-only)
+    const tabs = document.querySelectorAll('.tab');
+    const cards = [...document.querySelectorAll('.ts-card')];
+    const search = document.getElementById('search');
+
+    tabs.forEach(t => t.addEventListener('click', () => {
+      tabs.forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      const f = t.dataset.filter;
+      cards.forEach(c => {
+        const s = c.dataset.status;
+        c.style.display =
+          f === 'all' ? '' :
+          (f === s) ? '' : 'none';
+      });
+      search.value = '';
+    }));
+
+    search.addEventListener('input', e => {
+      const q = e.target.value.toLowerCase();
+      cards.forEach(c => {
+        c.style.display = c.dataset.name.toLowerCase().includes(q) ? '' : 'none';
+      });
+    });
+  </script>
+  <script type="module">
+    import { logout, getUserProfile, getUserRole } from './script.js';
+    import { auth, db } from './firebase-config.js';
+    import { collection, addDoc, query, where, getDocs, orderBy, serverTimestamp, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+    
+    let currentUser = null;
+    let allSessions = [];
+    let teams = [];
+
+    // Helper function to display profile
+    function displayCoachProfile(profile) {
+      if (!profile) return;
+      document.getElementById('profileSection').style.display = 'block';
+      document.getElementById('coachName').textContent = profile.name || 'COACH NAME';
+      document.getElementById('coachSport').textContent = profile.sport || 'SPORT';
+      
+      const avatarImage = document.getElementById('avatarImage');
+      const avatarFallback = document.getElementById('avatarFallback');
+      
+      if (profile.avatar) {
+        avatarImage.src = profile.avatar;
+        avatarImage.style.display = 'block';
+        avatarFallback.style.display = 'none';
+      } else {
+        avatarImage.style.display = 'none';
+        avatarFallback.style.display = 'block';
+      }
+    }
+    
+    // Try to load cached profile for immediate display
+    const cachedUID = Object.keys(localStorage).find(key => key.startsWith('profile_'));
+    if (cachedUID) {
+      try {
+        const cached = JSON.parse(localStorage.getItem(cachedUID));
+        displayCoachProfile(cached);
+      } catch (e) {
+        console.log('Cache load error:', e);
+      }
+    }
+
+    // Load teams from Firebase
+    async function loadTeams() {
+      if (!currentUser) return;
+      
+      try {
+        const teamsRef = collection(db, 'teams');
+        const q = query(teamsRef, where('coachId', '==', currentUser.uid));
+        const querySnapshot = await getDocs(q);
+        
+        teams = [];
+        querySnapshot.forEach((doc) => {
+          teams.push({
+            id: doc.id,
+            ...doc.data()
+          });
+        });
+        
+        // Populate team dropdown
+        const teamSelect = document.getElementById('modalSessionTeam');
+        teamSelect.innerHTML = '<option value="">Select a team...</option>';
+        teams.forEach(team => {
+          const option = document.createElement('option');
+          option.value = team.id;
+          option.textContent = team.name;
+          teamSelect.appendChild(option);
+        });
+      } catch (error) {
+        console.error('Error loading teams:', error);
+      }
+    }
+
+    // Load training sessions from Firebase
+    async function loadTrainingSessions() {
+      if (!currentUser) {
+        console.log('No current user, skipping session load');
+        return;
+      }
+      
+      console.log('Loading training sessions for user:', currentUser.uid);
+      
+      try {
+        const sessionsRef = collection(db, 'trainingSessions');
+        const q = query(sessionsRef, where('coachId', '==', currentUser.uid));
+        const querySnapshot = await getDocs(q);
+        
+        allSessions = [];
+        querySnapshot.forEach((doc) => {
+          console.log('Found session:', doc.id, doc.data());
+          allSessions.push({
+            id: doc.id,
+            ...doc.data()
+          });
+        });
+        
+        console.log('Total sessions loaded:', allSessions.length);
+        
+        // Sort by date manually (newest first)
+        allSessions.sort((a, b) => {
+          const dateA = new Date(a.date + ' ' + (a.time || '00:00'));
+          const dateB = new Date(b.date + ' ' + (b.time || '00:00'));
+          return dateB - dateA;
+        });
+        
+        renderSessions();
+      } catch (error) {
+        console.error('Error loading training sessions:', error);
+        alert('Error loading sessions. Please check the console.');
+      }
+    }
+
+    // Render sessions to the grid
+    function renderSessions() {
+      console.log('renderSessions called with', allSessions.length, 'sessions');
+      const grid = document.getElementById('sessionGrid');
+      
+      if (!grid) {
+        console.error('sessionGrid element not found!');
+        return;
+      }
+      
+      if (allSessions.length === 0) {
+        console.log('No sessions to display');
+        grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:#666; padding:40px;">No training sessions yet. Click + to add one!</p>';
+        return;
+      }
+      
+      console.log('Rendering', allSessions.length, 'session cards');
+      grid.innerHTML = '';
+      allSessions.forEach((session, index) => {
+        console.log(`Rendering session ${index + 1}:`, session.sessionName);
+        const card = document.createElement('article');
+        card.className = 'ts-card';
+        card.dataset.status = session.status || 'draft';
+        card.dataset.name = session.sessionName || '';
+        
+        card.innerHTML = `
+          <dl>
+            <div style="padding:8px 0;"><span style="font-weight:700;">Name</span> : ${session.sessionName || 'Untitled'}</div>
+            <div style="padding:8px 0;"><span style="font-weight:700;">Date</span> : ${session.date || 'N/A'}</div>
+            <div style="padding:8px 0;"><span style="font-weight:700;">Team</span> : ${session.teamName || 'N/A'}</div>
+            <div style="padding:8px 0;"><span style="font-weight:700;">Status</span> : <span style="text-transform:capitalize;">${session.status || 'draft'}</span></div>
+          </dl>
+        `;
+        
+        grid.appendChild(card);
+      });
+      console.log('Finished rendering sessions');
+      
+      // Re-apply current filter
+      const activeTab = document.querySelector('.tab.active');
+      if (activeTab) {
+        const filter = activeTab.dataset.filter;
+        filterSessions(filter);
+      }
+    }
+
+    // Filter sessions
+    function filterSessions(filter) {
+      const cards = document.querySelectorAll('.ts-card');
+      cards.forEach(card => {
+        const status = card.dataset.status;
+        card.style.display = (filter === 'all' || filter === status) ? '' : 'none';
+      });
+    }
+
+    // Modal controls
+    const addSessionBtn = document.getElementById('addSessionBtn');
+    const addSessionModal = document.getElementById('addSessionModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const cancelModalBtn = document.getElementById('cancelModalBtn');
+    const saveSessionBtn = document.getElementById('saveSessionBtn');
+
+    addSessionBtn.addEventListener('click', () => {
+      addSessionModal.style.display = 'block';
+      // Set default date to today
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('modalSessionDate').value = today;
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+      addSessionModal.style.display = 'none';
+      clearModalForm();
+    });
+
+    cancelModalBtn.addEventListener('click', () => {
+      addSessionModal.style.display = 'none';
+      clearModalForm();
+    });
+
+    function clearModalForm() {
+      document.getElementById('modalSessionName').value = '';
+      document.getElementById('modalSessionDate').value = '';
+      document.getElementById('modalSessionTime').value = '';
+      document.getElementById('modalSessionDuration').value = '';
+      document.getElementById('modalSessionLocation').value = '';
+      document.getElementById('modalSessionTeam').value = '';
+      document.getElementById('modalSessionDescription').value = '';
+      document.getElementById('modalSessionStatus').value = 'draft';
+    }
+
+    // Save session
+    saveSessionBtn.addEventListener('click', async () => {
+      const sessionName = document.getElementById('modalSessionName').value.trim();
+      const sessionDate = document.getElementById('modalSessionDate').value;
+      const sessionTime = document.getElementById('modalSessionTime').value;
+      const duration = document.getElementById('modalSessionDuration').value;
+      const location = document.getElementById('modalSessionLocation').value.trim();
+      const teamId = document.getElementById('modalSessionTeam').value;
+      const description = document.getElementById('modalSessionDescription').value.trim();
+      const status = document.getElementById('modalSessionStatus').value;
+
+      if (!sessionName || !sessionDate || !sessionTime || !teamId) {
+        alert('Please fill in all required fields (Name, Date, Time, Team)');
+        return;
+      }
+
+      try {
+        const selectedTeam = teams.find(t => t.id === teamId);
+        const sessionData = {
+          coachId: currentUser.uid,
+          sessionName,
+          date: sessionDate,
+          time: sessionTime,
+          duration: parseInt(duration) || 0,
+          location,
+          description,
+          teamId,
+          teamName: selectedTeam?.name || '',
+          status: status || 'draft',
+          createdAt: serverTimestamp()
+        };
+
+        // Save to Firebase
+        await addDoc(collection(db, 'trainingSessions'), sessionData);
+        
+        // Reload sessions from Firebase to get the latest data
+        await loadTrainingSessions();
+        
+        // Close modal and clear form
+        addSessionModal.style.display = 'none';
+        clearModalForm();
+        
+        alert('Training session saved successfully!');
+      } catch (error) {
+        console.error('Error saving training session:', error);
+        alert('Failed to save training session: ' + error.message);
+      }
+    });
+
+    // Single auth state handler - protects page and loads data
+    onAuthStateChanged(auth, async (user) => {
+      console.log('Auth state changed:', user ? 'User logged in' : 'No user');
+      
+      if (!user) {
+        console.log('No user authenticated, redirecting to login');
+        location.href = 'coach-login.html';
+        return;
+      }
+
+      // Check if user is a coach
+      try {
+        const role = await getUserRole(user.uid);
+        console.log('User role:', role);
+        
+        if (role !== 'coach') {
+          console.log('User is not a coach, redirecting');
+          location.href = role ? `${role}-dashboard.html` : 'coach-login.html';
+          return;
+        }
+
+        // User is authenticated and is a coach
+        currentUser = user;
+        console.log('Coach authenticated, UID:', user.uid);
+        
+        // Load profile
+        const profile = await getUserProfile(user.uid);
+        displayCoachProfile(profile);
+        
+        // Load data
+        console.log('Loading teams and sessions...');
+        await loadTeams();
+        await loadTrainingSessions();
+        console.log('Data loading complete');
+      } catch (error) {
+        console.error('Error during authentication check:', error);
+        location.href = 'coach-login.html';
+      }
+    });
+
+    // Sign out
+    document.getElementById('signOutBtn').addEventListener('click', () => {
+      logout();
+    });
+  </script>
+</body>
+</html>
+
