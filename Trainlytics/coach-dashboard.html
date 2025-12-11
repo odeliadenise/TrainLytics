@@ -372,6 +372,8 @@
       flex: 1;
       overflow-y: auto;
       padding: 0;
+      width: 100%;
+      max-width: none;
     }
 
     .content-section.active {
@@ -997,18 +999,32 @@
       font-weight: bold;
     }
 
-    /* Statistics Styles */
+    /* Enhanced Statistics Styles */
     #statistics.content-section {
       background: transparent;
       padding: 0;
     }
     
+    /* Force full width for athlete stats view */
+    #member-stats-detail-view {
+      width: 100% !important;
+      max-width: none !important;
+    }
+    
+    /* Ensure chart containers use full available space */
+    #member-stats-detail-view > div:not(.detail-header) {
+      width: 100% !important;
+      max-width: none !important;
+    }
+
     #statistics .schedule-container {
       background: transparent;
-      padding: 40px;
+      padding: 0;
       margin: 0;
       border: none;
       box-shadow: none;
+      width: 100%;
+      max-width: none;
     }
     
     .stats-date-filter {
@@ -1018,64 +1034,88 @@
     }
 
     .date-range-btn {
-      background: #e8e8e8;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       border: none;
-      padding: 8px 16px;
-      border-radius: 20px;
+      padding: 12px 20px;
+      border-radius: 25px;
       font-family: Arial, sans-serif;
-      font-size: 12px;
-      font-weight: bold;
+      font-size: 14px;
+      font-weight: 600;
       text-transform: uppercase;
       cursor: pointer;
-      color: #333;
+      color: white;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
     }
 
     .date-range-btn:hover {
-      background: #ddd;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
     }
 
-    .simple-teams-list {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      max-width: 600px;
+    /* Teams Overview Styles */
+    .stats-overview-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .stats-overview-header h3 {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 10px;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .stats-overview-header p {
+      font-size: 16px;
+      color: #666;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .clean-teams-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      max-width: 1200px;
       margin: 0 auto;
     }
 
-    .simple-team-item {
+    .clean-team-card {
+      background: linear-gradient(135deg, #fff 0%, #f8f9ff 100%);
+      border-radius: 16px;
+      padding: 24px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border: 2px solid transparent;
+      position: relative;
+      z-index: 10;
+      pointer-events: auto;
+    }
+
+    .clean-team-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+      border-color: #667eea;
+    }
+
+    .team-card-header {
       display: flex;
       align-items: center;
-      gap: 20px;
-      padding: 20px;
-      background: #fff;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      gap: 16px;
+      margin-bottom: 16px;
     }
 
-    .simple-team-item:hover {
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      transform: translateY(-2px);
-    }
-
-    .simple-team-avatar {
-      width: 60px;
-      height: 60px;
+    .team-card-avatar {
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       overflow: hidden;
-      flex-shrink: 0;
-      background: #f0f0f0;
-    }
-
-    .simple-team-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .simple-team-avatar.no-image {
-      background: linear-gradient(135deg, #FF6B6B, #FFE66D);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1084,221 +1124,413 @@
       font-weight: bold;
     }
 
-    .simple-team-info {
-      flex: 1;
+    .team-card-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
-    .simple-team-name {
+    .team-card-info h4 {
       font-size: 18px;
       font-weight: bold;
-      color: #000;
-      margin-bottom: 4px;
+      color: #333;
+      margin: 0;
       font-family: Arial, sans-serif;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
     }
 
-    .simple-team-members {
+    .team-card-info p {
       font-size: 14px;
       color: #666;
+      margin: 4px 0 0 0;
       font-family: Arial, sans-serif;
-      text-transform: uppercase;
     }
 
     /* Team Detail View Styles */
     .team-detail-header {
+      margin-bottom: 30px;
+    }
+
+    .team-header-info {
       display: flex;
-      align-items: center;
+      justify-content: space-between;
+      align-items: flex-start;
       gap: 20px;
-      margin-bottom: 30px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid #ddd;
+      margin-top: 20px;
     }
 
-    .player-detail-header {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      margin-bottom: 30px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid #ddd;
-    }
-
-    .stats-back-btn {
-      background: none;
-      border: none;
-      font-size: 14px;
-      color: #666;
-      cursor: pointer;
-      padding: 8px 12px;
-      border-radius: 4px;
-      font-family: Arial, sans-serif;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
-
-    .stats-back-btn:hover {
-      background: #f5f5f5;
-      color: #000;
-    }
-
-    .team-detail-header h2,
-    .player-detail-header h2 {
+    .team-header-info h2 {
       margin: 0;
-      font-size: 28px;
+      font-size: 32px;
       font-weight: bold;
-      color: #000;
+      color: #333;
       font-family: Arial, sans-serif;
       text-transform: uppercase;
       letter-spacing: 2px;
     }
 
-    .player-basic-info {
+    .team-quick-stats {
+      display: flex;
+      gap: 30px;
+    }
+
+    .quick-stat-item {
+      text-align: center;
+      min-width: 100px;
+    }
+
+    .stat-label {
+      display: block;
+      font-size: 12px;
+      color: #666;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-family: Arial, sans-serif;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-value {
+      display: block;
+      font-size: 24px;
+      color: #667eea;
+      font-weight: bold;
+      font-family: Arial, sans-serif;
+    }
+
+    .stats-back-btn {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      border: none;
+      font-size: 14px;
+      color: white;
+      cursor: pointer;
+      padding: 10px 16px;
+      border-radius: 20px;
+      font-family: Arial, sans-serif;
+      font-weight: 600;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(240, 147, 251, 0.3);
+    }
+
+    .stats-back-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(240, 147, 251, 0.4);
+    }
+
+    /* Team Overview Statistics */
+    .team-overview-stats {
+      margin: 40px 0;
+    }
+
+    .team-overview-stats h3 {
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 24px;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .team-stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    /* New single column layout for wider charts */
+    .team-stats-single-column {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .team-stat-card {
+      background: linear-gradient(135deg, #fff 0%, #f8f9ff 100%);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .team-stat-card-wide {
+      background: linear-gradient(135deg, #fff 0%, #f8f9ff 100%);
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .team-stat-card h4, .team-stat-card-wide h4 {
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 24px;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Team Members Section */
+    .team-members-section {
+      margin: 40px 0;
+    }
+
+    .team-members-section h3 {
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 24px;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .members-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .member-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: white;
+      border-radius: 12px;
+      padding: 16px 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .member-row:hover {
+      transform: translateX(5px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+      background: linear-gradient(135deg, #fff 0%, #f8f9ff 100%);
+    }
+
+    .member-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+    }
+
+    .member-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: white;
+      font-weight: bold;
+    }
+
+    .member-details {
+      flex: 1;
+    }
+
+    .member-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 2px;
+      font-family: Arial, sans-serif;
+    }
+
+    .member-student-id {
+      font-size: 12px;
+      color: #666;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+    }
+
+    .view-stats-btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+    }
+
+    .view-stats-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    /* Individual Member Statistics Styles */
+    .member-detail-header {
+      margin-bottom: 40px;
+    }
+
+    .member-header-info {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    #memberAvatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: white;
+      font-weight: bold;
+      box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .member-info h2 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    .member-basic-info {
       display: flex;
       gap: 20px;
+      margin-top: 8px;
+    }
+
+    .info-item {
       font-size: 14px;
       color: #666;
       font-family: Arial, sans-serif;
     }
 
-    /* Graphs Section */
-    .team-graphs-section,
-    .player-graphs-section {
-      margin-bottom: 40px;
+    /* Individual Graphs Section */
+    .individual-graphs-section {
+      margin: 40px 0;
     }
 
-    .graphs-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 30px;
-      margin-bottom: 20px;
-    }
-
-    .graph-container {
-      background: #fff;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .graph-container h3 {
-      font-size: 16px;
+    .individual-graphs-section h3 {
+      font-size: 24px;
       font-weight: bold;
-      color: #000;
-      margin-bottom: 15px;
+      color: #333;
+      margin-bottom: 30px;
       font-family: Arial, sans-serif;
       text-transform: uppercase;
       letter-spacing: 1px;
+    }
+
+    .individual-graph-card {
+      background: linear-gradient(135deg, #fff 0%, #f8f9ff 100%);
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(102, 126, 234, 0.1);
+    }
+
+    .graph-header {
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+    }
+
+    .graph-header h4 {
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 8px;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .graph-header p {
+      font-size: 14px;
+      color: #666;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      font-style: italic;
+    }
+
+    .graph-content {
+      position: relative;
     }
 
     .graph-placeholder {
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 200px;
-      color: #666;
-      font-size: 14px;
-      background: #f9f9f9;
-      border-radius: 8px;
+      height: 300px;
+      color: #999;
+      font-size: 16px;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border-radius: 12px;
       font-family: Arial, sans-serif;
+      font-style: italic;
     }
 
-    /* Members Stats Table */
-    .team-members-stats-section h3,
-    .player-stats-table-section h3 {
-      font-size: 18px;
+    /* Training Sessions Summary */
+    .training-sessions-summary {
+      margin: 40px 0;
+    }
+
+    .training-sessions-summary h3 {
+      font-size: 20px;
       font-weight: bold;
-      color: #000;
-      margin-bottom: 20px;
+      color: #333;
+      margin-bottom: 24px;
       font-family: Arial, sans-serif;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
 
-    .members-stats-table,
-    .player-stats-table {
-      background: #fff;
-      border-radius: 12px;
+    .sessions-table {
+      background: white;
+      border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     }
 
-    .members-stats-header,
-    .player-stats-header {
+    .session-row {
       display: grid;
-      background: #f5f5f5;
-      padding: 15px 20px;
+      grid-template-columns: 1fr 1.5fr 0.8fr 0.8fr 0.8fr 0.8fr 0.8fr;
+      padding: 16px 20px;
+      border-bottom: 1px solid #f0f0f0;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
+
+    .session-row:first-child {
+      background: linear-gradient(135deg, #f8f9ff 0%, #e9ecef 100%);
       font-weight: bold;
       color: #333;
-      font-size: 12px;
       text-transform: uppercase;
-      font-family: Arial, sans-serif;
+      font-size: 12px;
       letter-spacing: 0.5px;
     }
 
-    .members-stats-header {
-      grid-template-columns: 2fr 1.5fr 1fr 1fr;
-    }
-
-    .player-stats-header {
-      grid-template-columns: 1fr 1.5fr 0.8fr 0.8fr 0.8fr 0.8fr 0.8fr 2fr;
-    }
-
-    .member-col,
-    .stat-col {
-      padding: 0 10px;
-    }
-
-    .members-stats-body,
-    .player-stats-body {
-      max-height: 400px;
-      overflow-y: auto;
-    }
-
-    .member-stats-row,
-    .player-stats-row {
-      display: grid;
-      padding: 15px 20px;
-      border-bottom: 1px solid #f0f0f0;
-      transition: background 0.2s;
-      cursor: pointer;
-      font-size: 14px;
-      font-family: Arial, sans-serif;
-    }
-
-    .member-stats-row {
-      grid-template-columns: 2fr 1.5fr 1fr 1fr;
-    }
-
-    .player-stats-row {
-      grid-template-columns: 1fr 1.5fr 0.8fr 0.8fr 0.8fr 0.8fr 0.8fr 2fr;
-      cursor: default;
-    }
-
-    .member-stats-row:hover {
-      background: #f9f9f9;
-    }
-
-    .member-stats-row:last-child,
-    .player-stats-row:last-child {
+    .session-row:last-child {
       border-bottom: none;
     }
 
-    .view-btn {
-      background: #6C63FF;
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 4px;
-      font-size: 11px;
-      font-weight: bold;
-      text-transform: uppercase;
-      cursor: pointer;
-      font-family: Arial, sans-serif;
-    }
-
-    .view-btn:hover {
-      background: #5a52d5;
+    .session-row:not(:first-child):hover {
+      background: rgba(102, 126, 234, 0.05);
     }
 
     /* Responsive adjustments */
@@ -1880,102 +2112,190 @@
 
       <!-- Statistics Section -->
       <div id="statistics" class="content-section">
-        <div class="schedule-title">Statistics</div>
+        <div class="schedule-title">
+          Team Performance Analytics
+        </div>
         <div class="schedule-container">
-          <!-- Date Range Filter -->
-          <div class="stats-date-filter">
-            <button class="date-range-btn">Date Range</button>
-          </div>
 
-          <!-- Teams List View -->
+          <!-- Teams Overview View -->
           <div id="teams-overview-view" class="stats-view">
-            <div class="simple-teams-list" id="simpleTeamsList">
+            <div class="stats-overview-header">
+              <h3>Select a Team to View Statistics</h3>
+            </div>
+            <div class="clean-teams-grid" id="cleanTeamsList">
               <!-- Teams will be populated here -->
             </div>
           </div>
 
-          <!-- Team Detail View -->
+          <!-- Team Stats Detail View -->
           <div id="team-stats-detail-view" class="stats-view" style="display: none;">
             <div class="team-detail-header">
               <button class="stats-back-btn" onclick="backToTeamsOverview()">← Back to Teams</button>
-              <h2 id="teamDetailTitle">Team Name</h2>
+              <div class="team-header-info">
+                <h2 id="teamDetailTitle">Team Name</h2>
+                <div class="team-quick-stats" id="teamQuickStats">
+                  <div class="quick-stat-item">
+                    <span class="stat-label">Total Members</span>
+                    <span class="stat-value" id="totalMembers">0</span>
+                  </div>
+                  <div class="quick-stat-item">
+                    <span class="stat-label">Avg Performance</span>
+                    <span class="stat-value" id="avgTeamPerformance">0.0</span>
+                  </div>
+                  <div class="quick-stat-item">
+                    <span class="stat-label">Training Sessions</span>
+                    <span class="stat-value" id="totalSessions">0</span>
+                  </div>
+                </div>
+              </div>
             </div>
             
-            <!-- Team Graphs Section -->
-            <div class="team-graphs-section">
-              <div class="graphs-row">
-                <div class="graph-container">
-                  <h3>Average Points Per Player</h3>
-                  <canvas id="avgPointsChart" width="400" height="200"></canvas>
-                  <div id="avgPointsPlaceholder" class="graph-placeholder">No training data available yet</div>
-                </div>
-                <div class="graph-container">
-                  <h3>Team Performance Trend</h3>
-                  <canvas id="teamTrendChart" width="400" height="200"></canvas>
+            <!-- Team Overall Statistics -->
+            <div class="team-overview-stats">
+              <h3>Team Overview Statistics</h3>
+              <div class="team-stats-single-column">
+                <div class="team-stat-card-wide">
+                  <h4>Team Performance Trend</h4>
+                  <canvas id="teamPerformanceTrendChart" width="800" height="350"></canvas>
                   <div id="teamTrendPlaceholder" class="graph-placeholder">No training data available yet</div>
+                </div>
+                <div class="team-stat-card-wide">
+                  <h4>Average Team Stats</h4>
+                  <canvas id="teamAverageStatsChart" width="800" height="350"></canvas>
+                  <div id="teamAvgPlaceholder" class="graph-placeholder">No training data available yet</div>
                 </div>
               </div>
             </div>
 
             <!-- Team Members Section -->
-            <div class="team-members-stats-section">
+            <div class="team-members-section">
               <h3>Team Members</h3>
-              <div class="members-stats-table">
-                <div class="members-stats-header">
-                  <div class="member-col">Player Name</div>
-                  <div class="member-col">Student ID</div>
-                  <div class="member-col">Position</div>
-                  <div class="member-col">Action</div>
-                </div>
-                <div id="teamMembersStatsList" class="members-stats-body">
-                  <!-- Members will be populated here -->
-                </div>
+              <div class="members-list" id="teamMembersList">
+                <!-- Members will be populated here as rows -->
               </div>
             </div>
           </div>
 
-          <!-- Player Detail View -->
-          <div id="player-stats-detail-view" class="stats-view" style="display: none;">
-            <div class="player-detail-header">
-              <button class="stats-back-btn" onclick="backToTeamDetail()">← Back to Team</button>
-              <h2 id="playerDetailTitle">Player Name</h2>
-              <div class="player-basic-info" id="playerBasicInfo">
-                <!-- Player basic info will be populated here -->
-              </div>
-            </div>
-            
-            <!-- Player Graphs Section -->
-            <div class="player-graphs-section">
-              <div class="graphs-row">
-                <div class="graph-container">
-                  <h3>Points Over Time</h3>
-                  <canvas id="playerPointsChart" width="400" height="200"></canvas>
-                  <div id="playerPointsPlaceholder" class="graph-placeholder">No training data available yet</div>
-                </div>
-                <div class="graph-container">
-                  <h3>Average Stats</h3>
-                  <canvas id="playerAvgChart" width="400" height="200"></canvas>
-                  <div id="playerAvgPlaceholder" class="graph-placeholder">No training data available yet</div>
+          <!-- Individual Member Statistics View -->
+          <div id="member-stats-detail-view" class="stats-view" style="display: none; padding: 40px;">
+            <div class="detail-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);">
+              <button class="back-button" onclick="backToTeamDetail()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px 15px; border-radius: 8px; cursor: pointer; margin-bottom: 15px; font-size: 14px; transition: all 0.3s ease;">
+                ← Back to Team
+              </button>
+              <div style="display: flex; align-items: center; gap: 20px;">
+                <div class="member-avatar-large" id="memberAvatarText" style="width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold;">M</div>
+                <div>
+                  <h2 id="memberDetailTitle" style="margin: 0; font-size: 28px; font-weight: 600;">Member Name</h2>
+                  <p style="margin: 5px 0; opacity: 0.9; font-size: 16px;">Student ID: <span id="memberStudentId">12345</span></p>
+                  <p style="margin: 0; opacity: 0.9; font-size: 16px;">Position: <span id="memberPosition">Player</span></p>
                 </div>
               </div>
             </div>
 
-            <!-- Player Stats Table -->
-            <div class="player-stats-table-section">
-              <h3>Training Sessions History</h3>
-              <div class="player-stats-table">
-                <div class="player-stats-header">
-                  <div class="stat-col">Date</div>
-                  <div class="stat-col">Session Type</div>
-                  <div class="stat-col">Points</div>
-                  <div class="stat-col">Rebounds</div>
-                  <div class="stat-col">Assists</div>
-                  <div class="stat-col">Turnovers</div>
-                  <div class="stat-col">RPE</div>
-                  <div class="stat-col">Notes</div>
+            <!-- Athlete Performance Summary Cards -->
+            <div id="athletePerformanceSummary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+              <!-- Summary cards will be populated by JavaScript -->
+            </div>
+
+            <!-- Six Performance Charts - Full Width Layout -->
+            <div style="display: flex; flex-direction: column; gap: 25px; margin-bottom: 30px;">
+              
+              <!-- Points Chart -->
+              <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08);">
+                <h3 style="color: #333; margin-bottom: 15px; font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                  <span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 6px; font-size: 12px;">📊</span>
+                  Points per Session
+                </h3>
+                <div style="position: relative; height: 400px;">
+                  <canvas id="athletePointsChart" style="width: 100%; height: 100%;"></canvas>
+                  <div id="athletePointsPlaceholder" class="chart-placeholder" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #888; font-size: 14px;">
+                    No points data available
+                  </div>
                 </div>
-                <div id="playerStatsTableBody" class="player-stats-body">
-                  <!-- Player stats will be populated here -->
+              </div>
+
+              <!-- Rebounds Chart -->
+              <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08);">
+                <h3 style="color: #333; margin-bottom: 15px; font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                  <span style="background: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 6px; font-size: 12px;">🏀</span>
+                  Rebounds per Session
+                </h3>
+                <div style="position: relative; height: 400px;">
+                  <canvas id="athleteReboundsChart" style="width: 100%; height: 100%;"></canvas>
+                  <div id="athleteReboundsPlaceholder" class="chart-placeholder" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #888; font-size: 14px;">
+                    No rebounds data available
+                  </div>
+                </div>
+              </div>
+
+              <!-- Assists Chart -->
+              <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08);">
+                <h3 style="color: #333; margin-bottom: 15px; font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                  <span style="background: #fff3e0; color: #f57c00; padding: 4px 8px; border-radius: 6px; font-size: 12px;">🤝</span>
+                  Assists per Session
+                </h3>
+                <div style="position: relative; height: 400px;">
+                  <canvas id="athleteAssistsChart" style="width: 100%; height: 100%;"></canvas>
+                  <div id="athleteAssistsPlaceholder" class="chart-placeholder" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #888; font-size: 14px;">
+                    No assists data available
+                  </div>
+                </div>
+              </div>
+
+              <!-- Turnovers Chart -->
+              <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08);">
+                <h3 style="color: #333; margin-bottom: 15px; font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                  <span style="background: #ffebee; color: #d32f2f; padding: 4px 8px; border-radius: 6px; font-size: 12px;">⚠️</span>
+                  Turnovers per Session
+                </h3>
+                <div style="position: relative; height: 400px;">
+                  <canvas id="athleteTurnoversChart" style="width: 100%; height: 100%;"></canvas>
+                  <div id="athleteTurnoversPlaceholder" class="chart-placeholder" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #888; font-size: 14px;">
+                    No turnovers data available
+                  </div>
+                </div>
+              </div>
+
+              <!-- Fouls Chart -->
+              <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08);">
+                <h3 style="color: #333; margin-bottom: 15px; font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                  <span style="background: #fce4ec; color: #c2185b; padding: 4px 8px; border-radius: 6px; font-size: 12px;">🚫</span>
+                  Fouls per Session
+                </h3>
+                <div style="position: relative; height: 400px;">
+                  <canvas id="athleteFoulsChart" style="width: 100%; height: 100%;"></canvas>
+                  <div id="athleteFoulsPlaceholder" class="chart-placeholder" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #888; font-size: 14px;">
+                    No fouls data available
+                  </div>
+                </div>
+              </div>
+
+              <!-- RPE Chart -->
+              <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08);">
+                <h3 style="color: #333; margin-bottom: 15px; font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                  <span style="background: #f3e5f5; color: #7b1fa2; padding: 4px 8px; border-radius: 6px; font-size: 12px;">💪</span>
+                  Rate of Perceived Exertion (RPE)
+                </h3>
+                <div style="position: relative; height: 400px;">
+                  <canvas id="athleteRpeChart" style="width: 100%; height: 100%;"></canvas>
+                  <div id="athleteRpePlaceholder" class="chart-placeholder" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #888; font-size: 14px;">
+                    No RPE data available
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Training Sessions Summary Table -->
+            <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); margin-top: 30px;">
+              <h3 style="color: #333; margin-bottom: 20px; font-size: 18px; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                <span style="background: #f3e5f5; color: #7b1fa2; padding: 6px 10px; border-radius: 8px; font-size: 14px;">📋</span>
+                Training Sessions Summary
+              </h3>
+              <div id="athleteSessionsTable" style="overflow-x: auto;">
+                <!-- Training sessions data will be populated here -->
+                <div style="text-align: center; color: #888; padding: 40px; font-size: 14px;">
+                  Loading training session data...
                 </div>
               </div>
             </div>
@@ -1988,12 +2308,23 @@
   <!-- Leaflet (OpenStreetMap) -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  
+  <!-- Chart.js for Analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- Team Analytics Module -->
+  <script src="team_analytics.js"></script>
 
+  <!-- Chart.js Library for Statistics Visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.1/dist/chartjs-adapter-moment.min.js"></script>
+  
   <!-- ES Module Scripts -->
   <script type="module">
     import { requireAuth, logout, getUserProfile } from './script.js';
     import { auth, db } from './firebase-config.js';
-    import { doc, getDoc, updateDoc, collection, getDocs, query, where, setDoc, deleteDoc, arrayUnion, arrayRemove, addDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+    import { doc, getDoc, updateDoc, collection, getDocs, query, where, setDoc, deleteDoc, arrayUnion, arrayRemove, addDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
     // Protect this page for coaches only
     requireAuth('coach');
@@ -2002,6 +2333,12 @@
     let reminders = [];
     let athletes = [];
     let teams = [];
+    let currentSelectedTeam = null;
+    let currentSelectedMember = null;
+    let chartRefreshListeners = []; // Track active Firebase listeners
+    let autoRefreshEnabled = true; // Control automatic chart refreshing
+    let globalTeamAnalytics = null; // Global analytics instance to prevent multiple instances
+    let chartRefreshTimeouts = new Map(); // For debouncing chart updates
 
     // Get current user and populate profile
     
@@ -2665,10 +3002,16 @@
       await logout();
     });
 
-    // Reminder helpers
-    const remindersListEl = document.getElementById('remindersList');
+    // Back to Sessions button
+    document.getElementById('backToSessionsBtn')?.addEventListener('click', () => {
+      // Hide session members section and show training list
+      document.getElementById('sessionMembersSection').style.display = 'none';
+      document.getElementById('trainingListView').style.display = 'block';
+    });
 
+    // Reminder helpers
     function renderReminders() {
+      const remindersListEl = document.getElementById('remindersList');
       if (!remindersListEl) return;
       remindersListEl.innerHTML = '';
 
@@ -2736,12 +3079,15 @@
     }
 
     document.getElementById('addReminderBtn').addEventListener('click', addReminder);
-    remindersListEl.addEventListener('click', (e) => {
-      const btn = e.target.closest('.reminder-delete-btn');
-      if (!btn) return;
-      const index = Number(btn.dataset.index);
-      deleteReminder(index);
-    });
+    const remindersList = document.getElementById('remindersList');
+    if (remindersList) {
+      remindersList.addEventListener('click', (e) => {
+        const btn = e.target.closest('.reminder-delete-btn');
+        if (!btn) return;
+        const index = Number(btn.dataset.index);
+        deleteReminder(index);
+      });
+    }
 
     // Fetch athletes from database
     async function fetchAthletes() {
@@ -3079,7 +3425,7 @@
         );
         
         const querySnapshot = await getDocs(sessionsQuery);
-        trainingSessions = [];
+        trainingSessions = []; // Use global variable, not const local variable
         
         querySnapshot.forEach((doc) => {
           trainingSessions.push({
@@ -3203,10 +3549,24 @@
       if (!confirm('Are you sure you want to delete this training session?')) return;
 
       try {
+        // Delete all athlete session data for this session
+        const athleteDataQuery = query(collection(db, 'athleteSessionData'), where('sessionId', '==', sessionId));
+        const athleteDataSnapshot = await getDocs(athleteDataQuery);
+        
+        // Delete all athlete performance records for this session
+        const deletePromises = athleteDataSnapshot.docs.map(doc => deleteDoc(doc.ref));
+        await Promise.all(deletePromises);
+        
+        console.log(`🗑️ Deleted ${deletePromises.length} athlete performance records for session ${sessionId}`);
+        
+        // Delete the training session itself
         await deleteDoc(doc(db, 'trainingSessions', sessionId));
+        
+        // Update local state
         trainingSessions = trainingSessions.filter(s => s.id !== sessionId);
         renderTrainingSessions();
-        alert('Training session deleted successfully!');
+        
+        alert(`Training session and ${deletePromises.length} athlete performance records deleted successfully!`);
       } catch (error) {
         console.error('Error deleting training session:', error);
         alert('Failed to delete training session: ' + error.message);
@@ -3257,10 +3617,24 @@
       if (!confirm('Are you sure you want to delete this training session?')) return;
 
       try {
+        // Delete all athlete session data for this session
+        const athleteDataQuery = query(collection(db, 'athleteSessionData'), where('sessionId', '==', sessionId));
+        const athleteDataSnapshot = await getDocs(athleteDataQuery);
+        
+        // Delete all athlete performance records for this session
+        const deletePromises = athleteDataSnapshot.docs.map(doc => deleteDoc(doc.ref));
+        await Promise.all(deletePromises);
+        
+        console.log(`🗑️ Deleted ${deletePromises.length} athlete performance records for session ${sessionId}`);
+        
+        // Delete the training session itself
         await deleteDoc(doc(db, 'trainingSessions', sessionId));
+        
+        // Update local state
         trainingSessions = trainingSessions.filter(s => s.id !== sessionId);
         renderTrainingSessions();
-        alert('Training session deleted successfully!');
+        
+        alert(`Training session and ${deletePromises.length} athlete performance records deleted successfully!`);
       } catch (error) {
         console.error('Error deleting training session:', error);
         alert('Failed to delete training session');
@@ -4378,9 +4752,7 @@
       loadCompetitions();
     });
 
-    // ========== STATISTICS SECTION ==========
-    let currentSelectedTeam = null;
-    let currentSelectedPlayer = null;
+    // ========== ENHANCED STATISTICS SECTION ==========
 
     // Load and display teams in statistics view
     async function loadStatisticsData() {
@@ -4390,132 +4762,1478 @@
           await loadTeams();
         }
 
+        // Fetch fresh team data with member counts before rendering
+        await refreshTeamsWithMemberCounts();
+
         // Show teams overview
         renderTeamsOverview();
         document.getElementById('teams-overview-view').style.display = 'block';
         document.getElementById('team-stats-detail-view').style.display = 'none';
-        document.getElementById('player-stats-detail-view').style.display = 'none';
+        document.getElementById('member-stats-detail-view').style.display = 'none';
       } catch (error) {
         console.error('Error loading statistics:', error);
       }
     }
 
-    // Render teams list in statistics
+    // Refresh teams data with accurate member counts
+    async function refreshTeamsWithMemberCounts() {
+      try {
+        console.log('Refreshing teams with member counts...');
+        
+        for (let i = 0; i < teams.length; i++) {
+          const team = teams[i];
+          const teamDoc = await getDoc(doc(db, 'teams', team.id));
+          
+          if (teamDoc.exists()) {
+            const freshTeamData = teamDoc.data();
+            console.log(`Fresh data for team ${team.name}:`, freshTeamData);
+            
+            // Update the team in the teams array with fresh data including memberIds
+            teams[i] = {
+              ...team,
+              ...freshTeamData,
+              memberCount: freshTeamData.memberIds ? freshTeamData.memberIds.length : 0
+            };
+            
+            console.log(`Updated team ${team.name} member count:`, teams[i].memberCount);
+          } else {
+            // Fallback to existing member count if available
+            teams[i].memberCount = team.members ? team.members.length : 0;
+          }
+        }
+        
+        console.log('All teams refreshed with member counts:', teams);
+      } catch (error) {
+        console.error('Error refreshing teams data:', error);
+        // Fallback to existing data
+        teams.forEach((team, index) => {
+          teams[index].memberCount = team.members ? team.members.length : 0;
+        });
+      }
+    }
+
+    // Render teams list in clean card layout
     function renderTeamsOverview() {
-      const teamsList = document.getElementById('simpleTeamsList');
+      const teamsList = document.getElementById('cleanTeamsList');
       if (!teamsList) {
-        console.error('simpleTeamsList element not found');
+        console.error('cleanTeamsList element not found');
         return;
       }
 
       console.log('Rendering teams overview, teams count:', teams.length);
-      console.log('Teams data:', teams);
 
       if (teams.length === 0) {
-        teamsList.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;">No teams available</div>';
+        teamsList.innerHTML = '<div style="grid-column: 1/-1; padding: 40px; text-align: center; color: #666; font-family: Arial, sans-serif;">No teams available. Create your first team to get started!</div>';
         return;
       }
 
-      teamsList.innerHTML = teams.map(team => `
-        <div class="simple-team-item" onclick="showTeamDetail('${team.id}')">
-          <img src="${team.image || team.avatar || 'assets/default-team.png'}" alt="${team.name}" class="simple-team-avatar">
-          <span class="simple-team-name">${team.name}</span>
-        </div>
-      `).join('');
+      teamsList.innerHTML = teams.map(team => {
+        // Use the refreshed member count or fallback to calculating it
+        let memberCount = 0;
+        if (team.memberCount !== undefined) {
+          memberCount = team.memberCount;
+        } else if (team.memberIds) {
+          memberCount = team.memberIds.length;
+        } else if (team.members) {
+          memberCount = team.members.length;
+        }
+        
+        console.log(`Team ${team.name} member count:`, memberCount);
+        
+        return `
+          <div class="clean-team-card" onclick="showTeamDetail('${team.id}')">
+            <div class="team-card-header">
+              <div class="team-card-avatar">
+                ${team.image ? `<img src="${team.image}" alt="${team.name}">` : team.name.charAt(0).toUpperCase()}
+              </div>
+              <div class="team-card-info">
+                <h4>${team.name}</h4>
+                <p>${memberCount} member${memberCount !== 1 ? 's' : ''}</p>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
-    // Show team detail view
+    // Show team detail view with overall team statistics
     async function showTeamDetail(teamId) {
+      console.log('🔍 showTeamDetail called with teamId:', teamId);
+      
       currentSelectedTeam = teams.find(t => t.id === teamId);
-      if (!currentSelectedTeam) return;
+      if (!currentSelectedTeam) {
+        console.error('❌ Team not found:', teamId);
+        console.log('Available teams:', teams.map(t => ({ id: t.id, name: t.name })));
+        return;
+      }
 
+      console.log('Showing team detail for:', currentSelectedTeam);
+
+      // Update team header
       document.getElementById('teamDetailTitle').textContent = currentSelectedTeam.name;
       
-      // Load team members
-      await loadTeamMembers(teamId);
+      // Fetch fresh team data with members from Firebase
+      try {
+        const teamDoc = await getDoc(doc(db, 'teams', teamId));
+        if (teamDoc.exists()) {
+          const teamData = teamDoc.data();
+          console.log('Fetched team data:', teamData);
+          
+          // Update the team object with fresh data
+          currentSelectedTeam = { id: teamId, ...teamData };
+          
+          // Update quick stats with real member count
+          const memberCount = teamData.memberIds ? teamData.memberIds.length : 0;
+          document.getElementById('totalMembers').textContent = memberCount;
+          document.getElementById('avgTeamPerformance').textContent = '8.5'; // Placeholder
+          document.getElementById('totalSessions').textContent = '12'; // Placeholder
+
+          // Load team members list with fresh data
+          await loadTeamMembersWithProfiles(teamData.memberIds || []);
+        } else {
+          console.log('Team document not found');
+          // Fallback to existing team data
+          const memberCount = currentSelectedTeam.members ? currentSelectedTeam.members.length : 0;
+          document.getElementById('totalMembers').textContent = memberCount;
+          document.getElementById('avgTeamPerformance').textContent = '8.5'; // Placeholder
+          document.getElementById('totalSessions').textContent = '12'; // Placeholder
+          
+          await loadTeamMembersList(teamId);
+        }
+      } catch (error) {
+        console.error('Error fetching team data:', error);
+        // Fallback to existing team data
+        const memberCount = currentSelectedTeam.members ? currentSelectedTeam.members.length : 0;
+        document.getElementById('totalMembers').textContent = memberCount;
+        document.getElementById('avgTeamPerformance').textContent = '8.5'; // Placeholder
+        document.getElementById('totalSessions').textContent = '12'; // Placeholder
+        
+        await loadTeamMembersList(teamId);
+      }
 
       // Show team detail view
       document.getElementById('teams-overview-view').style.display = 'none';
       document.getElementById('team-stats-detail-view').style.display = 'block';
-      document.getElementById('player-stats-detail-view').style.display = 'none';
+      document.getElementById('member-stats-detail-view').style.display = 'none';
 
-      // Load team statistics/graphs here if you have training data
-      loadTeamGraphs(teamId);
+      // Load team graphs (placeholders for now)
+      loadTeamOverviewGraphs(teamId);
     }
 
-    // Load team members
-    async function loadTeamMembers(teamId) {
-      const membersContainer = document.getElementById('teamMembersStatsList');
+    // Load team members with their profiles from Firebase
+    async function loadTeamMembersWithProfiles(memberIds) {
+      const membersContainer = document.getElementById('teamMembersList');
       if (!membersContainer) return;
 
-      const team = teams.find(t => t.id === teamId);
-      if (!team || !team.members || team.members.length === 0) {
-        membersContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;">No members in this team</div>';
+      console.log('Loading members with profiles for IDs:', memberIds);
+
+      if (!memberIds || memberIds.length === 0) {
+        membersContainer.innerHTML = '<div style="padding: 40px; text-align: center; color: #666; font-family: Arial, sans-serif;">No members in this team yet. Add members to get started!</div>';
         return;
       }
 
-      membersContainer.innerHTML = team.members.map(member => `
-        <div class="member-stats-row">
-          <div class="member-col">${member.name}</div>
-          <div class="member-col">${member.studentId}</div>
-          <div class="member-col">${member.position || 'N/A'}</div>
-          <div class="member-col">
-            <button class="view-player-btn" onclick="showPlayerDetail('${member.studentId}', '${member.name}')">View Stats</button>
+      try {
+        const memberProfiles = [];
+        
+        // Fetch each member's profile
+        for (const memberId of memberIds) {
+          console.log('Fetching profile for member ID:', memberId);
+          const memberDoc = await getDoc(doc(db, 'profiles', memberId));
+          if (memberDoc.exists()) {
+            const memberData = memberDoc.data();
+            console.log('Found member profile:', memberData);
+            memberProfiles.push({
+              id: memberId,
+              name: memberData.fullName || memberData.name || 'Unknown',
+              studentId: memberData.studentId || memberId,
+              position: memberData.position || 'Player',
+              email: memberData.email || '',
+              ...memberData
+            });
+          } else {
+            console.log('Profile not found for member ID:', memberId);
+            // Add placeholder for missing profile
+            memberProfiles.push({
+              id: memberId,
+              name: 'Unknown Member',
+              studentId: memberId,
+              position: 'Player'
+            });
+          }
+        }
+
+        console.log('All member profiles loaded:', memberProfiles);
+
+        // Render the members list
+        if (memberProfiles.length === 0) {
+          membersContainer.innerHTML = '<div style="padding: 40px; text-align: center; color: #666; font-family: Arial, sans-serif;">No member profiles found.</div>';
+          return;
+        }
+
+        membersContainer.innerHTML = memberProfiles.map(member => `
+          <div class="member-row" onclick="showMemberDetail('${member.studentId}', '${member.name}', '${member.position}')">
+            <div class="member-info">
+              <div class="member-avatar">${member.name.charAt(0).toUpperCase()}</div>
+              <div class="member-details">
+                <div class="member-name">${member.name}</div>
+                <div class="member-student-id">ID: ${member.studentId}</div>
+              </div>
+            </div>
+            <button class="view-stats-btn" onclick="event.stopPropagation(); showMemberDetail('${member.studentId}', '${member.name}', '${member.position}')">
+              View Stats
+            </button>
           </div>
-        </div>
-      `).join('');
+        `).join('');
+
+      } catch (error) {
+        console.error('Error loading member profiles:', error);
+        membersContainer.innerHTML = '<div style="padding: 40px; text-align: center; color: #666; font-family: Arial, sans-serif;">Error loading team members. Please try again.</div>';
+      }
     }
 
-    // Load team graphs (placeholder for now)
-    function loadTeamGraphs(teamId) {
-      // Show placeholders since we don't have training data yet
-      document.getElementById('avgPointsChart').style.display = 'none';
-      document.getElementById('avgPointsPlaceholder').style.display = 'block';
-      document.getElementById('teamTrendChart').style.display = 'none';
-      document.getElementById('teamTrendPlaceholder').style.display = 'block';
-    }
+    // Load team members as rows (fallback for old team format)
+    async function loadTeamMembersList(teamId) {
+      const membersContainer = document.getElementById('teamMembersList');
+      if (!membersContainer) return;
 
-    // Show player detail view
-    async function showPlayerDetail(studentId, playerName) {
-      currentSelectedPlayer = { studentId, name: playerName };
+      console.log('Loading team members (fallback method) for team:', currentSelectedTeam);
+
+      const team = teams.find(t => t.id === teamId) || currentSelectedTeam;
       
-      document.getElementById('playerDetailTitle').textContent = playerName;
-      document.getElementById('playerBasicInfo').innerHTML = `<p>Student ID: ${studentId}</p>`;
+      // Check if we have members in the old format
+      if (team && team.members && team.members.length > 0) {
+        console.log('Using old members format:', team.members);
+        
+        membersContainer.innerHTML = team.members.map(member => `
+          <div class="member-row" onclick="showMemberDetail('${member.studentId}', '${member.name}', '${member.position || 'Player'}')">
+            <div class="member-info">
+              <div class="member-avatar">${member.name.charAt(0).toUpperCase()}</div>
+              <div class="member-details">
+                <div class="member-name">${member.name}</div>
+                <div class="member-student-id">ID: ${member.studentId}</div>
+              </div>
+            </div>
+            <button class="view-stats-btn" onclick="event.stopPropagation(); showMemberDetail('${member.studentId}', '${member.name}', '${member.position || 'Player'}')">
+              View Stats
+            </button>
+          </div>
+        `).join('');
+        
+      } else if (team && team.memberIds && team.memberIds.length > 0) {
+        console.log('Found memberIds, calling loadTeamMembersWithProfiles');
+        // If we have memberIds, use the new method
+        await loadTeamMembersWithProfiles(team.memberIds);
+        
+      } else {
+        console.log('No members found for team');
+        membersContainer.innerHTML = '<div style="padding: 40px; text-align: center; color: #666; font-family: Arial, sans-serif;">No members in this team yet. Add members to get started!</div>';
+      }
+    }
 
-      // Show player detail view
+    // Load team overview graphs with real-time updates
+    async function loadTeamOverviewGraphs(teamId) {
+      try {
+        console.log('🔄 Loading team performance analytics with real-time updates...');
+        
+        // Clear any existing listeners
+        clearChartRefreshListeners();
+        
+        // Initialize or reuse global analytics engine
+        if (!globalTeamAnalytics) {
+          globalTeamAnalytics = new TeamPerformanceAnalytics();
+        }
+        
+        // Store analytics instance globally for cleanup
+        window.teamAnalytics = globalTeamAnalytics;
+        
+        // Set up real-time chart refresh
+        setupTeamChartRealTimeRefresh(teamId, globalTeamAnalytics);
+        
+        // Initial load
+        await refreshTeamCharts(teamId, globalTeamAnalytics);
+        
+      } catch (error) {
+        console.error('Error setting up team performance graphs:', error);
+        showTeamPlaceholders();
+      }
+    }
+    
+    // Setup real-time chart refresh listeners
+    function setupTeamChartRealTimeRefresh(teamId, analytics) {
+      if (!autoRefreshEnabled) return;
+      
+      console.log('🔄 Setting up real-time chart refresh for team:', teamId);
+      
+      // Debounced refresh function to prevent rapid-fire updates
+      const debouncedRefresh = (eventType) => {
+        // Clear existing timeout for this event type
+        if (chartRefreshTimeouts.has(eventType)) {
+          clearTimeout(chartRefreshTimeouts.get(eventType));
+        }
+        
+        // Set new timeout
+        const timeoutId = setTimeout(async () => {
+          console.log(`${eventType} updated, refreshing charts...`);
+          await refreshTeamCharts(teamId, analytics);
+          chartRefreshTimeouts.delete(eventType);
+        }, 500); // 500ms debounce
+        
+        chartRefreshTimeouts.set(eventType, timeoutId);
+      };
+      
+      // Listen for training session changes
+      const sessionsQuery = query(collection(db, 'trainingSessions'), where('teamId', '==', teamId));
+      const sessionsUnsubscribe = onSnapshot(sessionsQuery, () => {
+        debouncedRefresh('📈 Training sessions');
+      });
+      
+      // Listen for athlete session data changes
+      const athleteDataQuery = query(collection(db, 'athleteSessionData'), where('teamId', '==', teamId));
+      const athleteDataUnsubscribe = onSnapshot(athleteDataQuery, () => {
+        debouncedRefresh('👥 Athlete data');
+      });
+      
+      // Store listeners for cleanup
+      chartRefreshListeners.push(sessionsUnsubscribe, athleteDataUnsubscribe);
+    }
+    
+    // Refresh team charts with latest data
+    async function refreshTeamCharts(teamId, analytics) {
+      try {
+        // Fetch training sessions for this team
+        const trainingSessions = await fetchTeamTrainingSessions(teamId);
+        console.log('Fetched training sessions:', trainingSessions);
+        
+        if (trainingSessions.length === 0) {
+          showTeamPlaceholders();
+          return;
+        }
+        
+        // Fetch athlete session data for all sessions
+        const athleteSessionData = await fetchAllAthleteSessionData(trainingSessions);
+        console.log('Fetched athlete session data:', athleteSessionData);
+        
+        // Calculate team performance trends
+        const performanceData = analytics.calculateTeamPerformanceTrend(trainingSessions, athleteSessionData);
+        console.log('Performance analytics result:', performanceData);
+        
+        if (performanceData.sessionStats.length > 0) {
+          // Render the team performance trend chart
+          analytics.renderChart('teamPerformanceTrendChart', performanceData.sessionStats, currentSelectedTeam.name);
+          
+          // Display summary statistics
+          displayTeamSummaryStats(performanceData.summary);
+          
+          // Show the chart, hide placeholder
+          document.getElementById('teamPerformanceTrendChart').style.display = 'block';
+          document.getElementById('teamTrendPlaceholder').style.display = 'none';
+        } else {
+          document.getElementById('teamPerformanceTrendChart').style.display = 'none';
+          document.getElementById('teamTrendPlaceholder').style.display = 'block';
+        }
+        
+        // Calculate and render player average points chart
+        const playerData = analytics.calculatePlayerAveragePoints(trainingSessions, athleteSessionData);
+        console.log('Player performance analytics result:', playerData);
+        
+        if (playerData.playerStats.length > 0) {
+          // Render the player average points bar chart
+          analytics.renderPlayerAverageChart('teamAverageStatsChart', playerData.playerStats, currentSelectedTeam.name);
+          
+          // Display player summary statistics
+          displayPlayerSummaryStats(playerData.summary);
+          
+          // Show the chart, hide placeholder
+          document.getElementById('teamAverageStatsChart').style.display = 'block';
+          document.getElementById('teamAvgPlaceholder').style.display = 'none';
+        } else {
+          document.getElementById('teamAverageStatsChart').style.display = 'none';
+          document.getElementById('teamAvgPlaceholder').style.display = 'block';
+        }
+        
+      } catch (error) {
+        console.error('Error refreshing team charts:', error);
+        showTeamPlaceholders();
+      }
+    }
+    
+    // Show team chart placeholders
+    function showTeamPlaceholders() {
+      document.getElementById('teamPerformanceTrendChart').style.display = 'none';
+      document.getElementById('teamTrendPlaceholder').style.display = 'block';
+      document.getElementById('teamAverageStatsChart').style.display = 'none';
+      document.getElementById('teamAvgPlaceholder').style.display = 'block';
+    }
+    
+    // Clear all chart refresh listeners
+    function clearChartRefreshListeners() {
+      // Clear Firebase listeners
+      chartRefreshListeners.forEach(unsubscribe => {
+        if (typeof unsubscribe === 'function') {
+          unsubscribe();
+        }
+      });
+      chartRefreshListeners = [];
+      
+      // Clear any pending chart refresh timeouts
+      chartRefreshTimeouts.forEach(timeoutId => clearTimeout(timeoutId));
+      chartRefreshTimeouts.clear();
+      
+      // Destroy any existing charts using the global analytics instance
+      if (globalTeamAnalytics) {
+        if (globalTeamAnalytics.chartInstance) {
+          globalTeamAnalytics.chartInstance.destroy();
+          globalTeamAnalytics.chartInstance = null;
+        }
+        if (globalTeamAnalytics.playerChartInstance) {
+          globalTeamAnalytics.playerChartInstance.destroy();
+          globalTeamAnalytics.playerChartInstance = null;
+        }
+      }
+      
+      // Also destroy via window reference (fallback)
+      if (window.teamAnalytics) {
+        if (window.teamAnalytics.chartInstance) {
+          window.teamAnalytics.chartInstance.destroy();
+          window.teamAnalytics.chartInstance = null;
+        }
+        if (window.teamAnalytics.playerChartInstance) {
+          window.teamAnalytics.playerChartInstance.destroy();
+          window.teamAnalytics.playerChartInstance = null;
+        }
+      }
+      
+      // Clear any Chart.js instances on common canvas IDs
+      ['teamPerformanceTrendChart', 'teamAverageStatsChart'].forEach(canvasId => {
+        const canvas = document.getElementById(canvasId);
+        if (canvas) {
+          const existingChart = Chart.getChart(canvas);
+          if (existingChart) {
+            existingChart.destroy();
+          }
+        }
+      });
+      
+      console.log('🧹 Cleared chart refresh listeners');
+    }
+
+    // Show individual member statistics with three graphs
+    async function showMemberDetail(studentId, memberName, position) {
+      currentSelectedMember = { studentId, name: memberName, position };
+      
+      // Update member header
+      document.getElementById('memberDetailTitle').textContent = memberName;
+      document.getElementById('memberStudentId').textContent = studentId;
+      document.getElementById('memberPosition').textContent = position;
+      document.getElementById('memberAvatarText').textContent = memberName.charAt(0).toUpperCase();
+
+      // Show member detail view
       document.getElementById('teams-overview-view').style.display = 'none';
       document.getElementById('team-stats-detail-view').style.display = 'none';
-      document.getElementById('player-stats-detail-view').style.display = 'block';
+      document.getElementById('member-stats-detail-view').style.display = 'block';
 
-      // Load player statistics/graphs
-      loadPlayerGraphs(studentId);
-      loadPlayerStatsTable(studentId);
+      // Load individual member graphs and data
+      loadMemberGraphs(studentId);
+      loadMemberSessionsSummary(studentId);
     }
 
-    // Load player graphs (placeholder for now)
-    function loadPlayerGraphs(studentId) {
-      // Show placeholders since we don't have training data yet
-      document.getElementById('playerPointsChart').style.display = 'none';
-      document.getElementById('playerPointsPlaceholder').style.display = 'block';
-      document.getElementById('playerAvgChart').style.display = 'none';
-      document.getElementById('playerAvgPlaceholder').style.display = 'block';
+    // Load individual member graphs with comprehensive 6-metric system
+    async function loadMemberGraphs(studentId) {
+      try {
+        console.log('📊 Loading comprehensive athlete performance metrics for:', studentId);
+        
+        // Clear any existing listeners
+        clearChartRefreshListeners();
+        
+        // Initialize or reuse global analytics engine
+        if (!globalTeamAnalytics) {
+          globalTeamAnalytics = new TeamPerformanceAnalytics();
+        }
+        
+        // Set up real-time member chart refresh
+        setupMemberChartRealTimeRefresh(studentId, globalTeamAnalytics);
+        
+        // Initial load of all 6 performance metrics
+        await refreshAthleteMetricCharts(studentId, globalTeamAnalytics);
+        
+      } catch (error) {
+        console.error('Error loading athlete performance metrics:', error);
+        showAthleteMetricPlaceholders();
+      }
+    }
+    
+    // Setup real-time member chart refresh listeners
+    function setupMemberChartRealTimeRefresh(studentId, analytics) {
+      if (!autoRefreshEnabled) return;
+      
+      console.log('🔄 Setting up real-time athlete performance refresh for:', studentId);
+      
+      // Debounced refresh for athlete metrics
+      const debouncedAthleteRefresh = () => {
+        if (chartRefreshTimeouts.has('athlete-metrics')) {
+          clearTimeout(chartRefreshTimeouts.get('athlete-metrics'));
+        }
+        
+        const timeoutId = setTimeout(async () => {
+          console.log('👤 Athlete data updated, refreshing performance metrics...');
+          await refreshAthleteMetricCharts(studentId, analytics);
+          chartRefreshTimeouts.delete('athlete-metrics');
+        }, 300); // 300ms debounce for athlete charts
+        
+        chartRefreshTimeouts.set('athlete-metrics', timeoutId);
+      };
+      
+      // Listen for athlete session data changes for this specific member
+      const memberDataQuery = query(collection(db, 'athleteSessionData'), where('athleteId', '==', studentId));
+      const memberDataUnsubscribe = onSnapshot(memberDataQuery, debouncedAthleteRefresh);
+      
+      // Store listener for cleanup
+      chartRefreshListeners.push(memberDataUnsubscribe);
+    }
+    
+    // Refresh all 6 athlete metric charts with latest data
+    async function refreshAthleteMetricCharts(studentId, analytics) {
+      try {
+        // Fetch athlete session data for this member
+        const athleteSessionData = await fetchAthleteSessionData(studentId);
+        console.log('🔍 RAW Athlete session data for', studentId, ':', athleteSessionData);
+        
+        // Log each session with details
+        athleteSessionData.forEach((session, index) => {
+          console.log(`📊 Session ${index + 1}:`, {
+            date: session.sessionDate,
+            name: session.sessionName,
+            points: session.points,
+            sessionId: session.sessionId,
+            teamId: session.teamId,
+            fullData: session
+          });
+        });
+        
+        if (athleteSessionData.length === 0) {
+          showAthleteMetricPlaceholders();
+          return;
+        }
+        
+        // Calculate comprehensive athlete performance metrics
+        const athletePerformance = analytics.calculateAthletePerformanceMetrics(athleteSessionData);
+        console.log('Athlete performance result:', athletePerformance);
+        
+        if (!athletePerformance.sessionMetrics || athletePerformance.sessionMetrics.length === 0) {
+          showAthleteMetricPlaceholders();
+          return;
+        }
+        
+        // Define the 6 specific metrics and their chart configurations
+        const metricConfigs = [
+          { metric: 'points', canvasId: 'athletePointsChart', color: '#1976d2', label: 'Points' },
+          { metric: 'rebounds', canvasId: 'athleteReboundsChart', color: '#2e7d32', label: 'Rebounds' },
+          { metric: 'assists', canvasId: 'athleteAssistsChart', color: '#f57c00', label: 'Assists' },
+          { metric: 'turnovers', canvasId: 'athleteTurnoversChart', color: '#d32f2f', label: 'Turnovers' },
+          { metric: 'fouls', canvasId: 'athleteFoulsChart', color: '#c2185b', label: 'Fouls' },
+          { metric: 'rpe', canvasId: 'athleteRpeChart', color: '#7b1fa2', label: 'RPE' }
+        ];
+        
+        // Render each of the 6 performance charts
+        metricConfigs.forEach(config => {
+          analytics.renderAthleteMetricChart(
+            config.canvasId, 
+            athletePerformance.sessionMetrics, 
+            config.metric, 
+            currentSelectedMember?.name || 'Athlete',
+            config.color
+          );
+        });
+        
+        // Update performance summary with comprehensive stats
+        if (athletePerformance.summary) {
+          updateAthletePerformanceSummary(athletePerformance.summary, currentSelectedMember?.name || 'Athlete');
+        }
+        
+        // Load sessions table
+        loadAthleteSessionsTable(athleteSessionData, currentSelectedMember?.name || 'Athlete');
+        
+      } catch (error) {
+        console.error('Error refreshing athlete metric charts:', error);
+        showAthleteMetricPlaceholders();
+      }
+    }
+    
+    // Show placeholders for all athlete metric charts
+    function showAthleteMetricPlaceholders() {
+      const metrics = ['Points', 'Rebounds', 'Assists', 'Turnovers', 'Fouls', 'Rpe'];
+      
+      metrics.forEach(metric => {
+        const placeholder = document.getElementById(`athlete${metric}Placeholder`);
+        const chart = document.getElementById(`athlete${metric}Chart`);
+        
+        if (placeholder && chart) {
+          chart.style.display = 'none';
+          placeholder.style.display = 'block';
+        }
+      });
+    }
+    
+    // Update athlete performance summary with comprehensive stats
+    function updateAthletePerformanceSummary(summary, athleteName) {
+      console.log(`👤 ${athleteName} Performance Summary:`, summary);
+      
+      const summaryContainer = document.getElementById('athletePerformanceSummary');
+      if (!summaryContainer || !summary) {
+        console.log('❌ No summary container or summary data');
+        return;
+      }
+
+      // Check if we have averages data
+      if (!summary.averages) {
+        console.log('❌ No averages data in summary:', summary);
+        return;
+      }
+      
+      // Create performance summary cards using the correct property structure
+      const summaryCards = [
+        { label: 'Avg Points', value: summary.averages.points?.toFixed(1) || '0.0', icon: '📊', color: '#1976d2' },
+        { label: 'Avg Rebounds', value: summary.averages.rebounds?.toFixed(1) || '0.0', icon: '🏀', color: '#2e7d32' },
+        { label: 'Avg Assists', value: summary.averages.assists?.toFixed(1) || '0.0', icon: '🤝', color: '#f57c00' },
+        { label: 'Avg Turnovers', value: summary.averages.turnovers?.toFixed(1) || '0.0', icon: '⚠️', color: '#d32f2f' },
+        { label: 'Avg Fouls', value: summary.averages.fouls?.toFixed(1) || '0.0', icon: '🚫', color: '#c2185b' },
+        { label: 'Avg RPE', value: summary.averages.rpe?.toFixed(1) || '0.0', icon: '💪', color: '#7b1fa2' }
+      ];
+
+      console.log('📊 Summary cards data:', summaryCards);
+      
+      summaryContainer.innerHTML = summaryCards.map(card => `
+        <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); text-align: center; border-left: 4px solid ${card.color};">
+          <div style="font-size: 24px; margin-bottom: 8px;">${card.icon}</div>
+          <div style="font-size: 24px; font-weight: bold; color: ${card.color}; margin-bottom: 5px;">${card.value}</div>
+          <div style="color: #666; font-size: 14px; font-weight: 500;">${card.label}</div>
+        </div>
+      `).join('');
+
+      console.log('✅ Updated athlete performance summary cards');
+    }
+    
+    // Fetch athlete session data for a specific member
+    async function fetchAthleteSessionData(studentId) {
+      try {
+        // Query athlete session data for this member
+        const athleteQuery = query(
+          collection(db, 'athleteSessionData'),
+          where('athleteId', '==', studentId)
+        );
+        
+        const athleteSnapshot = await getDocs(athleteQuery);
+        const sessionData = [];
+        
+        athleteSnapshot.forEach(doc => {
+          sessionData.push({
+            id: doc.id,
+            ...doc.data()
+          });
+        });
+        
+        // Sort by session date
+        sessionData.sort((a, b) => new Date(a.sessionDate) - new Date(b.sessionDate));
+        
+        return sessionData;
+      } catch (error) {
+        console.error('Error fetching athlete session data:', error);
+        return [];
+      }
     }
 
-    // Load player stats table (placeholder for now)
-    function loadPlayerStatsTable(studentId) {
-      const tableBody = document.getElementById('playerStatsTableBody');
-      if (!tableBody) return;
+    // Debug function to find and clean unwanted session data
+    window.debugAthleteData = async function(studentId) {
+      try {
+        console.log('🔍 Debugging athlete data for:', studentId);
+        
+        // Get all athlete session data
+        const athleteQuery = query(
+          collection(db, 'athleteSessionData'),
+          where('athleteId', '==', studentId)
+        );
+        
+        const snapshot = await getDocs(athleteQuery);
+        const allData = [];
+        
+        snapshot.forEach(doc => {
+          allData.push({
+            id: doc.id,
+            ...doc.data()
+          });
+        });
+        
+        console.log('📊 All athlete session data:', allData);
+        
+        // Group by date
+        const dataByDate = {};
+        allData.forEach(session => {
+          const date = session.sessionDate;
+          if (!dataByDate[date]) dataByDate[date] = [];
+          dataByDate[date].push(session);
+        });
+        
+        console.log('📅 Data grouped by date:', dataByDate);
+        
+        // Find December 8th data specifically
+        const dec8Data = allData.filter(session => 
+          session.sessionDate === '2025-12-08' || 
+          session.sessionDate === '2024-12-08' ||
+          session.sessionDate.includes('12-08') ||
+          session.sessionDate.includes('12/08')
+        );
+        
+        if (dec8Data.length > 0) {
+          console.log('🚨 Found December 8th data that might be unwanted:', dec8Data);
+          console.log('📋 To remove this data, run: removeUnwantedData("' + studentId + '", "2025-12-08")');
+        }
+        
+        return { allData, dataByDate, dec8Data };
+        
+      } catch (error) {
+        console.error('Error debugging athlete data:', error);
+      }
+    };
+    
+    // Function to remove unwanted session data
+    window.removeUnwantedData = async function(studentId, sessionDate) {
+      try {
+        console.log('🗑️ Removing unwanted data for', studentId, 'on', sessionDate);
+        
+        const athleteQuery = query(
+          collection(db, 'athleteSessionData'),
+          where('athleteId', '==', studentId),
+          where('sessionDate', '==', sessionDate)
+        );
+        
+        const snapshot = await getDocs(athleteQuery);
+        const deletePromises = [];
+        
+        snapshot.forEach(doc => {
+          console.log('🗑️ Deleting document:', doc.id, doc.data());
+          deletePromises.push(deleteDoc(doc.ref));
+        });
+        
+        await Promise.all(deletePromises);
+        console.log('✅ Successfully removed unwanted data for', sessionDate);
+        
+        // Refresh the current view if we're looking at this athlete
+        if (currentSelectedMember && currentSelectedMember.studentId === studentId) {
+          console.log('🔄 Refreshing athlete charts...');
+          await refreshAthleteMetricCharts(studentId, globalTeamAnalytics);
+        }
+        
+      } catch (error) {
+        console.error('Error removing unwanted data:', error);
+      }
+    };
 
-      tableBody.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;">No training data available yet</div>';
+    // Quick function to remove December 8th data for current selected member
+    window.quickCleanDec8 = async function() {
+      if (!currentSelectedMember) {
+        console.log('❌ No athlete selected. Please select an athlete first.');
+        return;
+      }
+      
+      const studentId = currentSelectedMember.studentId;
+      console.log('🧹 Cleaning December 8th data for:', studentId);
+      
+      try {
+        // Find all sessions for this athlete on December 8th (multiple date formats)
+        const athleteQuery = query(
+          collection(db, 'athleteSessionData'),
+          where('athleteId', '==', studentId)
+        );
+        
+        const snapshot = await getDocs(athleteQuery);
+        const toDelete = [];
+        
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const sessionDate = data.sessionDate;
+          
+          // Check if it's December 8th in any format
+          if (sessionDate && (
+            sessionDate === '2025-12-08' || 
+            sessionDate === '2024-12-08' ||
+            sessionDate === '12-08-2025' ||
+            sessionDate === '12/08/2025' ||
+            sessionDate === '08-12-2025' ||
+            sessionDate === '08/12/2025' ||
+            sessionDate.includes('2025-12-08') ||
+            sessionDate.includes('12-08') ||
+            sessionDate.includes('Dec 8') ||
+            sessionDate.includes('December 8')
+          )) {
+            console.log('🗑️ Found December 8th data to delete:', doc.id, data);
+            toDelete.push(doc.ref);
+          }
+        });
+        
+        if (toDelete.length > 0) {
+          console.log(`🗑️ Deleting ${toDelete.length} December 8th records...`);
+          await Promise.all(toDelete.map(ref => deleteDoc(ref)));
+          console.log('✅ Successfully deleted December 8th data!');
+          
+          // Refresh the athlete charts
+          await refreshAthleteMetricCharts(studentId, globalTeamAnalytics);
+          console.log('🔄 Charts refreshed!');
+        } else {
+          console.log('✅ No December 8th data found to delete.');
+        }
+        
+      } catch (error) {
+        console.error('❌ Error cleaning December 8th data:', error);
+      }
+    };
+
+    // Clean up any suspicious session data (unusual names, test data)
+    window.cleanSuspiciousData = async function() {
+      if (!currentSelectedMember) {
+        console.log('❌ No athlete selected. Please select an athlete first.');
+        return;
+      }
+      
+      const studentId = currentSelectedMember.studentId;
+      console.log('🧹 Cleaning suspicious/test data for:', studentId);
+      
+      try {
+        const athleteQuery = query(
+          collection(db, 'athleteSessionData'),
+          where('athleteId', '==', studentId)
+        );
+        
+        const snapshot = await getDocs(athleteQuery);
+        const toDelete = [];
+        const suspiciousNames = ['sdgsdg', 'test', 'sample', 'demo', 'asdf', 'qwerty', 'xxx', '123'];
+        
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const sessionName = (data.sessionName || '').toLowerCase();
+          const sessionDate = data.sessionDate;
+          
+          // Check for suspicious session names or December 8th
+          const isSuspicious = suspiciousNames.some(name => sessionName.includes(name));
+          const isDec8 = sessionDate && (
+            sessionDate === '2025-12-08' || 
+            sessionDate.includes('12-08') ||
+            sessionDate.includes('Dec 8')
+          );
+          
+          if (isSuspicious || isDec8) {
+            console.log('🗑️ Found suspicious data to delete:', doc.id, data);
+            toDelete.push(doc.ref);
+          }
+        });
+        
+        if (toDelete.length > 0) {
+          console.log(`🗑️ Deleting ${toDelete.length} suspicious records...`);
+          await Promise.all(toDelete.map(ref => deleteDoc(ref)));
+          console.log('✅ Successfully deleted suspicious data!');
+          
+          // Refresh the athlete charts
+          await refreshAthleteMetricCharts(studentId, globalTeamAnalytics);
+          console.log('🔄 Charts refreshed!');
+        } else {
+          console.log('✅ No suspicious data found to delete.');
+        }
+        
+      } catch (error) {
+        console.error('❌ Error cleaning suspicious data:', error);
+      }
+    };
+
+    // Universal cleanup function - delete ALL unwanted session data
+    window.universalCleanup = async function() {
+      console.log('🧹 Starting universal cleanup of unwanted session data...');
+      
+      try {
+        // Get all athlete session data
+        const allAthleteData = await getDocs(collection(db, 'athleteSessionData'));
+        const toDelete = [];
+        
+        // Define unwanted patterns
+        const unwantedNames = ['sdgsdg', 'strength', 'test', 'sample', 'demo', 'asdf', 'qwerty', 'xxx', '123'];
+        const unwantedDates = ['2024-12-07', '2024-12-08', '2025-12-07', '2025-12-08', '12-07', '12-08', 'Dec 7', 'Dec 8', 'December 7', 'December 8'];
+        
+        allAthleteData.forEach(doc => {
+          const data = doc.data();
+          const sessionName = (data.sessionName || '').toLowerCase();
+          const sessionDate = data.sessionDate || '';
+          const description = (data.description || '').toLowerCase();
+          
+          // Check for unwanted session names
+          const hasUnwantedName = unwantedNames.some(name => sessionName.includes(name));
+          
+          // Check for unwanted dates
+          const hasUnwantedDate = unwantedDates.some(date => 
+            sessionDate.includes(date.toLowerCase()) || 
+            sessionDate.includes(date)
+          );
+          
+          // Check for unwanted descriptions (like "加油！")
+          const hasUnwantedDesc = description.includes('加油') || description.includes('strength');
+          
+          if (hasUnwantedName || hasUnwantedDate || hasUnwantedDesc) {
+            console.log('🗑️ Marking for deletion:', {
+              id: doc.id,
+              name: data.sessionName,
+              date: data.sessionDate,
+              desc: data.description,
+              athlete: data.athleteName
+            });
+            toDelete.push(doc.ref);
+          }
+        });
+        
+        if (toDelete.length > 0) {
+          const confirmed = confirm(`Found ${toDelete.length} unwanted athlete session records. Delete them all? This cannot be undone!`);
+          
+          if (confirmed) {
+            console.log(`🗑️ Deleting ${toDelete.length} unwanted records...`);
+            await Promise.all(toDelete.map(ref => deleteDoc(ref)));
+            
+            // Also delete corresponding training sessions
+            const trainingSessions = await getDocs(collection(db, 'trainingSessions'));
+            const sessionToDelete = [];
+            
+            trainingSessions.forEach(doc => {
+              const data = doc.data();
+              const sessionName = (data.sessionName || '').toLowerCase();
+              const sessionDate = data.sessionDate || '';
+              const description = (data.description || '').toLowerCase();
+              
+              const hasUnwantedName = unwantedNames.some(name => sessionName.includes(name));
+              const hasUnwantedDate = unwantedDates.some(date => sessionDate.includes(date.toLowerCase()));
+              const hasUnwantedDesc = description.includes('加油') || description.includes('strength');
+              
+              if (hasUnwantedName || hasUnwantedDate || hasUnwantedDesc) {
+                sessionToDelete.push(doc.ref);
+              }
+            });
+            
+            if (sessionToDelete.length > 0) {
+              await Promise.all(sessionToDelete.map(ref => deleteDoc(ref)));
+              console.log(`✅ Also deleted ${sessionToDelete.length} training sessions`);
+            }
+            
+            alert(`✅ Successfully deleted ${toDelete.length} athlete records and ${sessionToDelete.length} training sessions!`);
+            console.log('🔄 Cleanup complete! Refresh your dashboard to see changes.');
+            
+            // Refresh current athlete charts if one is selected
+            if (currentSelectedMember && globalTeamAnalytics) {
+              await refreshAthleteMetricCharts(currentSelectedMember.studentId, globalTeamAnalytics);
+            }
+          }
+        } else {
+          alert('✅ No unwanted data found to delete!');
+          console.log('✅ Database is clean!');
+        }
+        
+      } catch (error) {
+        console.error('❌ Error during universal cleanup:', error);
+        alert('Error during cleanup: ' + error.message);
+      }
+    };
+
+    // Force delete the specific December 8th "sdgsdg" session for current athlete
+    window.forceDeleteDec8 = async function() {
+      if (!currentSelectedMember) {
+        alert('❌ No athlete selected. Please select an athlete first.');
+        return;
+      }
+      
+      const studentId = currentSelectedMember.studentId;
+      console.log('🗑️ FORCE deleting December 8th sdgsdg session for:', studentId);
+      
+      try {
+        // Check both 2024 and 2025 December 8th dates
+        const dates = ['2024-12-08', '2025-12-08'];
+        let totalDeleted = 0;
+        
+        for (const date of dates) {
+          const athleteQuery = query(
+            collection(db, 'athleteSessionData'),
+            where('athleteId', '==', studentId),
+            where('sessionDate', '==', date)
+          );
+          
+          const snapshot = await getDocs(athleteQuery);
+          let deletedCount = 0;
+          
+          const deletePromises = [];
+          snapshot.forEach(doc => {
+            console.log(`🗑️ DELETING ${date}:`, doc.id, doc.data());
+            deletePromises.push(deleteDoc(doc.ref));
+            deletedCount++;
+          });
+          
+          if (deletePromises.length > 0) {
+            await Promise.all(deletePromises);
+            console.log(`✅ DELETED ${deletedCount} records from ${date}!`);
+            totalDeleted += deletedCount;
+          }
+        }
+        
+        if (totalDeleted > 0) {
+          alert(`✅ Successfully deleted ${totalDeleted} unwanted December 8th sessions!`);
+          
+          // Force refresh
+          setTimeout(async () => {
+            await refreshAthleteMetricCharts(studentId, globalTeamAnalytics);
+            console.log('🔄 Charts force refreshed!');
+          }, 1000);
+        } else {
+          console.log('✅ No December 8th data found to delete.');
+          alert('✅ No December 8th data found.');
+        }
+        
+      } catch (error) {
+        console.error('❌ Error force deleting:', error);
+        alert('❌ Error: ' + error.message);
+      }
+    };
+
+    // Specific cleanup for "word" athlete December 8th data
+    window.cleanWordAthlete = async function() {
+      console.log('🎯 Specifically cleaning ALL December 8th data for "word" athlete...');
+      
+      try {
+        let totalDeleted = 0;
+        
+        // Check all possible December 8th date formats
+        const dateQueries = [
+          where('sessionDate', '==', '2024-12-08'),
+          where('sessionDate', '==', '2025-12-08')
+        ];
+        
+        for (const dateCondition of dateQueries) {
+          const query1 = query(
+            collection(db, 'athleteSessionData'),
+            dateCondition
+          );
+          
+          const snapshot = await getDocs(query1);
+          
+          for (const doc of snapshot.docs) {
+            const data = doc.data();
+            console.log('🔍 Found Dec 8th record:', doc.id, data);
+            
+            // Check if this belongs to "word" athlete
+            if (data.athleteName === 'word' || 
+                (data.athleteId && data.athleteId.toString().includes('word')) ||
+                (data.sessionName && data.sessionName.includes('sdgsdg'))) {
+              
+              console.log('🗑️ Deleting word athlete Dec 8th data:', doc.id);
+              await deleteDoc(doc.ref);
+              totalDeleted++;
+            }
+          }
+        }
+        
+        if (totalDeleted > 0) {
+          console.log(`✅ Successfully deleted ${totalDeleted} December 8th records for word athlete!`);
+          alert(`✅ Cleaned ${totalDeleted} December 8th records for "word" athlete!`);
+          
+          // Refresh all views
+          loadTeamMembers();
+          if (currentSelectedMember?.name === 'word') {
+            await refreshAthleteMetricCharts(currentSelectedMember.studentId, globalTeamAnalytics);
+          }
+        } else {
+          console.log('✅ No December 8th data found for "word" athlete.');
+          alert('✅ No December 8th data found for "word" athlete.');
+        }
+        
+      } catch (error) {
+        console.error('❌ Error cleaning word athlete December 8th data:', error);
+        alert('❌ Error cleaning word athlete data: ' + error.message);
+      }
+    };
+
+    // Comprehensive cleanup of ALL "sdgsdg" test sessions from entire database
+    window.cleanAllSdgsdgSessions = async function() {
+      console.log('🧹 COMPREHENSIVE CLEANUP: Removing ALL "sdgsdg" test sessions...');
+      
+      const confirmCleanup = confirm(
+        '🧹 This will permanently delete ALL "sdgsdg" test sessions from your database.\n\n' +
+        'This includes:\n' +
+        '• Training sessions with name "sdgsdg"\n' +
+        '• All athlete performance data from those sessions\n\n' +
+        'This is SAFE and will clean up test data.\n\n' +
+        'Continue with cleanup?'
+      );
+      
+      if (!confirmCleanup) {
+        console.log('❌ Cleanup cancelled by user');
+        return;
+      }
+      
+      try {
+        let totalDeleted = 0;
+        
+        // Step 1: Clean athleteSessionData collection
+        console.log('🔍 Step 1: Cleaning athleteSessionData...');
+        const athleteQuery = query(
+          collection(db, 'athleteSessionData'),
+          where('sessionName', '==', 'sdgsdg')
+        );
+        
+        const athleteSnapshot = await getDocs(athleteQuery);
+        console.log(`Found ${athleteSnapshot.size} athlete session records with "sdgsdg"`);
+        
+        const deletePromises = [];
+        athleteSnapshot.forEach(doc => {
+          console.log('🗑️ Deleting athlete session:', doc.id, doc.data());
+          deletePromises.push(deleteDoc(doc.ref));
+          totalDeleted++;
+        });
+        
+        if (deletePromises.length > 0) {
+          await Promise.all(deletePromises);
+          console.log(`✅ Deleted ${deletePromises.length} athlete session records`);
+        }
+        
+        // Step 2: Clean trainingSessions collection  
+        console.log('🔍 Step 2: Cleaning trainingSessions...');
+        const sessionQuery = query(
+          collection(db, 'trainingSessions'),
+          where('sessionName', '==', 'sdgsdg')
+        );
+        
+        const sessionSnapshot = await getDocs(sessionQuery);
+        console.log(`Found ${sessionSnapshot.size} training sessions with "sdgsdg"`);
+        
+        const sessionDeletePromises = [];
+        sessionSnapshot.forEach(doc => {
+          console.log('🗑️ Deleting training session:', doc.id, doc.data());
+          sessionDeletePromises.push(deleteDoc(doc.ref));
+          totalDeleted++;
+        });
+        
+        if (sessionDeletePromises.length > 0) {
+          await Promise.all(sessionDeletePromises);
+          console.log(`✅ Deleted ${sessionDeletePromises.length} training session records`);
+        }
+        
+        // Final results
+        if (totalDeleted > 0) {
+          console.log(`🎉 CLEANUP COMPLETE! Deleted ${totalDeleted} total "sdgsdg" records`);
+          alert(`🎉 Successfully cleaned ${totalDeleted} "sdgsdg" test records!\n\nYour database is now clean. All views will refresh automatically.`);
+          
+          // Refresh everything
+          await loadTeamMembers();
+          await refreshTeamCharts();
+          
+          if (currentSelectedMember) {
+            await refreshAthleteMetricCharts(currentSelectedMember.studentId, globalTeamAnalytics);
+          }
+          
+          console.log('🔄 All views refreshed after cleanup!');
+        } else {
+          console.log('✅ No "sdgsdg" sessions found - database already clean!');
+          alert('✅ No "sdgsdg" test sessions found. Your database is already clean!');
+        }
+        
+      } catch (error) {
+        console.error('❌ Error during comprehensive cleanup:', error);
+        alert(`❌ Error during cleanup: ${error.message}\n\nCheck console for details.`);
+      }
+    };
+
+    // Comprehensive cleanup of ALL "Strength" sessions from entire database
+    window.cleanAllStrengthSessions = async function() {
+      console.log('🧹 COMPREHENSIVE CLEANUP: Removing ALL "Strength" sessions...');
+      
+      const confirmCleanup = confirm(
+        '🧹 This will permanently delete ALL "Strength" sessions from your database.\n\n' +
+        'This includes:\n' +
+        '• Training sessions with name "Strength"\n' +
+        '• All athlete performance data from those sessions\n\n' +
+        'This action cannot be undone.\n\n' +
+        'Continue with cleanup?'
+      );
+      
+      if (!confirmCleanup) {
+        console.log('❌ Cleanup cancelled by user');
+        return;
+      }
+      
+      try {
+        let totalDeleted = 0;
+        
+        // Step 1: Clean athleteSessionData collection
+        console.log('🔍 Step 1: Cleaning athleteSessionData...');
+        const athleteSnapshot = await getDocs(collection(db, 'athleteSessionData'));
+        
+        const deletePromises = [];
+        athleteSnapshot.forEach(doc => {
+          const data = doc.data();
+          const sessionName = (data.sessionName || '').toLowerCase();
+          
+          if (sessionName.includes('strength')) {
+            console.log('🗑️ Deleting athlete session:', doc.id, data);
+            deletePromises.push(deleteDoc(doc.ref));
+            totalDeleted++;
+          }
+        });
+        
+        if (deletePromises.length > 0) {
+          await Promise.all(deletePromises);
+          console.log(`✅ Deleted ${deletePromises.length} athlete session records`);
+        }
+        
+        // Step 2: Clean trainingSessions collection  
+        console.log('🔍 Step 2: Cleaning trainingSessions...');
+        const sessionSnapshot = await getDocs(collection(db, 'trainingSessions'));
+        
+        const sessionDeletePromises = [];
+        sessionSnapshot.forEach(doc => {
+          const data = doc.data();
+          const sessionName = (data.sessionName || '').toLowerCase();
+          
+          if (sessionName.includes('strength')) {
+            console.log('🗑️ Deleting training session:', doc.id, data);
+            sessionDeletePromises.push(deleteDoc(doc.ref));
+            totalDeleted++;
+          }
+        });
+        
+        if (sessionDeletePromises.length > 0) {
+          await Promise.all(sessionDeletePromises);
+          console.log(`✅ Deleted ${sessionDeletePromises.length} training session records`);
+        }
+        
+        // Final results
+        if (totalDeleted > 0) {
+          console.log(`🎉 CLEANUP COMPLETE! Deleted ${totalDeleted} total "Strength" records`);
+          alert(`🎉 Successfully cleaned ${totalDeleted} "Strength" session records!\n\nYour database is now clean. All views will refresh automatically.`);
+          
+          // Refresh everything
+          await loadTeamMembers();
+          if (typeof refreshTeamCharts === 'function') {
+            await refreshTeamCharts();
+          }
+          
+          if (currentSelectedMember && globalTeamAnalytics) {
+            await refreshAthleteMetricCharts(currentSelectedMember.studentId, globalTeamAnalytics);
+          }
+          
+          console.log('🔄 All views refreshed after cleanup!');
+        } else {
+          console.log('✅ No "Strength" sessions found - database already clean!');
+          alert('✅ No "Strength" sessions found. Your database is already clean!');
+        }
+        
+      } catch (error) {
+        console.error('❌ Error during comprehensive cleanup:', error);
+        alert(`❌ Error during cleanup: ${error.message}\n\nCheck console for details.`);
+      }
+    };
+
+    // Load and display athlete training sessions table
+    function loadAthleteSessionsTable(sessionData, athleteName) {
+      const tableContainer = document.getElementById('athleteSessionsTable');
+      if (!tableContainer || !sessionData || sessionData.length === 0) {
+        if (tableContainer) {
+          tableContainer.innerHTML = '<div style="text-align: center; color: #888; padding: 40px; font-size: 14px;">No training session data available for this athlete yet.</div>';
+        }
+        return;
+      }
+      
+      // Sort sessions by date (newest first)
+      const sortedSessions = [...sessionData].sort((a, b) => new Date(b.sessionDate) - new Date(a.sessionDate));
+      
+      // Helper function to get attendance styling
+      function getAttendanceStyle(attendance) {
+        const status = (attendance || 'Present').toLowerCase();
+        
+        switch (status) {
+          case 'present':
+            return {
+              style: 'background: #e8f5e8; color: #2e7d32; padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;',
+              icon: '✅'
+            };
+          case 'absent':
+            return {
+              style: 'background: #ffebee; color: #d32f2f; padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;',
+              icon: '❌'
+            };
+          case 'injured':
+            return {
+              style: 'background: #fff3e0; color: #f57c00; padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;',
+              icon: '🤕'
+            };
+          case 'late':
+            return {
+              style: 'background: #fff9c4; color: #f9a825; padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;',
+              icon: '⏰'
+            };
+          case 'left early':
+            return {
+              style: 'background: #f3e5f5; color: #7b1fa2; padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;',
+              icon: '🚪'
+            };
+          case 'excused':
+            return {
+              style: 'background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;',
+              icon: '📋'
+            };
+          default:
+            return {
+              style: 'background: #f5f5f5; color: #666; padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;',
+              icon: '❓'
+            };
+        }
+      }
+      
+      // Create table HTML
+      const tableHTML = `
+        <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+          <thead>
+            <tr style="background: #f8f9fa; border-bottom: 2px solid #e9ecef;">
+              <th style="padding: 12px; text-align: left; font-weight: 600; color: #495057; border-bottom: 1px solid #dee2e6;">Date</th>
+              <th style="padding: 12px; text-align: left; font-weight: 600; color: #495057; border-bottom: 1px solid #dee2e6;">Session</th>
+              <th style="padding: 12px; text-align: center; font-weight: 600; color: #495057; border-bottom: 1px solid #dee2e6;">Status</th>
+              <th style="padding: 12px; text-align: center; font-weight: 600; color: #495057; border-bottom: 1px solid #dee2e6;">Points</th>
+              <th style="padding: 12px; text-align: center; font-weight: 600; color: #495057; border-bottom: 1px solid #dee2e6;">Rebounds</th>
+              <th style="padding: 12px; text-align: center; font-weight: 600; color: #495057; border-bottom: 1px solid #dee2e6;">Assists</th>
+              <th style="padding: 12px; text-align: center; font-weight: 600; color: #495057; border-bottom: 1px solid #dee2e6;">Turnovers</th>
+              <th style="padding: 12px; text-align: center; font-weight: 600; color: #495057; border-bottom: 1px solid #dee2e6;">Fouls</th>
+              <th style="padding: 12px; text-align: center; font-weight: 600; color: #495057; border-bottom: 1px solid #dee2e6;">RPE</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${sortedSessions.map((session, index) => {
+              const attendance = session.attendance || 'Present';
+              const attendanceStyle = getAttendanceStyle(attendance);
+              return `
+              <tr style="border-bottom: 1px solid #e9ecef; ${index % 2 === 0 ? 'background: #f8f9fa;' : 'background: white;'} transition: background-color 0.2s ease;">
+                <td style="padding: 12px; color: #495057;">${formatSessionDate(session.sessionDate)}</td>
+                <td style="padding: 12px; color: #495057; font-weight: 500;">${session.sessionName || 'Training Session'}</td>
+                <td style="padding: 12px; text-align: center;">
+                  <span style="${attendanceStyle.style}">${attendanceStyle.icon} ${attendance}</span>
+                </td>
+                <td style="padding: 12px; text-align: center; color: #1976d2; font-weight: 600;">${session.points || 0}</td>
+                <td style="padding: 12px; text-align: center; color: #2e7d32; font-weight: 600;">${session.rebounds || 0}</td>
+                <td style="padding: 12px; text-align: center; color: #f57c00; font-weight: 600;">${session.assists || 0}</td>
+                <td style="padding: 12px; text-align: center; color: #d32f2f; font-weight: 600;">${session.turnovers || 0}</td>
+                <td style="padding: 12px; text-align: center; color: #c2185b; font-weight: 600;">${session.fouls || 0}</td>
+                <td style="padding: 12px; text-align: center; color: #7b1fa2; font-weight: 600;">${session.rpe || 0}/10</td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      `;
+      
+      tableContainer.innerHTML = tableHTML;
+      
+      // Add hover effects to table rows
+      const rows = tableContainer.querySelectorAll('tbody tr');
+      rows.forEach(row => {
+        row.addEventListener('mouseenter', () => {
+          row.style.background = '#e3f2fd';
+        });
+        row.addEventListener('mouseleave', () => {
+          const index = Array.from(rows).indexOf(row);
+          row.style.background = index % 2 === 0 ? '#f8f9fa' : 'white';
+        });
+      });
+    }
+    
+    // Helper function to format session date
+    function formatSessionDate(dateString) {
+      try {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        });
+      } catch (error) {
+        return dateString || 'Unknown Date';
+      }
     }
 
-    // Back navigation functions
+    // Load member training sessions summary
+    async function loadMemberSessionsSummary(studentId) {
+      const tableContainer = document.getElementById('memberSessionsTable');
+      if (!tableContainer) return;
+
+      try {
+        // Fetch member's session data
+        const sessionData = await fetchMemberSessionData(studentId, currentSelectedTeam.id);
+        
+        if (sessionData.length === 0) {
+          tableContainer.innerHTML = `
+            <div class="session-row">
+              <div>Date</div>
+              <div>Session Type</div>
+              <div>Points</div>
+              <div>Rebounds</div>
+              <div>Assists</div>
+              <div>Turnovers</div>
+              <div>RPE</div>
+            </div>
+            <div style="padding: 40px; text-align: center; color: #666; font-family: Arial, sans-serif; font-style: italic;">
+              No training sessions recorded yet. Training data will appear here once sessions are completed.
+            </div>
+          `;
+          return;
+        }
+
+        // Create table structure with real data
+        const tableHTML = `
+          <div class="session-row">
+            <div>Date</div>
+            <div>Session Type</div>
+            <div>Points</div>
+            <div>Rebounds</div>
+            <div>Assists</div>
+            <div>Turnovers</div>
+            <div>RPE</div>
+          </div>
+          ${sessionData.map(session => `
+            <div class="session-row">
+              <div>${new Date(session.sessionDate).toLocaleDateString()}</div>
+              <div>${session.sessionName || 'Training Session'}</div>
+              <div>${session.points || 0}</div>
+              <div>${session.rebounds || 0}</div>
+              <div>${session.assists || 0}</div>
+              <div>${session.turnovers || 0}</div>
+              <div>${session.rpe || 'N/A'}</div>
+            </div>
+          `).join('')}
+        `;
+        
+        tableContainer.innerHTML = tableHTML;
+
+      } catch (error) {
+        console.error('Error loading member sessions summary:', error);
+        tableContainer.innerHTML = `
+          <div class="session-row">
+            <div>Date</div>
+            <div>Session Type</div>
+            <div>Points</div>
+            <div>Rebounds</div>
+            <div>Assists</div>
+            <div>Turnovers</div>
+            <div>RPE</div>
+          </div>
+          <div style="padding: 40px; text-align: center; color: #e74c3c; font-family: Arial, sans-serif;">
+            Error loading training sessions. Please try again.
+          </div>
+        `;
+      }
+    }
+
+    // Enhanced back navigation functions
     window.backToTeamsOverview = function() {
       document.getElementById('teams-overview-view').style.display = 'block';
       document.getElementById('team-stats-detail-view').style.display = 'none';
-      document.getElementById('player-stats-detail-view').style.display = 'none';
+      document.getElementById('member-stats-detail-view').style.display = 'none';
       currentSelectedTeam = null;
-      currentSelectedPlayer = null;
+      currentSelectedMember = null;
     };
 
     window.backToTeamDetail = function() {
@@ -4526,9 +6244,285 @@
       }
     };
 
-    // Make showTeamDetail and showPlayerDetail available globally
+    // Make functions available globally - move here to ensure they're defined early
     window.showTeamDetail = showTeamDetail;
-    window.showPlayerDetail = showPlayerDetail;
+    window.showMemberDetail = showMemberDetail;
+    
+    // Debug function for testing
+    window.testTeamClick = function() {
+      console.log('🧪 Testing team click functionality...');
+      console.log('Teams available:', teams.length);
+      console.log('showTeamDetail function:', typeof window.showTeamDetail);
+      if (teams.length > 0) {
+        console.log('First team ID:', teams[0].id);
+        showTeamDetail(teams[0].id);
+      }
+    };
+
+    // Make functions available globally
+    window.showTeamDetail = showTeamDetail;
+    window.showMemberDetail = showMemberDetail;
+    
+    // Debug function for testing
+    window.testTeamClick = function() {
+      console.log('🧪 Testing team click functionality...');
+      console.log('Teams available:', teams.length);
+      console.log('showTeamDetail function:', typeof window.showTeamDetail);
+      if (teams.length > 0) {
+        console.log('First team ID:', teams[0].id);
+        showTeamDetail(teams[0].id);
+      }
+    };
+
+    // ========== ANALYTICS SUPPORT FUNCTIONS ==========
+    
+    // Fetch training sessions for a specific team
+    async function fetchTeamTrainingSessions(teamId) {
+      try {
+        const sessionsQuery = query(
+          collection(db, 'trainingSessions'),
+          where('teamId', '==', teamId)
+        );
+        
+        const sessionsSnapshot = await getDocs(sessionsQuery);
+        const sessions = [];
+        
+        sessionsSnapshot.forEach(doc => {
+          sessions.push({
+            id: doc.id,
+            ...doc.data()
+          });
+        });
+        
+        // Sort by date
+        sessions.sort((a, b) => new Date(a.sessionDate) - new Date(b.sessionDate));
+        
+        return sessions;
+      } catch (error) {
+        console.error('Error fetching team training sessions:', error);
+        return [];
+      }
+    }
+    
+    // Fetch athlete session data for multiple sessions
+    async function fetchAllAthleteSessionData(trainingSessions) {
+      try {
+        const allAthleteData = [];
+        
+        // Fetch athlete data for each session
+        for (const session of trainingSessions) {
+          const athleteQuery = query(
+            collection(db, 'athleteSessionData'),
+            where('sessionId', '==', session.id)
+          );
+          
+          const athleteSnapshot = await getDocs(athleteQuery);
+          
+          athleteSnapshot.forEach(doc => {
+            allAthleteData.push({
+              id: doc.id,
+              sessionId: session.id,
+              ...doc.data()
+            });
+          });
+        }
+        
+        return allAthleteData;
+      } catch (error) {
+        console.error('Error fetching athlete session data:', error);
+        return [];
+      }
+    }
+    
+    // Display team summary statistics
+    function displayTeamSummaryStats(summary) {
+      if (!summary) return;
+      
+      // Update the quick stats in the header
+      document.getElementById('avgTeamPerformance').textContent = summary.overallAverage.toFixed(1);
+      document.getElementById('totalSessions').textContent = summary.totalSessions;
+      
+      // Log detailed summary for debugging
+      console.log('📊 Team Performance Summary:', {
+        'Total Sessions': summary.totalSessions,
+        'Overall Average Points/Player': summary.overallAverage,
+        'Highest Session Average': summary.highestAverage,
+        'Lowest Session Average': summary.lowestAverage,
+        'Total Athletes Tracked': summary.totalAthletesTracked,
+        'Consistency Score': summary.consistencyScore + '%'
+      });
+    }
+
+    // Display player summary statistics
+    function displayPlayerSummaryStats(summary) {
+      if (!summary) return;
+      
+      // Log detailed summary for debugging
+      console.log('👥 Player Performance Summary:', {
+        'Total Players': summary.totalPlayers,
+        'Top Performer': summary.topPerformer?.playerName + ' (' + summary.topPerformer?.averagePoints.toFixed(1) + ' avg)',
+        'Highest Average': summary.highestAverage.toFixed(1),
+        'Lowest Average': summary.lowestAverage.toFixed(1),
+        'Overall Average': summary.overallAverage.toFixed(1),
+        'Performance Spread': summary.performanceSpread.toFixed(1) + ' points',
+        'Avg Sessions/Player': summary.averageSessionsPerPlayer
+      });
+      
+      // Update additional stats if UI elements exist
+      const topPerformerElement = document.getElementById('topPerformer');
+      if (topPerformerElement && summary.topPerformer) {
+        topPerformerElement.textContent = `${summary.topPerformer.playerName} (${summary.topPerformer.averagePoints.toFixed(1)} avg)`;
+      }
+      
+      const totalPlayersElement = document.getElementById('totalPlayers');
+      if (totalPlayersElement) {
+        totalPlayersElement.textContent = summary.totalPlayers;
+      }
+    }
+
+    // ========== SAMPLE DATA GENERATOR ==========
+    async function generateSampleTrainingData() {
+      console.log('🏀 Generating sample training data...');
+      
+      if (!currentUser) {
+        alert('Please make sure you are logged in as a coach.');
+        return;
+      }
+      
+      try {
+        // Generate unique IDs
+        const timestamp = Date.now();
+        const sampleTeamId = `sample-team-${timestamp}`;
+        const sampleTeamName = `Sample Team ${timestamp}`;
+        
+        // Create athlete IDs
+        const athleteIds = [
+          `athlete1-${timestamp}`,
+          `athlete2-${timestamp}`,
+          `athlete3-${timestamp}`,
+          `athlete4-${timestamp}`,
+          `athlete5-${timestamp}`
+        ];
+        
+        console.log('📝 Creating sample team...');
+        // Create sample team
+        await setDoc(doc(db, 'teams', sampleTeamId), {
+          name: sampleTeamName,
+          sport: 'Basketball',
+          coachId: currentUser.uid,
+          coachEmail: currentUser.email,
+          createdAt: new Date().toISOString(),
+          memberIds: athleteIds,
+          image: '',
+          description: 'Sample team for testing analytics'
+        });
+        
+        console.log('👥 Creating athlete profiles...');
+        // Create athlete profiles
+        const athletes = [
+          { id: athleteIds[0], name: 'John Smith', email: 'john.smith@example.com' },
+          { id: athleteIds[1], name: 'Sarah Johnson', email: 'sarah.johnson@example.com' },
+          { id: athleteIds[2], name: 'Mike Davis', email: 'mike.davis@example.com' },
+          { id: athleteIds[3], name: 'Emma Wilson', email: 'emma.wilson@example.com' },
+          { id: athleteIds[4], name: 'Alex Brown', email: 'alex.brown@example.com' }
+        ];
+        
+        for (const athlete of athletes) {
+          await setDoc(doc(db, 'profiles', athlete.id), {
+            fullName: athlete.name,
+            email: athlete.email,
+            studentId: athlete.id.substr(-8),
+            position: 'Player',
+            sport: 'Basketball',
+            role: 'athlete',
+            createdAt: new Date().toISOString()
+          });
+        }
+        
+        console.log('🏃‍♂️ Creating training sessions...');
+        // Generate 5 sample training sessions
+        const sessions = [];
+        
+        for (let i = 0; i < 5; i++) {
+          const sessionDate = new Date();
+          sessionDate.setDate(sessionDate.getDate() - (i * 7)); // Weekly sessions
+          
+          const sessionData = {
+            sessionName: `Training Session ${5 - i}`,
+            sessionDate: sessionDate.toISOString().split('T')[0],
+            sessionTime: '18:00',
+            teamId: sampleTeamId,
+            teamName: sampleTeamName,
+            coachId: currentUser.uid,
+            status: 'completed',
+            duration: '90',
+            location: 'Main Court',
+            description: `Basketball training session ${5 - i} - Skills and scrimmage`,
+            createdAt: new Date().toISOString()
+          };
+          
+          // Add session to Firebase
+          const sessionRef = await addDoc(collection(db, 'trainingSessions'), sessionData);
+          sessions.push({ id: sessionRef.id, ...sessionData });
+          console.log(`✅ Created: ${sessionData.sessionName}`);
+        }
+        
+        console.log('📊 Creating athlete performance data...');
+        // Generate athlete performance data for each session
+        for (const session of sessions) {
+          for (const athlete of athletes) {
+            // Generate realistic performance data
+            const attendanceOptions = ['Present', 'Present', 'Present', 'Late', 'Left Early'];
+            const attendance = attendanceOptions[Math.floor(Math.random() * attendanceOptions.length)];
+            
+            // Adjust performance based on attendance
+            let pointsMultiplier = 1.0;
+            if (attendance === 'Late') pointsMultiplier = 0.7;
+            else if (attendance === 'Left Early') pointsMultiplier = 0.8;
+            
+            const performanceData = {
+              athleteId: athlete.id,
+              athleteName: athlete.name,
+              athleteEmail: athlete.email,
+              sessionId: session.id,
+              sessionName: session.sessionName,
+              sessionDate: session.sessionDate,
+              teamId: sampleTeamId,
+              teamName: sampleTeamName,
+              attendance: attendance,
+              points: Math.floor((Math.random() * 20 + 5) * pointsMultiplier), // 5-25 points
+              rebounds: Math.floor(Math.random() * 10 + 1), // 1-10 rebounds
+              assists: Math.floor(Math.random() * 8 + 1), // 1-8 assists
+              turnovers: Math.floor(Math.random() * 5), // 0-4 turnovers
+              fouls: Math.floor(Math.random() * 4), // 0-3 fouls
+              rpe: Math.floor(Math.random() * 4 + 6), // 6-9 RPE scale
+              notes: '',
+              createdAt: new Date().toISOString()
+            };
+            
+            // Add athlete session data to Firebase
+            await addDoc(collection(db, 'athleteSessionData'), performanceData);
+          }
+        }
+        
+        console.log('🎉 Sample training data created successfully!');
+        console.log(`📊 Created: ${sessions.length} training sessions with ${athletes.length} athletes each`);
+        alert(`Sample data created successfully!\\n\\n• Team: ${sampleTeamName}\\n• Sessions: ${sessions.length}\\n• Athletes: ${athletes.length}\\n\\nCharts will automatically refresh with new data!`);
+        
+        // Refresh the teams list and statistics
+        loadStatisticsData();
+        
+        // If we're currently viewing a team, refresh its charts automatically
+        if (currentSelectedTeam && currentSelectedTeam.id === sampleTeamId) {
+          console.log('♻️ Auto-refreshing current team charts...');
+          // The real-time listeners will handle the refresh automatically
+        }
+        
+      } catch (error) {
+        console.error('❌ Error creating sample data:', error);
+        alert('Error creating sample data. Check console for details.');
+      }
+    }
 
   </script>
 </body>
