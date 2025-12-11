@@ -822,16 +822,21 @@
     }
 
     .competition-action-btn {
-      background: none;
-      border: none;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 6px;
       cursor: pointer;
-      font-size: 18px;
-      padding: 4px 8px;
+      font-size: 16px;
+      padding: 6px 10px;
       color: #666;
+      transition: all 0.2s ease;
     }
 
     .competition-action-btn:hover {
-      color: #000;
+      color: #333;
+      background: #f8f9fa;
+      border-color: #999;
+      transform: scale(1.05);
     }
 
     .form-button {
@@ -2597,8 +2602,13 @@
           memberCard.style.border = '2px solid #9b59b6';
         }
         
+        // Create avatar HTML - use image if available, otherwise show first letter
+        const avatarHtml = athlete.avatar ? 
+          `<img src="${athlete.avatar}" alt="${athlete.name}" class="member-avatar" />` :
+          `<div class="member-avatar" style="width: 60px; height: 60px; border-radius: 50%; background: #dcc4f8; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; color: #333;">${athlete.name.charAt(0).toUpperCase()}</div>`;
+        
         memberCard.innerHTML = `
-          <img src="${athlete.avatar}" alt="${athlete.name}" class="member-avatar" />
+          ${avatarHtml}
           <span class="member-name">${athlete.name}</span>
           <button class="member-add-btn${isSelected ? ' selected' : ''}">${isSelected ? '✓' : '⊕'}</button>
         `;
@@ -3170,8 +3180,14 @@
         const memberCard = document.createElement('div');
         memberCard.className = 'member-card';
         memberCard.dataset.athleteId = athlete.id;
+        
+        // Create avatar HTML - use image if available, otherwise show first letter
+        const avatarHtml = athlete.avatar ? 
+          `<img src="${athlete.avatar}" alt="${athlete.name}" class="member-avatar" />` :
+          `<div class="member-avatar" style="width: 60px; height: 60px; border-radius: 50%; background: #dcc4f8; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; color: #333;">${athlete.name.charAt(0).toUpperCase()}</div>`;
+        
         memberCard.innerHTML = `
-          <img src="${athlete.avatar}" alt="${athlete.name}" class="member-avatar" />
+          ${avatarHtml}
           <span class="member-name">${athlete.name}</span>
           <button class="member-add-btn">⊕</button>
         `;
@@ -3480,9 +3496,16 @@
         const sessionCard = document.createElement('div');
         sessionCard.className = 'training-card';
         
+        const hasReminders = session.reminders && session.reminders.length > 0;
+        
         sessionCard.innerHTML = `
-          <div class="training-card-title" onclick="showSessionMembers('${session.id}')">
-            ${session.sessionName}
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="training-card-title" onclick="showSessionMembers('${session.id}')" style="flex: 1;">
+              ${session.sessionName}
+            </div>
+            ${hasReminders ? `<div style="background: #ff6b6b; color: white; padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; cursor: pointer;" onclick="showReminders('${session.id}')" title="Click to view reminders">
+              📧 ${session.reminders.length} Reminder${session.reminders.length > 1 ? 's' : ''}
+            </div>` : ''}
           </div>
           
           <div class="training-card-info" onclick="showSessionMembers('${session.id}')">
@@ -3571,6 +3594,25 @@
         console.error('Error deleting training session:', error);
         alert('Failed to delete training session: ' + error.message);
       }
+    };
+
+    // Show reminders for a training session
+    window.showReminders = function(sessionId) {
+      const session = trainingSessions.find(s => s.id === sessionId);
+      if (!session || !session.reminders || session.reminders.length === 0) {
+        alert('No reminders for this session.');
+        return;
+      }
+
+      let reminderText = `Reminders for ${session.sessionName}:\n\n`;
+      session.reminders.forEach((reminder, index) => {
+        const date = new Date(reminder.timestamp).toLocaleString();
+        reminderText += `${index + 1}. From: ${reminder.athleteName} (${reminder.athleteEmail})\n`;
+        reminderText += `   Date: ${date}\n`;
+        reminderText += `   Message: ${reminder.message}\n\n`;
+      });
+
+      alert(reminderText);
     };
 
     // Update session status
@@ -4555,7 +4597,7 @@
           </div>
           
           <div class="competition-details">
-            <div class="competition-name">${comp.name}</div>
+            <div class="competition-name">${comp.competitionName}</div>
             <div class="competition-info">${formattedDate.toUpperCase()}</div>
             <div class="competition-info">${comp.time}</div>
             <div class="competition-info">${comp.location}</div>
@@ -4706,12 +4748,12 @@
       if (!competition) return;
 
       // Populate form
-      document.getElementById('compNameInput').value = competition.name;
+      document.getElementById('compNameInput').value = competition.competitionName;
       document.getElementById('compDateInput').value = competition.date;
       document.getElementById('compTimeInput').value = competition.time;
       document.getElementById('compLocationInput').value = competition.location;
-      document.getElementById('compTeam1Input').value = competition.team1;
-      document.getElementById('compTeam2Input').value = competition.team2;
+      document.getElementById('compTeam1Input').value = competition.team1Id;
+      document.getElementById('compTeam2Input').value = competition.opponentName;
 
       // Set editing state
       window.currentEditingCompId = compId;
@@ -4973,7 +5015,10 @@
         membersContainer.innerHTML = memberProfiles.map(member => `
           <div class="member-row" onclick="showMemberDetail('${member.studentId}', '${member.name}', '${member.position}')">
             <div class="member-info">
-              <div class="member-avatar">${member.name.charAt(0).toUpperCase()}</div>
+              ${member.avatar ? 
+                `<img src="${member.avatar}" alt="${member.name}" class="member-avatar" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" />` : 
+                `<div class="member-avatar" style="width: 50px; height: 50px; border-radius: 50%; background: #dcc4f8; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; color: #333;">${member.name.charAt(0).toUpperCase()}</div>`
+              }
               <div class="member-details">
                 <div class="member-name">${member.name}</div>
                 <div class="member-student-id">ID: ${member.studentId}</div>
@@ -5007,7 +5052,10 @@
         membersContainer.innerHTML = team.members.map(member => `
           <div class="member-row" onclick="showMemberDetail('${member.studentId}', '${member.name}', '${member.position || 'Player'}')">
             <div class="member-info">
-              <div class="member-avatar">${member.name.charAt(0).toUpperCase()}</div>
+              ${member.avatar ? 
+                `<img src="${member.avatar}" alt="${member.name}" class="member-avatar" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" />` : 
+                `<div class="member-avatar" style="width: 50px; height: 50px; border-radius: 50%; background: #dcc4f8; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; color: #333;">${member.name.charAt(0).toUpperCase()}</div>`
+              }
               <div class="member-details">
                 <div class="member-name">${member.name}</div>
                 <div class="member-student-id">ID: ${member.studentId}</div>

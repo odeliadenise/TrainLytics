@@ -16,10 +16,10 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #ffffff;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   font-family: Arial, Helvetica, sans-serif;
   color: #1e293b;
-  text-align: center;
+  overflow-x: hidden;
   overflow-y: auto;
 }
 
@@ -107,6 +107,270 @@ footer {
   width: 100%;
   font-size: 12px;
   color: #94a3b8;
+}
+
+/* ===== MODERN INDEX PAGE STYLES ===== */
+.hero-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px 40px;
+  text-align: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  top: -200px;
+  right: -200px;
+  animation: float 6s ease-in-out infinite;
+}
+
+.hero-section::after {
+  content: '';
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  bottom: -100px;
+  left: -100px;
+  animation: float 8s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  animation: fadeInUp 1s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.logo-container {
+  margin-bottom: 20px;
+  animation: fadeIn 1.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.main-logo {
+  width: 180px;
+  height: auto;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15));
+}
+
+.main-title {
+  font-family: 'Overcame';
+  font-size: 72px;
+  color: white;
+  margin: 0 0 16px 0;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  letter-spacing: 2px;
+}
+
+.tagline {
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0 0 12px 0;
+  font-weight: 600;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.subtitle {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.role-selection {
+  background: white;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.selection-title {
+  font-size: 42px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 60px 0;
+  letter-spacing: -0.5px;
+}
+
+.role-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.role-card {
+  background: white;
+  border-radius: 24px;
+  padding: 48px 32px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  border: 2px solid #f1f5f9;
+  overflow: hidden;
+}
+
+.role-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  transform: scaleX(0);
+  transition: transform 0.4s ease;
+}
+
+.role-card:hover::before {
+  transform: scaleX(1);
+}
+
+.role-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 20px 48px rgba(102, 126, 234, 0.25);
+  border-color: #667eea;
+}
+
+.role-icon {
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 24px;
+  transition: transform 0.4s ease;
+}
+
+.role-card:hover .role-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.role-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.role-card h3 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 16px 0;
+}
+
+.role-card p {
+  font-size: 15px;
+  color: #64748b;
+  line-height: 1.6;
+  margin: 0 0 24px 0;
+  text-align: center;
+}
+
+.card-arrow {
+  font-size: 32px;
+  color: #667eea;
+  font-weight: bold;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
+}
+
+.role-card:hover .card-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.features-section {
+  background: #f8fafc;
+  padding: 80px 20px;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.feature-item {
+  text-align: center;
+  padding: 32px 24px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.feature-item h4 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 12px 0;
+}
+
+.feature-item p {
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0;
+  text-align: center;
+}
+
+.modern-footer {
+  background: #1e293b;
+  padding: 32px 20px;
+  text-align: center;
+  width: 100%;
+  margin-top: auto;
+}
+
+.modern-footer p {
+  color: #94a3b8;
+  font-size: 14px;
+  margin: 0;
 }
 
 /* ===== Responsive (mobile) ===== */
@@ -794,19 +1058,21 @@ footer {
 
 /* ===== DASHBOARD (Shared UI for athlete/coach) ===== */
 /* Sidebar navigation + common content sections */
-.nav-section{ display:flex; flex-direction:column; gap:12px; }
+.nav-section{ display:flex; flex-direction:column; gap:0; }
 .nav-item{
-  padding:10px 12px; color:#333; font-size:15px; font-weight:600; cursor:pointer;
-  transition:background .3s; border-radius:4px;
+  padding:8px 0; cursor:pointer; border-radius:0; font-size:16px; text-align:left;
+  transition:color 0.2s; font-family:Arial, sans-serif; font-weight:bold; 
+  text-transform:uppercase; letter-spacing:1px; color:#000;
 }
-.nav-item:hover{ background:#f0f0f0; }
-.nav-item.active{ background:#e8d5f2; color:#6b4c9a; }
+.nav-item:hover{ background:none; color:#9333ea; }
+.nav-item.active{ background:none; color:#000; font-weight:bold; }
 
 .sign-out-btn{
-  background:#ddd; color:#333; border:none; padding:12px; border-radius:20px;
-  cursor:pointer; font-size:14px; font-weight:600; transition:background .3s; margin-top:auto;
+  background:#b8bcc4; border:none; padding:10px 16px; border-radius:20px;
+  cursor:pointer; font-weight:bold; text-transform:uppercase; font-size:11px; margin-top:auto;
+  font-family:Arial, sans-serif; letter-spacing:0.5px;
 }
-.sign-out-btn:hover{ background:#ccc; }
+.sign-out-btn:hover{ background:#a9adb5; }
 
 .content-section{ display:none; }
 .content-section.active{ display:block; }
@@ -831,25 +1097,32 @@ footer {
 /* Buttons inside dashboard sidebars (scoped to avoid conflicts) */
 .coach-sidebar .manage-account-btn,
 .athlete-sidebar .manage-account-btn{
-  background:#ddd; color:#333; border:none; padding:10px; border-radius:20px;
-  cursor:pointer; font-size:13px; font-weight:600; margin-top:12px; transition:background .3s;
+  background:#b8bcc4; border:none; padding:10px 16px; border-radius:20px;
+  cursor:pointer; font-size:11px; font-weight:bold; text-transform:uppercase; 
+  font-family:Arial, sans-serif; letter-spacing:0.5px;
 }
 .coach-sidebar .manage-account-btn:hover,
-.athlete-sidebar .manage-account-btn:hover{ background:#ccc; }
+.athlete-sidebar .manage-account-btn:hover{ background:#a9adb5; }
 
 /* ===== ATHLETE DASHBOARD (page-specific wrappers) ===== */
-.athlete-dashboard{ display:flex; height:100vh; background:#f5f5f5; }
+.athlete-dashboard{ display:flex; height:100vh; background:#ffffff; }
 .athlete-sidebar{
-  width:250px; background:#fff; padding:20px; border-right:1px solid #ddd; display:flex; flex-direction:column;
-  box-shadow:2px 0 4px rgba(0,0,0,.05);
+  width:250px; background:white; border-right:1px solid #000; display:flex; flex-direction:column;
+  padding:24px 20px; overflow-y:auto;
 }
-.athlete-profile{ text-align:center; margin-bottom:30px; padding-bottom:20px; border-bottom:1px solid #eee; }
+.athlete-profile{ text-align:center; padding-bottom:20px; border-bottom:1px solid #ddd; margin-bottom:20px; }
 .athlete-avatar{
-  width:80px; height:80px; background:#e8d5f2; border-radius:50%; margin:0 auto 12px; display:flex; align-items:center; justify-content:center;
-  font-size:40px; overflow:hidden; position:relative;
+  width:70px; height:70px; border-radius:50%; background:#dcc4f8; display:flex; align-items:center; justify-content:center;
+  margin:0 auto 10px; font-size:36px;
 }
-.athlete-name{ font-size:16px; font-weight:600; margin-bottom:4px; color:#333; }
-.athlete-sport{ font-size:13px; color:#666; }
+.athlete-name{ 
+  font-weight:bold; font-size:13px; margin-bottom:4px; text-transform:uppercase; 
+  font-family:Arial, sans-serif; letter-spacing:0.5px; 
+}
+.athlete-sport{ 
+  font-size:11px; color:#666; margin-bottom:12px; text-transform:uppercase; 
+  font-family:Arial, sans-serif; 
+}
 .athlete-nav{ flex:1; display:flex; flex-direction:column; gap:20px; }
 .athlete-content{ flex:1; padding:40px; overflow-y:auto; }
 
